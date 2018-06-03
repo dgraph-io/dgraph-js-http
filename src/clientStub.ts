@@ -123,7 +123,7 @@ export class DgraphClientStub {
     }
 
     public health(): Promise<string> {
-        return fetch(this.getURL("health"), {
+        return fetch(this.getURL("health"), { // tslint:disable-line no-unsafe-any
             method: "GET",
         })
             .then((response: { status: number; text(): string }) => {
@@ -136,7 +136,7 @@ export class DgraphClientStub {
 
     private callAPI<T>(path: string, config: {}): Promise<T> {
         const url = this.getURL(path);
-        return fetch(url, config)
+        return fetch(url, config) // tslint:disable-line no-unsafe-any
             .then((response: { status: number; json(): T }) => {
                 if (response.status >= 300 || response.status < 200) {
                     throw new Error(`Invalid status code = ${response.status}`);
