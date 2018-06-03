@@ -1,0 +1,45 @@
+{
+  "name": "dgraph-js-http",
+  "version": "0.1.0",
+  "description": "A javascript HTTP client for Dgraph",
+  "license": "Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/dgraph-io/dgraph-js-http.git"
+  },
+  "bugs": {
+    "url": "https://github.com/dgraph-io/dgraph-js-http/issues"
+  },
+  "homepage": "https://github.com/dgraph-io/dgraph-js-http#readme",
+  "files": [
+    "lib"
+  ],
+  "main": "lib/index.js",
+  "typings": "lib/index.d.ts",
+  "scripts": {
+    "clean": "rimraf coverage",
+    "build": "tsc -p tsconfig.release.json",
+    "build:watch": "tsc -w -p tsconfig.release.json",
+    "lint": "tslint -t stylish --project \"tsconfig.json\"",
+    "lint:fix": "tslint --fix -t stylish --project \"tsconfig.json\"",
+    "pretest": "npm run lint",
+    "test": "npm run test-only",
+    "test-only": "jest --coverage --runInBand",
+    "test:watch": "jest --watch",
+    "coveralls": "cat ./coverage/lcov.info | coveralls"
+  },
+  "devDependencies": {
+    "@types/jest": "^22.1.0",
+    "@types/node": "^9.3.0",
+    "coveralls": "^3.0.0",
+    "jest": "^22.1.4",
+    "rimraf": "^2.6.2",
+    "ts-jest": "^22.0.1",
+    "tslint": "^5.9.1",
+    "tslint-microsoft-contrib": "^5.0.2",
+    "typescript": "^2.6.2"
+  },
+  "dependencies": {
+    "isomorphic-fetch": "^2.2.1"
+  }
+}
