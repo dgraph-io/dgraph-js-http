@@ -23,7 +23,7 @@ and understand how to run and work with Dgraph.
   - [Run a mutation](#run-a-mutation)
   - [Run a query](#run-a-query)
   - [Commit a transaction](#commit-a-transaction)
-  - [Request latency](#request-latency)
+  - [Check request latency](#check-request-latency)
   - [Debug mode](#debug-mode)
 - [Development](#development)
   - [Building the source](#building-the-source)
@@ -235,10 +235,13 @@ try {
 }
 ```
 
-### Request latency
+### Check request latency
 
-To get the request latency, check the `extensions.server_latency` for the
-Response object for queries or the Assigned object for mutations.
+To see the server latency information for requests, check the
+`extensions.server_latency` field from the Response object for queries or from
+the Assigned object for mutations. These latencies show the amount of time the
+Dgraph server took to process the entire request. It does not consider the time
+over the network for the request to reach back to the client.
 
 ```js
 // queries
