@@ -23,6 +23,7 @@ and understand how to run and work with Dgraph.
   - [Run a mutation](#run-a-mutation)
   - [Run a query](#run-a-query)
   - [Commit a transaction](#commit-a-transaction)
+  - [Request latency](#request-latency)
   - [Debug mode](#debug-mode)
 - [Development](#development)
   - [Building the source](#building-the-source)
@@ -232,6 +233,26 @@ try {
   // and hence safe.
   await txn.discard();
 }
+```
+
+### Request latency
+
+To get the request latency, check the `extensions.server_latency` for the
+Response object for queries or the Assigned object for mutations.
+
+```js
+// queries
+const res = await txn.queryWithVars(query, vars);
+console.log(res.extensions.server_latency);
+// { parsing_ns: 29478,
+//  processing_ns: 44540975,
+//  encoding_ns: 868178 }
+
+// mutations
+const assigned = await txn.mutate({ setJson: p });
+console.log(assigned.extensions.server_latency);
+// { parsing_ns: 132207,
+//   processing_ns: 84100996 }
 ```
 
 ### Debug mode
