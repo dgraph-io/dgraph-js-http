@@ -1,19 +1,4 @@
 import { APIError, APIResultError } from "./errors";
-import { LinRead } from "./types";
-
-export function mergeLinReads(target: LinRead, src?: LinRead | null): LinRead {
-    if (src == null) {
-        return target;
-    }
-
-    Object.keys(src.ids).forEach((group: string): void => {
-        const targetVal = target.ids[group];
-        if (targetVal == null || src.ids[group] > targetVal) {
-            target.ids[group] = src.ids[group];
-        }
-    });
-    return target;
-}
 
 export function isAbortedError(error: any): boolean { // tslint:disable-line no-any
     if (!(error instanceof APIError)) {

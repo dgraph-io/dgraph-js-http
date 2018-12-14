@@ -17,7 +17,7 @@ declare const fetch: any; // tslint:disable-line no-any
  * Stub is a stub/client connecting to a single dgraph server instance.
  */
 export class DgraphClientStub {
-    private addr: string;
+    private addr: string; // tslint:disable-line
     constructor(addr?: string | null) {
         if (addr == null) {
             this.addr = "http://localhost:8080"; // tslint:disable-line no-http-string
@@ -48,9 +48,6 @@ export class DgraphClientStub {
         const headers: { [k: string]: string } = {};
         if (req.vars != null) {
             headers["X-Dgraph-Vars"] = JSON.stringify(req.vars);
-        }
-        if (req.linRead != null) {
-            headers["X-Dgraph-LinRead"] = JSON.stringify(req.linRead.ids);
         }
 
         return this.callAPI(`query${req.startTs == null ? "" : `/${req.startTs}`}`, {

@@ -12,7 +12,6 @@ export interface Request {
         [k: string]: string;
     } | null;
     startTs?: number | null;
-    linRead?: LinRead | null;
 }
 export interface Response {
     data: {};
@@ -39,17 +38,12 @@ export interface Extensions {
     server_latency: Latency;
     txn: TxnContext;
 }
-export interface LinRead {
-    ids: {
-        [k: string]: number;
-    };
-}
+
 export interface TxnContext {
     start_ts: number;
     commit_ts?: number | null;
     aborted?: boolean | null;
     keys?: string[] | null;
-    lin_read: LinRead;
 }
 export interface Latency {
     parsing_ns?: number | null;

@@ -4,7 +4,6 @@ import { Assigned, Mutation, Request, Response, TxnContext } from "./types";
 import {
     isAbortedError,
     isConflictError,
-    mergeLinReads,
     stringifyMessage,
 } from "./util";
 
@@ -30,7 +29,7 @@ export class Txn {
 
     constructor(dc: DgraphClient) {
         this.dc = dc;
-        this.ctx = { start_ts: 0, lin_read: this.dc.getLinRead() };
+        this.ctx = { start_ts: 0 };
     }
 
     /**
@@ -58,7 +57,6 @@ export class Txn {
         const req: Request = {
             query: q,
             startTs: this.ctx.start_ts,
-            linRead: this.ctx.lin_read,
         };
         if (vars != null) {
             const varsObj: { [k: string]: string } = {};
@@ -191,9 +189,6 @@ export class Txn {
             // This condition will be true only if the server doesn't return a txn context after a query or mutation.
             return;
         }
-
-        mergeLinReads(this.ctx.lin_read, src.lin_read);
-        this.dc.mergeLinReads(src.lin_read);
 
         if (this.ctx.start_ts === 0) {
             this.ctx.start_ts = src.start_ts;

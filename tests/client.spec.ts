@@ -15,21 +15,21 @@ describe("client", () => {
         });
 
         it("should handle debug mode", () => {
-            console.log = jest.fn();
+            console.log = jest.fn();// tslint:disable-line
 
             const msg = "test message";
             const client = createClient();
 
             client.debug(msg);
-            expect(console.log).not.toHaveBeenCalled();
+            expect(console.log).not.toHaveBeenCalled();// tslint:disable-line
 
             client.setDebugMode();
             client.debug(msg);
-            expect(console.log).toHaveBeenCalledTimes(1);
+            expect(console.log).toHaveBeenCalledTimes(1);// tslint:disable-line
 
             client.setDebugMode(false);
             client.debug(msg);
-            expect(console.log).toHaveBeenCalledTimes(1);
+            expect(console.log).toHaveBeenCalledTimes(1);// tslint:disable-line
         });
     });
 });

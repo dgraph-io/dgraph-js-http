@@ -1,4 +1,4 @@
-import * as dgraph from "../../src";
+//import * as dgraph from "../../src";
 
 import { setSchema, setup } from "../helper";
 
