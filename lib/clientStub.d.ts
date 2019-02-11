@@ -9,6 +9,6 @@ export declare class DgraphClientStub {
     commit(ctx: TxnContext): Promise<TxnContext>;
     abort(ctx: TxnContext): Promise<TxnContext>;
     health(): Promise<string>;
-    private callAPI<T>(path, config);
-    private getURL(path);
+    private callAPI;
+    private getURL;
 }

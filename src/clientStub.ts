@@ -49,9 +49,6 @@ export class DgraphClientStub {
         if (req.vars != null) {
             headers["X-Dgraph-Vars"] = JSON.stringify(req.vars);
         }
-        if (req.linRead != null) {
-            headers["X-Dgraph-LinRead"] = JSON.stringify(req.linRead.ids);
-        }
 
         return this.callAPI(`query${req.startTs == null ? "" : `/${req.startTs}`}`, {
             method: "POST",

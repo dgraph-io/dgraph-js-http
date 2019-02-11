@@ -15,6 +15,7 @@ describe("client", () => {
         });
 
         it("should handle debug mode", () => {
+            // tslint:disable no-console
             console.log = jest.fn();
 
             const msg = "test message";
@@ -30,6 +31,7 @@ describe("client", () => {
             client.setDebugMode(false);
             client.debug(msg);
             expect(console.log).toHaveBeenCalledTimes(1);
+            // tslint:enable no-console
         });
     });
 });
