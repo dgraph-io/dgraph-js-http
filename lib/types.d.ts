@@ -31,14 +31,13 @@ export interface Assigned {
 }
 export interface AssignedData {
     uids: {
-        [k: string]: number;
+        [k: string]: string;
     };
 }
 export interface Extensions {
     server_latency: Latency;
     txn: TxnContext;
 }
-
 export interface TxnContext {
     start_ts: number;
     commit_ts?: number | null;
