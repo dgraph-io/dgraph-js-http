@@ -29,7 +29,11 @@ export class Txn {
 
     constructor(dc: DgraphClient) {
         this.dc = dc;
-        this.ctx = { start_ts: 0 };
+        this.ctx = {
+          start_ts: 0,
+          keys: [],
+          preds: [],
+        };
     }
 
     /**
@@ -184,6 +188,15 @@ export class Txn {
         await c.abort(this.ctx);
     }
 
+    private mergeArrays(a: string[], b: string[]) {
+        const res = a.slice();
+        res.push(...b);
+        res.sort();
+        // Filter unique in a sorted array.
+        return res.filter(
+            (item: string, idx: number, arr: string[]) => idx === 0 || arr[idx - 1] !== item);
+    }
+
     private mergeContext(src?: TxnContext | null): void {
         if (src == null) {
             // This condition will be true only if the server doesn't return a txn context after a query or mutation.
@@ -197,12 +210,11 @@ export class Txn {
             throw new Error("StartTs mismatch");
         }
 
-        if (src.keys != null) {
-            if (this.ctx.keys == null) {
-                this.ctx.keys = src.keys;
-            } else {
-                this.ctx.keys.push(...src.keys);
-            }
+        if (src.keys !== null) {
+            this.ctx.keys = this.mergeArrays(this.ctx.keys, src.keys);
+        }
+        if (src.preds !== null) {
+            this.ctx.preds = this.mergeArrays(this.ctx.preds, src.preds);
         }
     }
 }

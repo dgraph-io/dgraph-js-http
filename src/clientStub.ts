@@ -50,7 +50,7 @@ export class DgraphClientStub {
             headers["X-Dgraph-Vars"] = JSON.stringify(req.vars);
         }
 
-        return this.callAPI(`query${req.startTs == null ? "" : `/${req.startTs}`}`, {
+        return this.callAPI(`query${req.startTs === 0 ? "" : `/${req.startTs}`}`, {
             method: "POST",
             body: req.query,
             headers,
@@ -73,10 +73,10 @@ export class DgraphClientStub {
             body = JSON.stringify(obj);
         } else if (mu.setNquads != null || mu.deleteNquads != null) {
             body = `{
-                ${mu.setNquads == null ? "" : `set {
+                ${mu.setNquads === undefined ? "" : `set {
                     ${mu.setNquads}
                 }`}
-                ${mu.deleteNquads == null ? "" : `delete {
+                ${mu.deleteNquads === undefined ? "" : `delete {
                     ${mu.deleteNquads}
                 }`}
             }`;
@@ -92,7 +92,7 @@ export class DgraphClientStub {
             headers["X-Dgraph-CommitNow"] = "true";
         }
 
-        return this.callAPI(`mutate${mu.startTs == null ? "" : `/${mu.startTs}`}`, {
+        return this.callAPI(`mutate${mu.startTs === 0 ? "" : `/${mu.startTs}`}`, {
             method: "POST",
             body,
             headers,

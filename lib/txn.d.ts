@@ -13,5 +13,6 @@ export declare class Txn {
     mutate(mu: Mutation): Promise<Assigned>;
     commit(): Promise<void>;
     discard(): Promise<void>;
+    private mergeArrays;
     private mergeContext;
 }

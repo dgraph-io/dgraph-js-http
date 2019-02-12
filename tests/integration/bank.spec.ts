@@ -37,12 +37,22 @@ async function createAccounts(): Promise<void> {
     });
 }
 
-let startStatus = 0; // set before Promise.all
+let startTime = 0; // set before Promise.all
+let lastStatus = new Date().getTime();
 let cancelled = false;
 let finished = false;
 
 let runs = 0;
 let aborts = 0;
+
+function conditionalLog(): void {
+    const now = new Date().getTime();
+    if (now - lastStatus > 4000 && !cancelled) {
+        // tslint:disable-next-line no-console
+        console.log(`Runs: ${runs}, Aborts: ${aborts}, Total Time: ${new Date().getTime() - startTime} ms`);
+        lastStatus = now;
+    }
+}
 
 async function runTotal(): Promise<void> {
     const res = await client.newTxn().query(`{
@@ -55,9 +65,7 @@ async function runTotal(): Promise<void> {
     }`);
     // tslint:disable-next-line no-unsafe-any
     expect((<{ total: { bal: number }[] }>res.data).total[0].bal).toBe(uids.length * initialBalance);
-
-    // tslint:disable-next-line no-console
-    console.log(`Runs: ${runs}, Aborts: ${aborts}, Total Time: ${new Date().getTime() - startStatus} ms`);
+    conditionalLog();
 }
 
 async function runTotalInLoop(): Promise<void> {
@@ -129,7 +137,7 @@ describe("bank", () => {
             promises.push(runTxnInLoop());
         }
 
-        startStatus = new Date().getTime();
+        startTime = new Date().getTime();
         const id = setTimeout(
             () => {
                 cancelled = true;

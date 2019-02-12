@@ -11,7 +11,7 @@ export interface Request {
     vars?: {
         [k: string]: string;
     } | null;
-    startTs?: number | null;
+    startTs?: number;
 }
 export interface Response {
     data: {};
@@ -22,7 +22,7 @@ export interface Mutation {
     deleteJson?: object | null;
     setNquads?: string | null;
     deleteNquads?: string | null;
-    startTs?: number | null;
+    startTs?: number;
     commitNow?: boolean | null;
 }
 export interface Assigned {
@@ -40,9 +40,9 @@ export interface Extensions {
 }
 export interface TxnContext {
     start_ts: number;
-    commit_ts?: number | null;
     aborted?: boolean | null;
     keys?: string[] | null;
+    preds?: string[] | null;
 }
 export interface Latency {
     parsing_ns?: number | null;

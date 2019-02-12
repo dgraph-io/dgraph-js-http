@@ -67,7 +67,7 @@ async function tryUpsert(account: Account): Promise<void> {
     }
 }
 
-let startStatus = 0; // set at the start of doUpserts
+let startTime = 0; // set at the start of doUpserts
 let lastStatus = 0;
 let cancelled = false; // cancelled due to timeout
 
@@ -76,9 +76,9 @@ let retryCount = 0;
 
 function conditionalLog(): void {
     const now = new Date().getTime();
-    if (now - lastStatus > 1000 && !cancelled) {
+    if (now - lastStatus > 4000 && !cancelled) {
         // tslint:disable-next-line no-console
-        console.log(`Success: ${successCount}, Retries: ${retryCount}, Total Time: ${now - startStatus} ms`);
+        console.log(`Success: ${successCount}, Retries: ${retryCount}, Total Time: ${now - startTime} ms`);
         lastStatus = now;
     }
 }
@@ -111,7 +111,7 @@ async function doUpserts(): Promise<void> {
         }
     }
 
-    startStatus = new Date().getTime();
+    startTime = new Date().getTime();
     const id = setTimeout(
         () => {
             cancelled = true;
