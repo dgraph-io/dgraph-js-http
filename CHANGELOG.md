@@ -7,10 +7,21 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
-## [v0.1.0] - 2018-06-03
+## 0.2.0 - 2019-02-12
+
+### Removed
+
+- Removed linRead logic - see Dgraph issue #2570
+  This version of dgraph-js-http may be incompatible with Dgraph below 1.0.9
+
+### Changed
+
+- Switched to yarn for dependencies management
+
+## [0.1.0] - 2018-06-03
 
 ### Added
 - Full compatibility with Dgraph v1.0.6
 
 [Unreleased]: https://github.com/dgraph-io/dgraph-js-http/compare/v0.1.0...HEAD
-[v0.1.0]: https://github.com/dgraph-io/dgraph-js-http/tree/v0.1.0
+[0.1.0]: https://github.com/dgraph-io/dgraph-js-http/tree/v0.1.0
