@@ -29,15 +29,15 @@
     "coveralls": "cat ./coverage/lcov.info | coveralls"
   },
   "devDependencies": {
-    "@types/jest": "^22.1.0",
-    "@types/node": "^9.3.0",
-    "coveralls": "^3.0.0",
-    "jest": "^22.1.4",
-    "rimraf": "^2.6.2",
-    "ts-jest": "^22.0.1",
-    "tslint": "^5.9.1",
-    "tslint-microsoft-contrib": "^5.0.2",
-    "typescript": "^2.6.2"
+    "@types/jest": "^24.0.4",
+    "@types/node": "^11.9.3",
+    "coveralls": "^3.0.2",
+    "jest": "^24.1.0",
+    "rimraf": "^2.6.3",
+    "ts-jest": "^23.10.5",
+    "tslint": "^5.12.1",
+    "tslint-microsoft-contrib": "^6.0.0",
+    "typescript": "^3.3.3"
   },
   "dependencies": {
     "isomorphic-fetch": "^2.2.1"
