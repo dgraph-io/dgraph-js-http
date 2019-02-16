@@ -100,13 +100,23 @@ export class DgraphClientStub {
     }
 
     public commit(ctx: TxnContext): Promise<TxnContext> {
-        let body: string;
+        const reqMap = {};
+        const keys = "keys";
+        const preds = "preds";
+
         if (ctx.keys == null) {
-            body = "[]";
+            reqMap[keys] = [];
         } else {
-            body = JSON.stringify(ctx.keys);
+            reqMap[keys] = ctx.keys;
         }
 
+        if (ctx.preds == null) {
+            reqMap[preds] = [];
+        } else {
+            reqMap[preds] = ctx.preds;
+        }
+
+        const body = JSON.stringify(reqMap);
         return this.callAPI(`commit/${ctx.start_ts}`, {
             method: "POST",
             body,
@@ -145,7 +155,6 @@ export class DgraphClientStub {
                 if (errors != null) {
                     throw new APIError(url, errors);
                 }
-
                 return json;
             });
     }

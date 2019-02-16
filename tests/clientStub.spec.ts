@@ -7,13 +7,6 @@ async function checkHealth(stub: dgraph.DgraphClientStub): Promise<void> {
 }
 
 describe("clientStub", () => {
-    describe("constructor", () => {
-        it("should accept undefined and null arguments", async () => {
-            await checkHealth(new dgraph.DgraphClientStub());
-            await checkHealth(new dgraph.DgraphClientStub(null));
-        });
-    });
-
     describe("health", () => {
         it("should check health", async () => {
             const client = await setup();

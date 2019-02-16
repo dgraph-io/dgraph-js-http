@@ -1,6 +1,6 @@
 import * as dgraph from "../src";
 
-export const SERVER_ADDR = "http://localhost:8080"; // tslint:disable-line no-http-string
+export const SERVER_ADDR = "http://localhost:8180"; // tslint:disable-line no-http-string
 
 export function createClient(): dgraph.DgraphClient {
     return new dgraph.DgraphClient(new dgraph.DgraphClientStub(SERVER_ADDR));
