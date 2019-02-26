@@ -61,7 +61,7 @@ describe("txn", () => {
 
             const p = txn.queryWithVars(
                 '{ me(func: eq(name, "Alice")) { name }}',
-                null,
+                undefined,
             );
             await expect(p).rejects.toBe(dgraph.ERR_FINISHED);
         });

@@ -5,8 +5,8 @@ export function isAbortedError(error: any): boolean { // tslint:disable-line no-
         return false;
     }
 
-    const firstError: APIResultError | null | undefined = error.errors.length > 0 ? error.errors[0] : null;
-    if (firstError == null) {
+    const firstError: APIResultError | undefined | undefined = error.errors.length > 0 ? error.errors[0] : undefined;
+    if (firstError === undefined) {
         return false;
     }
 
@@ -19,8 +19,8 @@ export function isConflictError(error: any): boolean { // tslint:disable-line no
         return false;
     }
 
-    const firstError: APIResultError | null | undefined = error.errors.length > 0 ? error.errors[0] : null;
-    if (firstError == null) {
+    const firstError: APIResultError | undefined | undefined = error.errors.length > 0 ? error.errors[0] : undefined;
+    if (firstError === undefined) {
         return false;
     }
 

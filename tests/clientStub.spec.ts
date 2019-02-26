@@ -10,7 +10,7 @@ describe("clientStub", () => {
     describe("constructor", () => {
         it("should accept undefined and null arguments", async () => {
             await checkHealth(new dgraph.DgraphClientStub());
-            await checkHealth(new dgraph.DgraphClientStub(null));
+            await checkHealth(new dgraph.DgraphClientStub(undefined));
         });
     });
 

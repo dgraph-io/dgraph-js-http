@@ -17,9 +17,9 @@ declare const fetch: any; // tslint:disable-line no-any
  * Stub is a stub/client connecting to a single dgraph server instance.
  */
 export class DgraphClientStub {
-    private addr: string;
+    private readonly addr: string;
     constructor(addr?: string | null) {
-        if (addr == null) {
+        if (addr === undefined) {
             this.addr = "http://localhost:8080"; // tslint:disable-line no-http-string
         } else {
             this.addr = addr;
@@ -28,9 +28,9 @@ export class DgraphClientStub {
 
     public alter(op: Operation): Promise<Payload> {
         let body: string;
-        if (op.schema != null) {
+        if (op.schema !== undefined) {
             body = op.schema;
-        } else if (op.dropAttr != null) {
+        } else if (op.dropAttr !== undefined) {
             body = JSON.stringify({ drop_attr: op.dropAttr });
         } else if (op.dropAll) {
             body = JSON.stringify({ drop_all: true });
@@ -46,7 +46,7 @@ export class DgraphClientStub {
 
     public query(req: Request): Promise<Response> {
         const headers: { [k: string]: string } = {};
-        if (req.vars != null) {
+        if (req.vars !== undefined) {
             headers["X-Dgraph-Vars"] = JSON.stringify(req.vars);
         }
 
@@ -60,18 +60,18 @@ export class DgraphClientStub {
     public mutate(mu: Mutation): Promise<Assigned> {
         let body: string;
         let usingJSON: boolean = false;
-        if (mu.setJson != null || mu.deleteJson != null) {
+        if (mu.setJson !== undefined || mu.deleteJson !== undefined) {
             usingJSON = true;
             const obj: { [k: string]: object } = {};
-            if (mu.setJson != null) {
+            if (mu.setJson !== undefined) {
                 obj.set = mu.setJson;
             }
-            if (mu.deleteJson != null) {
+            if (mu.deleteJson !== undefined) {
                 obj.delete = mu.deleteJson;
             }
 
             body = JSON.stringify(obj);
-        } else if (mu.setNquads != null || mu.deleteNquads != null) {
+        } else if (mu.setNquads !== undefined || mu.deleteNquads !== undefined) {
             body = `{
                 ${mu.setNquads === undefined ? "" : `set {
                     ${mu.setNquads}
@@ -101,7 +101,7 @@ export class DgraphClientStub {
 
     public commit(ctx: TxnContext): Promise<TxnContext> {
         let body: string;
-        if (ctx.keys == null) {
+        if (ctx.keys === undefined) {
             body = "[]";
         } else {
             body = JSON.stringify(ctx.keys);
@@ -142,7 +142,7 @@ export class DgraphClientStub {
             })
             .then((json: T) => {
                 const errors = (<{ errors: APIResultError[] }><any>json).errors; // tslint:disable-line no-any
-                if (errors != null) {
+                if (errors !== undefined) {
                     throw new APIError(url, errors);
                 }
 

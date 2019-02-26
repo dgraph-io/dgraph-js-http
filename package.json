@@ -29,7 +29,7 @@
     "coveralls": "cat ./coverage/lcov.info | coveralls"
   },
   "devDependencies": {
-    "@types/jest": "^24.0.4",
+    "@types/jest": "^24.0.9",
     "@types/node": "^11.9.3",
     "coveralls": "^3.0.2",
     "jest": "^24.1.0",

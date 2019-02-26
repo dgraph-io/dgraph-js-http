@@ -1,5 +1,3 @@
-//import * as dgraph from "../../src";
-
 import { setSchema, setup } from "../helper";
 
 const data = ["200", "300", "400"];

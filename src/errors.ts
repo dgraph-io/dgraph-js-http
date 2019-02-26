@@ -16,13 +16,13 @@ export class CustomError extends Error {
 
         // fix the extended error prototype chain because typescript __extends implementation can't
         const setPrototypeOf: Function = (<any>Object).setPrototypeOf;
-        setPrototypeOf != null
+        setPrototypeOf !== undefined
             ? setPrototypeOf(this, new.target.prototype)
             : ((<any>this).__proto__ = new.target.prototype);
 
         // try to remove contructor from stack trace
         const captureStackTrace: Function = (<any>Error).captureStackTrace;
-        if (captureStackTrace != null) {
+        if (captureStackTrace !== undefined) {
             captureStackTrace(this, this.constructor);
         }
         // tslint:enable no-any no-unsafe-any

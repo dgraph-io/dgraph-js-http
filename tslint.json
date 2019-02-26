@@ -3,12 +3,7 @@
     "tslint-microsoft-contrib"
   ],
   "rules": {
-    "newline-per-chained-call": false,
-    "triple-equals": false,
-    "prefer-readonly": false,
-    "prefer-while": false,
-    "no-null-keyword": false,
-    "no-constant-condition": false,
+    "newline-per-chained-call": ["error", { "ignoreChainWithDepth": 2 }],
     "mocha-no-side-effect-code": false,
     "missing-jsdoc": false,
     "no-relative-imports": false,

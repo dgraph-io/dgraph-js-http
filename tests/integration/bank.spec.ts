@@ -83,14 +83,14 @@ async function runTotalInLoop(): Promise<void> {
 async function runTxn(): Promise<void> {
     let fromUid: string;
     let toUid: string;
-    for (;;) {
+    while (true) {
         fromUid = uids[Math.floor(Math.random() * uids.length)];
         toUid = uids[Math.floor(Math.random() * uids.length)];
 
         if (fromUid !== toUid) {
             break;
         }
-    }
+    } // tslint:disable-line no-constant-condition
 
     const txn = client.newTxn();
     try {
