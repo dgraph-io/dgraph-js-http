@@ -35,7 +35,7 @@ describe("txn", () => {
             res = await client.newTxn().queryWithVars(
                 "query me($a: string) { me(func: eq(name, $a)) { name }}",
                 {
-                    $a: new String("Alice"), // tslint:disable-line no-construct
+                    $a: "Alice",
                     $b: true, // non-string properties are ignored
                 },
             );
@@ -61,7 +61,6 @@ describe("txn", () => {
 
             const p = txn.queryWithVars(
                 '{ me(func: eq(name, "Alice")) { name }}',
-                null,
             );
             await expect(p).rejects.toBe(dgraph.ERR_FINISHED);
         });

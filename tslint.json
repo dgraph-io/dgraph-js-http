@@ -5,6 +5,7 @@
   "rules": {
     "mocha-no-side-effect-code": false,
     "missing-jsdoc": false,
+    "newline-per-chained-call": ["error", { "ignoreChainWithDepth": 2 }],
     "no-relative-imports": false,
     "import-name": false,
     "export-name": false,

@@ -83,7 +83,8 @@ async function runTotalInLoop(): Promise<void> {
 async function runTxn(): Promise<void> {
     let fromUid: string;
     let toUid: string;
-    for (;;) {
+    // tslint:disable-next-line no-constant-condition
+    while (true) {
         fromUid = uids[Math.floor(Math.random() * uids.length)];
         toUid = uids[Math.floor(Math.random() * uids.length)];
 

@@ -42,7 +42,7 @@ export class Txn {
      * e.g. client.newTxn().query("...").
      */
     public query(q: string): Promise<Response> {
-        return this.queryWithVars(q, null);
+        return this.queryWithVars(q);
     }
 
     /**
@@ -51,7 +51,7 @@ export class Txn {
      */
     public async queryWithVars(
         q: string,
-        vars?: { [k: string]: any } | null, // tslint:disable-line no-any
+        vars?: { [k: string]: any }, // tslint:disable-line no-any
     ): Promise<Response> {
         if (this.finished) {
             this.dc.debug(`Query request (ERR_FINISHED):\nquery = ${q}\nvars = ${vars}`);
@@ -62,7 +62,7 @@ export class Txn {
             query: q,
             startTs: this.ctx.start_ts,
         };
-        if (vars != null) {
+        if (vars !== undefined) {
             const varsObj: { [k: string]: string } = {};
             Object.keys(vars).forEach((key: string) => {
                 const value = vars[key];
@@ -197,8 +197,8 @@ export class Txn {
             (item: string, idx: number, arr: string[]) => idx === 0 || arr[idx - 1] !== item);
     }
 
-    private mergeContext(src?: TxnContext | null): void {
-        if (src == null) {
+    private mergeContext(src?: TxnContext): void {
+        if (src === undefined) {
             // This condition will be true only if the server doesn't return a txn context after a query or mutation.
             return;
         }
@@ -210,10 +210,10 @@ export class Txn {
             throw new Error("StartTs mismatch");
         }
 
-        if (src.keys !== null) {
+        if (src.keys !== undefined) {
             this.ctx.keys = this.mergeArrays(this.ctx.keys, src.keys);
         }
-        if (src.preds !== null) {
+        if (src.preds !== undefined) {
             this.ctx.preds = this.mergeArrays(this.ctx.preds, src.preds);
         }
     }

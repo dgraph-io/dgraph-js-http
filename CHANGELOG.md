@@ -7,6 +7,14 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## 1.0.0-rc1 - 2019-03-01
+
+### Changed
+
+- Upgraded devDependencies
+- Null is no longer accepted as a falsy parameter
+  (thanks to tslint, not sure if a good idea, thus rc1 not final API).
+
 ## 0.2.0 - 2019-02-12
 
 ### Removed
