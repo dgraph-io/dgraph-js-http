@@ -106,10 +106,17 @@ export class Txn {
         mu.startTs = this.ctx.start_ts;
         this.dc.debug(`Mutate request:\n${stringifyMessage(mu)}`);
 
-        let ag: Assigned;
         const c = this.dc.anyClient();
         try {
-            ag = await c.mutate(mu);
+            const ag = await c.mutate(mu);
+            if (mu.commitNow) {
+                this.finished = true;
+            }
+
+            this.mergeContext(ag.extensions.txn);
+            this.dc.debug(`Mutate response:\n${stringifyMessage(ag)}`);
+
+            return ag;
         } catch (e) {
             // Since a mutation error occurred, the txn should no longer be used (some
             // mutations could have applied but not others, but we don't know which ones).
@@ -125,15 +132,6 @@ export class Txn {
             // with another transaction.
             throw (isAbortedError(e) || isConflictError(e)) ? ERR_ABORTED : e;
         }
-
-        if (mu.commitNow) {
-            this.finished = true;
-        }
-
-        this.mergeContext(ag.extensions.txn);
-        this.dc.debug(`Mutate response:\n${stringifyMessage(ag)}`);
-
-        return ag;
     }
 
     /**
