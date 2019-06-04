@@ -15,7 +15,7 @@ describe("delete", () => {
         let res = await client.newTxn().query(q);
         expect((<{ find_bob: { name: string }[] }>res.data).find_bob[0].name).toEqual("Alice");
 
-        await client.newTxn().mutate({ deleteNquads: `<${uid}> * * .`, commitNow: true });
+        await client.newTxn().mutate({ deleteNquads: `<${uid}> <name> * .`, commitNow: true });
         res = await client.newTxn().query(q);
         expect((<{ find_bob: { name: string }[] }>res.data).find_bob).toHaveLength(0);
     });

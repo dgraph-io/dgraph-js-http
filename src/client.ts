@@ -43,6 +43,16 @@ export class DgraphClient {
     }
 
     /**
+     * login obtains access tokens from Dgraph Server
+     */
+    public async login(userid: string, password: string): Promise<boolean> {
+      this.debug(`Login request:\nuserid: ${userid}`);
+
+      const c = this.anyClient();
+      return c.login(userid, password); // tslint:disable-line no-unsafe-any
+    }
+
+    /**
      * newTxn creates a new transaction.
      */
     public newTxn(): Txn {
