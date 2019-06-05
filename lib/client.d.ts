@@ -6,6 +6,7 @@ export declare class DgraphClient {
     private debugMode;
     constructor(...clients: DgraphClientStub[]);
     alter(op: Operation): Promise<Payload>;
+    login(userid: string, password: string): Promise<boolean>;
     newTxn(): Txn;
     setDebugMode(mode?: boolean): void;
     debug(msg: string): void;

@@ -17,6 +17,12 @@ export interface Response {
     data: {};
     extensions: Extensions;
 }
+export interface LoginResponse {
+    data: {
+        accessJWT: string;
+        refreshJWT: string;
+    };
+}
 export interface Mutation {
     setJson?: object | null;
     deleteJson?: object | null;

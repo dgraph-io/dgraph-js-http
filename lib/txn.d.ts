@@ -9,7 +9,7 @@ export declare class Txn {
     query(q: string): Promise<Response>;
     queryWithVars(q: string, vars?: {
         [k: string]: any;
-    } | null): Promise<Response>;
+    }): Promise<Response>;
     mutate(mu: Mutation): Promise<Assigned>;
     commit(): Promise<void>;
     discard(): Promise<void>;
