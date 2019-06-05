@@ -72,11 +72,36 @@ const dgraph = require("dgraph-js-http");
 const clientStub = new dgraph.DgraphClientStub(
   // addr: optional, default: "http://localhost:8080"
   "http://localhost:8080",
+  // legacyApi: optional, default: false. Set to true when connecting to Dgraph v1.0.x
+  false,
 );
 const dgraphClient = new dgraph.DgraphClient(clientStub);
 ```
 
 To facilitate debugging, [debug mode](#debug-mode) can be enabled for a client.
+
+### Login into Dgraph
+
+If your Dgraph server has Access Control Lists enabled (Dgraph v1.1 or above),
+the clientStub must be logged in for accessing data:
+
+```js
+await clientStub.login("groot", "password");
+```
+
+Calling `login` will obtain and remember the access and refresh JWT tokens.
+All subsequent operations via the logged in `clientStub` will send along the
+stored access token.
+
+Access tokens expire after 6 hours, so in long-lived apps (e.g. business logic servers)
+you need to `login` again on a periodic basis:
+
+```js
+// When no parameters are specified the clientStub uses existing refresh token
+// to obtain a new access token.
+await clientStub.login();
+```
+
 
 ### Alter the database
 
