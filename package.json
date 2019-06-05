@@ -1,6 +1,6 @@
 {
   "name": "dgraph-js-http",
-  "version": "1.1.0-rc4",
+  "version": "1.1.0-rc5",
   "description": "A javascript HTTP client for Dgraph",
   "license": "Apache-2.0",
   "repository": {
@@ -30,14 +30,14 @@
   },
   "devDependencies": {
     "@types/jest": "^24.0.9",
-    "@types/node": "^11.9.3",
+    "@types/node": "^12.0.4",
     "coveralls": "^3.0.2",
     "jest": "^24.1.0",
     "rimraf": "^2.6.3",
     "ts-jest": "^24.0.0",
     "tslint": "^5.13.1",
     "tslint-microsoft-contrib": "^6.0.0",
-    "typescript": "^3.3.3"
+    "typescript": "^3.5.1"
   },
   "dependencies": {
     "isomorphic-fetch": "^2.2.1"

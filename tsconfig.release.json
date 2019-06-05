@@ -1,6 +1,7 @@
 {
   "extends": "./tsconfig.json",
   "compilerOptions": {
+    "outFile": "./lib/index.js",
     "removeComments": true
   },
   "include": [

@@ -31,16 +31,16 @@ and understand how to run and work with Dgraph.
 
 ## Install
 
-Install using npm:
-
-```sh
-npm install dgraph-js-http --save
-```
-
-or yarn:
+Install using `yarn`:
 
 ```sh
 yarn add dgraph-js-http
+```
+
+or npm:
+
+```sh
+npm install dgraph-js-http --save
 ```
 
 You will also need a Promise polyfill for
