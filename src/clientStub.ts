@@ -19,7 +19,7 @@ declare const fetch: any; // tslint:disable-line no-any
  */
 export class DgraphClientStub {
     private readonly addr: string;
-    private readonly legacyApi: boolean;
+    private legacyApi: boolean;
     private accessJWT: string;
     private refreshJWT: string;
 
@@ -30,6 +30,22 @@ export class DgraphClientStub {
             this.addr = addr;
         }
         this.legacyApi = !!legacyApi;
+    }
+
+    public async DEPRECATED_detectApiVersion(): Promise<boolean> { // tslint:disable-line function-name
+        this.legacyApi = false;
+        try {
+            await this.query({ query: "schema {}", startTs: 0 });
+            return this.legacyApi;
+        } catch (e) {
+            // tslint:disable-next-line no-unsafe-any
+            if (!e.errors || e.errors.length === 0 || e.errors[0].code !== "ErrorInvalidRequest") {
+                throw e;
+            }
+        }
+        this.legacyApi = !this.legacyApi;
+        await this.query({ query: "schema {}", startTs: 0 });
+        return this.legacyApi;
     }
 
     public alter(op: Operation): Promise<Payload> {
@@ -63,7 +79,7 @@ export class DgraphClientStub {
             });
           }
         }
-        if (headers["Content-Type"] === undefined) {
+        if (headers["Content-Type"] === undefined && !this.legacyApi) {
             headers["Content-Type"] = "application/graphqlpm";
         }
 

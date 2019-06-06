@@ -2,10 +2,11 @@ import "isomorphic-fetch";
 import { Assigned, Mutation, Operation, Payload, Request, Response, TxnContext } from "./types";
 export declare class DgraphClientStub {
     private readonly addr;
-    private readonly legacyApi;
+    private legacyApi;
     private accessJWT;
     private refreshJWT;
     constructor(addr?: string, legacyApi?: boolean);
+    DEPRECATED_detectApiVersion(): Promise<boolean>;
     alter(op: Operation): Promise<Payload>;
     query(req: Request): Promise<Response>;
     mutate(mu: Mutation): Promise<Assigned>;
