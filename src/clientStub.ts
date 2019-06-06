@@ -100,6 +100,8 @@ export class DgraphClientStub {
                     ${mu.deleteNquads}
                 }`}
             }`;
+        } else if (mu.mutation !== undefined) {
+          body = mu.mutation;
         } else {
             return Promise.reject("Mutation has no data");
         }

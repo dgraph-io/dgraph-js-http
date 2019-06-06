@@ -33,6 +33,7 @@ export interface Mutation {
     deleteNquads?: string | null;
     startTs?: number;
     commitNow?: boolean | null;
+    mutation?: string | null;
 }
 
 export interface Assigned {
