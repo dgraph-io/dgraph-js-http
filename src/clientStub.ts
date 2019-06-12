@@ -80,7 +80,7 @@ export class DgraphClientStub {
           }
         }
         if (headers["Content-Type"] === undefined && !this.legacyApi) {
-            headers["Content-Type"] = "application/graphqlpm";
+            headers["Content-Type"] = "application/graphql+-";
         }
 
         const startTs = req.startTs === 0
@@ -177,16 +177,25 @@ export class DgraphClientStub {
         return this.callAPI(url, { method: "POST" });
     }
 
-    public health(): Promise<string> {
-        return fetch(this.getURL("health"), { // tslint:disable-line no-unsafe-any
-            method: "GET",
-        })
-            .then((response: { status: number; text(): string }) => {
-                if (response.status >= 300 || response.status < 200) {
-                    throw new Error(`Invalid status code = ${response.status}`);
-                }
-                return response.text();
+    public async health(): Promise<{ health: string; version: string; instance?: string; uptime?: number }> {
+        const response: { status: number; text(): Promise<string> } =
+            await fetch(this.getURL("health"), { // tslint:disable-line no-unsafe-any
+                method: "GET",
             });
+        if (response.status >= 300 || response.status < 200) {
+            throw new Error(`Invalid status code = ${response.status}`);
+        }
+        const text = await response.text();
+        if (text === "OK") {
+          return {
+            health: "OK",
+            version: "1.0.x",
+          };
+        }
+        return {
+          ...JSON.parse(text),
+          health: "OK",
+        };
     }
 
     public async login(userid?: string, password?: string, refreshJWT?: string): Promise<boolean> {
