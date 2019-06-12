@@ -4,9 +4,9 @@ import { SERVER_ADDR, USE_LEGACY_API } from "../helper";
 
 describe("clientStub version detection", () => {
     it("should not throw errors", () => {
-        const stub = new DgraphClientStub(SERVER_ADDR, false);
-        return expect(stub.DEPRECATED_detectApiVersion())
+        const stub = new DgraphClientStub(SERVER_ADDR, USE_LEGACY_API);
+        return expect(stub.detectApiVersion())
             .resolves
-            .toBe(USE_LEGACY_API);
+            .toBe("master");
     });
 });

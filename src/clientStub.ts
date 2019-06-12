@@ -32,20 +32,10 @@ export class DgraphClientStub {
         this.legacyApi = !!legacyApi;
     }
 
-    public async DEPRECATED_detectApiVersion(): Promise<boolean> { // tslint:disable-line function-name
-        this.legacyApi = false;
-        try {
-            await this.query({ query: "schema {}", startTs: 0 });
-            return this.legacyApi;
-        } catch (e) {
-            // tslint:disable-next-line no-unsafe-any
-            if (!e.errors || e.errors.length === 0 || e.errors[0].code !== "ErrorInvalidRequest") {
-                throw e;
-            }
-        }
-        this.legacyApi = !this.legacyApi;
-        await this.query({ query: "schema {}", startTs: 0 });
-        return this.legacyApi;
+    public async detectApiVersion(): Promise<string> {
+        const health = await this.health();
+        this.legacyApi = health.version.startsWith("1.0.");
+        return health.version;
     }
 
     public alter(op: Operation): Promise<Payload> {
@@ -188,7 +178,7 @@ export class DgraphClientStub {
         const text = await response.text();
         if (text === "OK") {
           return {
-            health: "OK",
+            health: text,
             version: "1.0.x",
           };
         }

@@ -6,13 +6,18 @@ export declare class DgraphClientStub {
     private accessJWT;
     private refreshJWT;
     constructor(addr?: string, legacyApi?: boolean);
-    DEPRECATED_detectApiVersion(): Promise<boolean>;
+    detectApiVersion(): Promise<string>;
     alter(op: Operation): Promise<Payload>;
     query(req: Request): Promise<Response>;
     mutate(mu: Mutation): Promise<Assigned>;
     commit(ctx: TxnContext): Promise<TxnContext>;
     abort(ctx: TxnContext): Promise<TxnContext>;
-    health(): Promise<string>;
+    health(): Promise<{
+        health: string;
+        version: string;
+        instance?: string;
+        uptime?: number;
+    }>;
     login(userid?: string, password?: string, refreshJWT?: string): Promise<boolean>;
     private callAPI;
     private getURL;
