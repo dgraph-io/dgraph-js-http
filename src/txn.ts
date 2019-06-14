@@ -61,6 +61,7 @@ export class Txn {
         const req: Request = {
             query: q,
             startTs: this.ctx.start_ts,
+            timeout: this.dc.getQueryTimeout(),
         };
         if (vars !== undefined) {
             const varsObj: { [k: string]: string } = {};

@@ -12,6 +12,8 @@ export interface Request {
     query: string;
     vars?: { [k: string]: string } | null;
     startTs?: number;
+    timeout?: number;
+    debug?: boolean;
 }
 
 export interface Response {

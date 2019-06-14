@@ -73,10 +73,35 @@ export class DgraphClientStub {
             headers["Content-Type"] = "application/graphql+-";
         }
 
-        const startTs = req.startTs === 0
-            ? ""
-            : (!this.legacyApi ? `?startTs=${req.startTs}` : `/${req.startTs}`);
-        return this.callAPI(`query${startTs}`, {
+        let url = "query";
+
+        if (this.legacyApi) {
+          if (req.startTs !== 0) {
+            url += `/${req.startTs}`;
+          }
+        } else {
+          const params: { key: string; value: string }[] = [];
+          if (req.startTs !== 0) {
+            params.push({
+              key: "startTs",
+              value: `${req.startTs}`,
+            });
+          }
+          if (req.timeout > 0) {
+            params.push({
+              key: "timeout",
+              value: `${req.timeout}s`,
+            });
+          }
+          if (params.length > 0) {
+              url += "?";
+              url += params.map(
+                ({ key, value }: { key: string; value: string }): string => `${key}=${value}`,
+              ).join("&");
+          }
+        }
+
+        return this.callAPI(url, {
             method: "POST",
             body: req.query,
             headers,

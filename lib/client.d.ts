@@ -4,7 +4,10 @@ import { Operation, Payload } from "./types";
 export declare class DgraphClient {
     private readonly clients;
     private debugMode;
+    private queryTimeout;
     constructor(...clients: DgraphClientStub[]);
+    setQueryTimeout(timeout: number): DgraphClient;
+    getQueryTimeout(): number;
     alter(op: Operation): Promise<Payload>;
     login(userid: string, password: string): Promise<boolean>;
     newTxn(): Txn;

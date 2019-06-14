@@ -10,6 +10,7 @@ import { stringifyMessage } from "./util";
 export class DgraphClient {
     private readonly clients: DgraphClientStub[];
     private debugMode: boolean = false;
+    private queryTimeout: number = 6000;
 
     /**
      * Creates a new Client for interacting with the Dgraph store.
@@ -24,6 +25,18 @@ export class DgraphClient {
 
         this.clients = clients;
     }
+
+    /**
+     * Set timeout applied to all queries made via this client.
+     */
+     public setQueryTimeout(timeout: number): DgraphClient {
+       this.queryTimeout = timeout;
+       return this;
+     }
+
+     public getQueryTimeout(): number {
+       return this.queryTimeout;
+     }
 
     /**
      * By setting various fields of api.Operation, alter can be used to do the
