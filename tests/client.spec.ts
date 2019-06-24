@@ -33,5 +33,15 @@ describe("client", () => {
             expect(console.log).toHaveBeenCalledTimes(1);
             // tslint:enable no-console
         });
+
+        describe("fetchUiKeywords", () => {
+            it("should return keywords object", async () => {
+                const client = createClient();
+                await expect(client.fetchUiKeywords())
+                    .resolves
+                    .toHaveProperty("keywords");
+            });
+        });
+
     });
 });

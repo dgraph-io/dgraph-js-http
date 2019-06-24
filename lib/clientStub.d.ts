@@ -1,5 +1,5 @@
 import "isomorphic-fetch";
-import { Assigned, Mutation, Operation, Payload, Request, Response, TxnContext } from "./types";
+import { Assigned, Mutation, Operation, Payload, Request, Response, TxnContext, UiKeywords } from "./types";
 export declare class DgraphClientStub {
     private readonly addr;
     private legacyApi;
@@ -19,6 +19,7 @@ export declare class DgraphClientStub {
         uptime?: number;
     }>;
     login(userid?: string, password?: string, refreshJWT?: string): Promise<boolean>;
+    fetchUiKeywords(): Promise<UiKeywords>;
     private callAPI;
     private getURL;
 }

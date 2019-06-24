@@ -21,6 +21,20 @@ describe("clientStub", () => {
         });
     });
 
+    describe("fetchUiKeywords", () => {
+        it("should return keywords object", async () => {
+            const client = await setup();
+            await expect(client.anyClient().fetchUiKeywords())
+                .resolves
+                .toHaveProperty("keywords");
+            const resp = await client.anyClient().fetchUiKeywords();
+            expect(resp.keywords).toContainEqual({
+                type: "",
+                name: "alloftext",
+            });
+        });
+    });
+
     describe("timeout", () => {
         it("should add timeout to the query string", async () => {
             const stub = new dgraph.DgraphClientStub();

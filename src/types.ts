@@ -21,6 +21,10 @@ export interface Response {
     extensions: Extensions;
 }
 
+export interface UiKeywords {
+  keywords: { "type": string; name: string }[];
+}
+
 export interface LoginResponse {
     data: {
       accessJWT: string;

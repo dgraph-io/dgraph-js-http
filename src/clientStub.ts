@@ -10,6 +10,7 @@ import {
     Request,
     Response,
     TxnContext,
+    UiKeywords,
 } from "./types";
 
 declare const fetch: any; // tslint:disable-line no-any
@@ -236,6 +237,10 @@ export class DgraphClientStub {
       this.accessJWT = res.data.accessJWT;
       this.refreshJWT = res.data.refreshJWT;
       return true;
+    }
+
+    public async fetchUiKeywords(): Promise<UiKeywords> {
+      return this.callAPI("ui/keywords", {});
     }
 
     private async callAPI<T>(path: string, config: { method?: string; body?: string; headers?: { [k: string]: string } }): Promise<T> {

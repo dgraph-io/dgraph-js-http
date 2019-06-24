@@ -1,7 +1,7 @@
 import { DgraphClientStub } from "./clientStub";
 import { ERR_NO_CLIENTS } from "./errors";
 import { Txn } from "./txn";
-import { Operation, Payload } from "./types";
+import { Operation, Payload, UiKeywords } from "./types";
 import { stringifyMessage } from "./util";
 
 /**
@@ -78,6 +78,10 @@ export class DgraphClient {
      */
     public setDebugMode(mode: boolean = true): void {
         this.debugMode = mode;
+    }
+
+    public fetchUiKeywords(): Promise<UiKeywords> {
+      return this.anyClient().fetchUiKeywords();
     }
 
     /**
