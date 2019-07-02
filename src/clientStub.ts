@@ -21,8 +21,8 @@ declare const fetch: any; // tslint:disable-line no-any
 export class DgraphClientStub {
     private readonly addr: string;
     private legacyApi: boolean;
-    private accessJWT: string;
-    private refreshJWT: string;
+    private accessToken: string;
+    private refreshToken: string;
 
     constructor(addr?: string, legacyApi?: boolean) {
         if (addr === undefined) {
@@ -220,17 +220,17 @@ export class DgraphClientStub {
         };
     }
 
-    public async login(userid?: string, password?: string, refreshJWT?: string): Promise<boolean> {
+    public async login(userid?: string, password?: string, refreshToken?: string): Promise<boolean> {
       if (this.legacyApi) {
         throw new Error("Pre v1.1 clients do not support Login methods");
       }
 
       const body: { [k: string]: string } = {};
-      if (userid === undefined && this.refreshJWT === undefined) {
+      if (userid === undefined && this.refreshToken === undefined) {
         throw new Error("Cannot find login details: neither userid/password nor refresh token are specified");
       }
       if (userid === undefined) {
-        body.refresh_token = refreshJWT !== undefined ? refreshJWT : this.refreshJWT;
+        body.refresh_token = refreshToken !== undefined ? refreshToken : this.refreshToken;
       } else {
         body.userid = userid;
         body.password = password;
@@ -240,20 +240,20 @@ export class DgraphClientStub {
         method: "POST",
         body: JSON.stringify(body),
       });
-      this.accessJWT = res.data.accessJWT;
-      this.refreshJWT = res.data.refreshJWT;
+      this.accessToken = res.data.accessJWT;
+      this.refreshToken = res.data.refreshJWT;
       return true;
     }
 
     public logout(): void {
-        this.accessJWT = undefined;
-        this.refreshJWT = undefined;
+        this.accessToken = undefined;
+        this.refreshToken = undefined;
     }
 
-    public getAuthTokens(): { accessJWT?: string; refreshJWT?: string } {
+    public getAuthTokens(): { accessToken?: string; refreshToken?: string } {
         return {
-          accessJWT: this.accessJWT,
-          refreshJWT: this.refreshJWT,
+          accessToken: this.accessToken,
+          refreshToken: this.refreshToken,
         };
     }
 
@@ -263,9 +263,9 @@ export class DgraphClientStub {
 
     private async callAPI<T>(path: string, config: { method?: string; body?: string; headers?: { [k: string]: string } }): Promise<T> {
         const url = this.getURL(path);
-        if (this.accessJWT !== undefined) {
+        if (this.accessToken !== undefined) {
           config.headers = config.headers !== undefined ? config.headers : {};
-          config.headers["X-Dgraph-AccessToken"] = this.accessJWT;
+          config.headers["X-Dgraph-AccessToken"] = this.accessToken;
         }
 
         return fetch(url, config) // tslint:disable-line no-unsafe-any

@@ -3,8 +3,8 @@ import { Assigned, Mutation, Operation, Payload, Request, Response, TxnContext, 
 export declare class DgraphClientStub {
     private readonly addr;
     private legacyApi;
-    private accessJWT;
-    private refreshJWT;
+    private accessToken;
+    private refreshToken;
     constructor(addr?: string, legacyApi?: boolean);
     detectApiVersion(): Promise<string>;
     alter(op: Operation): Promise<Payload>;
@@ -18,11 +18,11 @@ export declare class DgraphClientStub {
         instance?: string;
         uptime?: number;
     }>;
-    login(userid?: string, password?: string, refreshJWT?: string): Promise<boolean>;
+    login(userid?: string, password?: string, refreshToken?: string): Promise<boolean>;
     logout(): void;
     getAuthTokens(): {
-        accessJWT?: string;
-        refreshJWT?: string;
+        accessToken?: string;
+        refreshToken?: string;
     };
     fetchUiKeywords(): Promise<UiKeywords>;
     private callAPI;
