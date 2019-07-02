@@ -64,6 +64,33 @@ describe("txn", () => {
             );
             await expect(p).rejects.toBe(dgraph.ERR_FINISHED);
         });
+
+        it("should pass debug option to the server", async () => {
+          client = await setup();
+          const txn = client.newTxn();
+          await txn.mutate({
+              setJson: { name: "Alice" },
+          });
+          await txn.commit();
+
+          // This shouldn't be necessary, but https://github.com/dgraph-io/dgraph/issues/3622
+          client.logout();
+
+          const queryTxn = client.newTxn();
+
+          const resp = queryTxn.query(
+              "{ me(func: has(name)) { name }}",
+              { debug: true },
+          );
+
+          await expect(resp).resolves.toHaveProperty("data.me.0.uid");
+
+          const resp2 = queryTxn.query(
+              "{ me(func: has(name)) { name }}",
+          );
+          // Query without debug shouldn't return uid.
+          await expect(resp2).resolves.not.toHaveProperty("data.me.0.uid");
+        });
     });
 
     describe("mutate", () => {

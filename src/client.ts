@@ -10,7 +10,7 @@ import { stringifyMessage } from "./util";
 export class DgraphClient {
     private readonly clients: DgraphClientStub[];
     private debugMode: boolean = false;
-    private queryTimeout: number = 6000;
+    private queryTimeout: number = 600;
 
     /**
      * Creates a new Client for interacting with the Dgraph store.
@@ -63,6 +63,14 @@ export class DgraphClient {
 
       const c = this.anyClient();
       return c.login(userid, password); // tslint:disable-line no-unsafe-any
+    }
+
+    /**
+     * logout - forget all access tokens.
+     */
+    public logout(): void {
+      this.debug("Logout");
+      this.clients.forEach((c: DgraphClientStub) => c.logout());
     }
 
     /**

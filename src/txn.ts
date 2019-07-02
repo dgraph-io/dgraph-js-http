@@ -41,8 +41,8 @@ export class Txn {
      * need to be made in the same transaction, it's convenient to chain the method,
      * e.g. client.newTxn().query("...").
      */
-    public query(q: string): Promise<Response> {
-        return this.queryWithVars(q);
+    public query(q: string, options?: { debug?: boolean }): Promise<Response> {
+        return this.queryWithVars(q, undefined, options);
     }
 
     /**
@@ -52,6 +52,7 @@ export class Txn {
     public async queryWithVars(
         q: string,
         vars?: { [k: string]: any }, // tslint:disable-line no-any
+        options: { debug?: boolean } = {},
     ): Promise<Response> {
         if (this.finished) {
             this.dc.debug(`Query request (ERR_FINISHED):\nquery = ${q}\nvars = ${vars}`);
@@ -62,6 +63,7 @@ export class Txn {
             query: q,
             startTs: this.ctx.start_ts,
             timeout: this.dc.getQueryTimeout(),
+            debug: options.debug,
         };
         if (vars !== undefined) {
             const varsObj: { [k: string]: string } = {};

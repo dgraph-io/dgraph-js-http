@@ -10,6 +10,7 @@ export declare class DgraphClient {
     getQueryTimeout(): number;
     alter(op: Operation): Promise<Payload>;
     login(userid: string, password: string): Promise<boolean>;
+    logout(): void;
     newTxn(): Txn;
     setDebugMode(mode?: boolean): void;
     fetchUiKeywords(): Promise<UiKeywords>;

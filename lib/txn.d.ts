@@ -6,9 +6,13 @@ export declare class Txn {
     private finished;
     private mutated;
     constructor(dc: DgraphClient);
-    query(q: string): Promise<Response>;
+    query(q: string, options?: {
+        debug?: boolean;
+    }): Promise<Response>;
     queryWithVars(q: string, vars?: {
         [k: string]: any;
+    }, options?: {
+        debug?: boolean;
     }): Promise<Response>;
     mutate(mu: Mutation): Promise<Assigned>;
     commit(): Promise<void>;

@@ -94,6 +94,12 @@ export class DgraphClientStub {
               value: `${req.timeout}s`,
             });
           }
+          if (req.debug) {
+            params.push({
+              key: "debug",
+              value: "true",
+            });
+          }
           if (params.length > 0) {
               url += "?";
               url += params.map(
@@ -237,6 +243,18 @@ export class DgraphClientStub {
       this.accessJWT = res.data.accessJWT;
       this.refreshJWT = res.data.refreshJWT;
       return true;
+    }
+
+    public logout(): void {
+        this.accessJWT = undefined;
+        this.refreshJWT = undefined;
+    }
+
+    public getAuthTokens(): { accessJWT?: string; refreshJWT?: string } {
+        return {
+          accessJWT: this.accessJWT,
+          refreshJWT: this.refreshJWT,
+        };
     }
 
     public async fetchUiKeywords(): Promise<UiKeywords> {

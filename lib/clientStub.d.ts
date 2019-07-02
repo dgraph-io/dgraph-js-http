@@ -19,6 +19,11 @@ export declare class DgraphClientStub {
         uptime?: number;
     }>;
     login(userid?: string, password?: string, refreshJWT?: string): Promise<boolean>;
+    logout(): void;
+    getAuthTokens(): {
+        accessJWT?: string;
+        refreshJWT?: string;
+    };
     fetchUiKeywords(): Promise<UiKeywords>;
     private callAPI;
     private getURL;
