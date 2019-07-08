@@ -48,4 +48,23 @@ describe("ACL Login", () => {
 
         expect(res.data).toEqual({ me: [{ name: "ok 200" }, { name: "ok 300" }, { name: "ok 400" }] });
     });
+
+    it("should use supplied JWT token when passed in", async () => {
+        if (USE_LEGACY_API) {
+          // Older Dgraph doesn't support ACL.
+          return;
+        }
+
+        const client = await setup("groot", "password");
+        const stub = client.anyClient();
+
+        const { refreshToken } = stub.getAuthTokens();
+
+        await expect(stub.login()).resolves.toBe(true);
+
+        stub.logout();
+
+        await expect(stub.login(undefined, undefined, refreshToken)).resolves.toBe(true);
+
+    });
 });

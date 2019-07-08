@@ -80,6 +80,9 @@ export class DgraphClientStub {
           if (req.startTs !== 0) {
             url += `/${req.startTs}`;
           }
+          if (req.debug) {
+            url += "?debug=true";
+          }
         } else {
           const params: { key: string; value: string }[] = [];
           if (req.startTs !== 0) {
@@ -226,7 +229,7 @@ export class DgraphClientStub {
       }
 
       const body: { [k: string]: string } = {};
-      if (userid === undefined && this.refreshToken === undefined) {
+      if (userid === undefined && refreshToken === undefined && this.refreshToken === undefined) {
         throw new Error("Cannot find login details: neither userid/password nor refresh token are specified");
       }
       if (userid === undefined) {
