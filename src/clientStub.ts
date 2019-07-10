@@ -143,6 +143,18 @@ export class DgraphClientStub {
             }`;
         } else if (mu.mutation !== undefined) {
           body = mu.mutation;
+          if (mu.isJsonString !== undefined) {
+            // Caller has specified mutation type
+            usingJSON = mu.isJsonString;
+          } else {
+            // Detect content-type
+            try {
+              JSON.parse(mu.mutation);
+              usingJSON = true;
+            } catch (e) {
+              usingJSON = false;
+            }
+          }
         } else {
             return Promise.reject("Mutation has no data");
         }

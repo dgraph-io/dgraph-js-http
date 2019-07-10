@@ -39,7 +39,10 @@ export interface Mutation {
     deleteNquads?: string | null;
     startTs?: number;
     commitNow?: boolean | null;
+    // Raw mutation text to send;
     mutation?: string | null;
+    // Set to true if `mutation` field (above) contains a JSON mutation.
+    isJsonString?: boolean;
 }
 
 export interface Assigned {

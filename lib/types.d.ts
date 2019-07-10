@@ -39,6 +39,7 @@ export interface Mutation {
     startTs?: number;
     commitNow?: boolean | null;
     mutation?: string | null;
+    isJsonString?: boolean;
 }
 export interface Assigned {
     data: AssignedData;

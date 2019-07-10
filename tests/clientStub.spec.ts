@@ -66,4 +66,62 @@ describe("clientStub", () => {
             expect((<any>stub).callAPI.mock.calls[1][0]).toBe("query");
         });
     });
+
+    describe("mutate", () => {
+        it("should detect Content-Type when none is specified", async () => {
+            const stub = new dgraph.DgraphClientStub();
+            // tslint:disable-next-line no-any
+            (<any>stub).callAPI = jest.fn();
+
+            await stub.mutate({
+                mutation: "{ set: 123 }",
+            });
+
+            // tslint:disable-next-line no-any
+            expect((<any>stub).callAPI).toHaveBeenCalledTimes(1);
+            // tslint:disable-next-line no-unsafe-any no-any
+            expect((<any>stub).callAPI.mock.calls[0][1].headers)
+                .toHaveProperty("Content-Type", "application/rdf");
+
+            await stub.mutate({
+                mutation: '{ "setJson": { "name": "Alice" } }',
+            });
+
+            // tslint:disable-next-line no-any
+            expect((<any>stub).callAPI).toHaveBeenCalledTimes(2);
+            // tslint:disable-next-line no-unsafe-any no-any
+            expect((<any>stub).callAPI.mock.calls[1][1].headers)
+                .toHaveProperty("Content-Type", "application/json");
+
+        });
+
+        it("should use specified Content-Type if present", async () => {
+            const stub = new dgraph.DgraphClientStub();
+            // tslint:disable-next-line no-any
+            (<any>stub).callAPI = jest.fn();
+
+            await stub.mutate({
+                mutation: "{ set: 123 }",
+                isJsonString: true,
+            });
+
+            // tslint:disable-next-line no-any
+            expect((<any>stub).callAPI).toHaveBeenCalledTimes(1);
+            // tslint:disable-next-line no-unsafe-any no-any
+            expect((<any>stub).callAPI.mock.calls[0][1].headers)
+                .toHaveProperty("Content-Type", "application/json");
+
+            await stub.mutate({
+                mutation: '{ "setJson": { "name": "Alice" } }',
+                isJsonString: false,
+            });
+
+            // tslint:disable-next-line no-any
+            expect((<any>stub).callAPI).toHaveBeenCalledTimes(2);
+            // tslint:disable-next-line no-unsafe-any no-any
+            expect((<any>stub).callAPI.mock.calls[1][1].headers)
+                .toHaveProperty("Content-Type", "application/rdf");
+
+        });
+    });
 });
