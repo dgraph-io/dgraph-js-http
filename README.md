@@ -229,6 +229,29 @@ Number of people named "Alice": 1
 Alice
 ```
 
+### Running an Upsert
+
+Txn#mutate(Mutation) runs a mutation and also upsert transactions. It takes in a Mutation object, which provides two main ways to set data: JSON and RDF N-Quad. You can choose whichever way is convenient.
+
+To know more about upsert, we highly recommend going through the docs at https://docs.dgraph.io/mutations/#upsert-block.
+
+```js
+// Create data.
+const p = {
+   query:"{v as var(func: eq(email, \"user@company1.io\"))}",
+   set:[
+      {
+         "uid":"uid(v)",
+         "name":"first last",
+         "email":"user@company1.io"
+      }
+   ]
+};
+
+// Run mutation.
+await txn.mutate({ mutation: JSON.stringify(p), commitNow: true });
+```
+
 ### Commit a transaction
 
 A transaction can be committed using the `Txn#commit()` method. If your transaction
