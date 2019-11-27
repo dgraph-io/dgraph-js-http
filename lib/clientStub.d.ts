@@ -5,6 +5,8 @@ export declare class DgraphClientStub {
     private legacyApi;
     private accessToken;
     private refreshToken;
+    private autoRefresh;
+    private autoRefreshTimer?;
     constructor(addr?: string, legacyApi?: boolean);
     detectApiVersion(): Promise<string>;
     alter(op: Operation): Promise<Payload>;
@@ -25,6 +27,9 @@ export declare class DgraphClientStub {
         refreshToken?: string;
     };
     fetchUiKeywords(): Promise<UiKeywords>;
+    setAutoRefresh(val: boolean): void;
+    private cancelRefreshTimer;
+    private maybeStartRefreshTimer;
     private callAPI;
     private getURL;
 }

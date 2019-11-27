@@ -1,6 +1,6 @@
 {
   "name": "dgraph-js-http",
-  "version": "1.1.0-rc18",
+  "version": "1.1.0-rc19",
   "description": "A javascript HTTP client for Dgraph",
   "license": "Apache-2.0",
   "repository": {
@@ -40,6 +40,7 @@
     "typescript": "^3.5.1"
   },
   "dependencies": {
-    "isomorphic-fetch": "^2.2.1"
+    "isomorphic-fetch": "^2.2.1",
+    "jsonwebtoken": "^8.5.1"
   }
 }

@@ -1,4 +1,5 @@
 import "isomorphic-fetch"; // tslint:disable-line no-import-side-effect
+import * as jwt from "jsonwebtoken";
 
 import { APIError, APIResultError } from "./errors";
 import {
@@ -15,6 +16,9 @@ import {
 
 declare const fetch: any; // tslint:disable-line no-any
 
+// milliseconds before doing automatic token refresh
+const AUTO_REFRESH_PREFETCH_TIME = 5000;
+
 /**
  * Stub is a stub/client connecting to a single dgraph server instance.
  */
@@ -23,6 +27,8 @@ export class DgraphClientStub {
     private legacyApi: boolean;
     private accessToken: string;
     private refreshToken: string;
+    private autoRefresh: boolean;
+    private autoRefreshTimer?: number;
 
     constructor(addr?: string, legacyApi?: boolean) {
         if (addr === undefined) {
@@ -257,6 +263,8 @@ export class DgraphClientStub {
       });
       this.accessToken = res.data.accessJWT;
       this.refreshToken = res.data.refreshJWT;
+
+      this.maybeStartRefreshTimer(this.accessToken);
       return true;
     }
 
@@ -274,6 +282,38 @@ export class DgraphClientStub {
 
     public async fetchUiKeywords(): Promise<UiKeywords> {
       return this.callAPI("ui/keywords", {});
+    }
+
+    public setAutoRefresh(val: boolean) {
+        if (!val) {
+          this.cancelRefreshTimer();
+        }
+        this.autoRefresh = val;
+        this.maybeStartRefreshTimer(this.accessToken);
+    }
+
+    private cancelRefreshTimer() {
+      if (this.autoRefreshTimer !== undefined) {
+        clearTimeout(<any>this.autoRefreshTimer);
+        this.autoRefreshTimer = undefined;
+      }
+    }
+
+    private maybeStartRefreshTimer(accessToken?: string) {
+      if (accessToken === undefined || !this.autoRefresh) {
+        return;
+      }
+      this.cancelRefreshTimer();
+
+      const timeToWait = Math.max(
+          2000,
+          jwt.decode(accessToken).exp * 1000 - Date.now()
+              - AUTO_REFRESH_PREFETCH_TIME);
+
+      this.autoRefreshTimer = <any>setTimeout(
+          () => this.refreshToken && this.login(),
+          timeToWait,
+      );
     }
 
     private async callAPI<T>(path: string, config: { method?: string; body?: string; headers?: { [k: string]: string } }): Promise<T> {
