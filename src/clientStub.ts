@@ -109,6 +109,18 @@ export class DgraphClientStub {
               value: "true",
             });
           }
+          if (req.readOnly) {
+            params.push({
+              key: "ro",
+              value: "true",
+            });
+          }
+          if (req.bestEffort) {
+            params.push({
+              key: "be",
+              value: "true",
+            });
+          }
           if (params.length > 0) {
               url += "?";
               url += params.map(

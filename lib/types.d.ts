@@ -14,6 +14,8 @@ export interface Request {
     startTs?: number;
     timeout?: number;
     debug?: boolean;
+    readOnly?: boolean;
+    bestEffort?: boolean;
 }
 export interface Response {
     data: {};

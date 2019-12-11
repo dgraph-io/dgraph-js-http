@@ -52,10 +52,15 @@ export class Txn {
     public async queryWithVars(
         q: string,
         vars?: { [k: string]: any }, // tslint:disable-line no-any
-        options: { debug?: boolean } = {},
+        options: { debug?: boolean, readOnly?: boolean, bestEffort?: boolean } = {},
     ): Promise<Response> {
         if (this.finished) {
             this.dc.debug(`Query request (ERR_FINISHED):\nquery = ${q}\nvars = ${vars}`);
+            throw ERR_FINISHED;
+        }
+
+        if (options.bestEffort && !options.readOnly) {
+            this.dc.debug('Best effort only works with read-only queries.');
             throw ERR_FINISHED;
         }
 
@@ -64,6 +69,8 @@ export class Txn {
             startTs: this.ctx.start_ts,
             timeout: this.dc.getQueryTimeout(),
             debug: options.debug,
+            readOnly: options.readOnly,
+            bestEffort: options.bestEffort
         };
         if (vars !== undefined) {
             const varsObj: { [k: string]: string } = {};

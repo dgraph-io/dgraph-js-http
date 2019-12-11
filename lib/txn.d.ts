@@ -13,6 +13,8 @@ export declare class Txn {
         [k: string]: any;
     }, options?: {
         debug?: boolean;
+        readOnly?: boolean;
+        bestEffort?: boolean;
     }): Promise<Response>;
     mutate(mu: Mutation): Promise<Assigned>;
     commit(): Promise<void>;
