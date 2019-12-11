@@ -41,7 +41,7 @@ export class Txn {
      * need to be made in the same transaction, it's convenient to chain the method,
      * e.g. client.newTxn().query("...").
      */
-    public query(q: string, options?: { debug?: boolean }): Promise<Response> {
+    public query(q: string, options?: { debug?: boolean, readOnly?: boolean, bestEffort?: boolean }): Promise<Response> {
         return this.queryWithVars(q, undefined, options);
     }
 
