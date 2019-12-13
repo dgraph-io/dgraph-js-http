@@ -30,6 +30,12 @@ export declare class DgraphClientStub {
     setAutoRefresh(val: boolean): void;
     private cancelRefreshTimer;
     private maybeStartRefreshTimer;
-    private callAPI;
+    callAPI<T>(path: string, config: {
+        method?: string;
+        body?: string;
+        headers?: {
+            [k: string]: string;
+        };
+    }): Promise<T>;
     private getURL;
 }

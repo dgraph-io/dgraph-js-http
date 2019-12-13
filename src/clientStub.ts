@@ -316,7 +316,7 @@ export class DgraphClientStub {
       );
     }
 
-    private async callAPI<T>(path: string, config: { method?: string; body?: string; headers?: { [k: string]: string } }): Promise<T> {
+    public async callAPI<T>(path: string, config: { method?: string; body?: string; headers?: { [k: string]: string } }): Promise<T> {
         const url = this.getURL(path);
         if (this.accessToken !== undefined && path !== "login") {
           config.headers = config.headers !== undefined ? config.headers : {};
