@@ -12,3 +12,6 @@ export * from "./txn";
 
 // Export error constants.
 export * from "./errors";
+
+// Export DgraphCluster class
+export * from './cluster'

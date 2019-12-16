@@ -1,7 +1,7 @@
 import { DgraphClientStub } from "./clientStub";
 import { ERR_NO_CLIENTS } from "./errors";
 import { Txn } from "./txn";
-import { Operation, Payload, UiKeywords, Response } from "./types";
+import { Operation, Payload, UiKeywords } from "./types";
 import { stringifyMessage } from "./util";
 
 /**

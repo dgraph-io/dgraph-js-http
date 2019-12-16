@@ -1,6 +1,6 @@
 import { DgraphClientStub } from "./clientStub";
 import { Txn } from "./txn";
-import { Operation, Payload, UiKeywords, Response } from "./types";
+import { Operation, Payload, UiKeywords } from "./types";
 export declare class DgraphClient {
     private readonly clients;
     private debugMode;
@@ -16,5 +16,4 @@ export declare class DgraphClient {
     fetchUiKeywords(): Promise<UiKeywords>;
     debug(msg: string): void;
     anyClient(): DgraphClientStub;
-    getHealth(query: any): Promise<Response>;
 }
