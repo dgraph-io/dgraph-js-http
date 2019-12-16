@@ -104,23 +104,4 @@ export class DgraphClient {
     public anyClient(): DgraphClientStub {
         return this.clients[Math.floor(Math.random() * this.clients.length)];
     }
-
-    public getHealth(query): Promise<Response> {
-        const url = "health" + (query? "?" + query : "");
-        const client = this.anyClient();
-
-        console.log(query, url);
-
-        return client.callAPI(url, {
-          method: "GET",
-        });
-    }
-
-    public getState(): Promise<Response> {
-      const client = this.anyClient();
-
-      return client.callAPI("state", {
-        method: "GET",
-      });
-  }
 }
