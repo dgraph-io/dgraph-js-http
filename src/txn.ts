@@ -1,5 +1,5 @@
 import { DgraphClient } from "./client";
-import { ERR_ABORTED, ERR_FINISHED } from "./errors";
+import { ERR_ABORTED, ERR_FINISHED, ERR_BEST_EFFORT_REQUIRED_READ_ONLY } from "./errors";
 import { Assigned, Mutation, Request, Response, TxnContext, TxnOptions } from "./types";
 import {
     isAbortedError,
@@ -31,8 +31,8 @@ export class Txn {
         this.dc = dc;
 
         if (options && options.bestEffort && !options.readOnly) {
-            this.dc.debug('Best effort only works with read-only queries.');
-            throw ERR_ABORTED;
+            this.dc.debug('Client attempted to query using best-effort without setting the transaction to read-only');
+            throw ERR_BEST_EFFORT_REQUIRED_READ_ONLY;
         }
 
         this.ctx = {
