@@ -39,8 +39,8 @@ export class Txn {
           start_ts: 0,
           keys: [],
           preds: [],
-          readOnly: options.readOnly || false,
-          bestEffort: options.bestEffort || false
+          readOnly: options && options.readOnly,
+          bestEffort: options && options.bestEffort
         };
     }
 
