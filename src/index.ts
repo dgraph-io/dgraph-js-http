@@ -15,3 +15,6 @@ export * from "./errors";
 
 // Export DgraphCluster class
 export * from './cluster'
+
+// Export DgraphZero class
+export * from './zero'
