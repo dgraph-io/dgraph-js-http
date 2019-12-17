@@ -30,7 +30,7 @@ export class Txn {
     constructor(dc: DgraphClient, options?: TxnOptions) {
         this.dc = dc;
 
-        if (options.bestEffort && !options.readOnly) {
+        if (options && options.bestEffort && !options.readOnly) {
             this.dc.debug('Best effort only works with read-only queries.');
             throw ERR_ABORTED;
         }
