@@ -1,6 +1,6 @@
 import { DgraphClientStub } from "./clientStub";
 import { Txn } from "./txn";
-import { Operation, Payload, UiKeywords } from "./types";
+import { Operation, Payload, UiKeywords, TxnOptions } from "./types";
 export declare class DgraphClient {
     private readonly clients;
     private debugMode;
@@ -11,7 +11,7 @@ export declare class DgraphClient {
     alter(op: Operation): Promise<Payload>;
     login(userid: string, password: string): Promise<boolean>;
     logout(): void;
-    newTxn(): Txn;
+    newTxn(options?: TxnOptions): Txn;
     setDebugMode(mode?: boolean): void;
     fetchUiKeywords(): Promise<UiKeywords>;
     debug(msg: string): void;

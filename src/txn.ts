@@ -1,6 +1,6 @@
 import { DgraphClient } from "./client";
 import { ERR_ABORTED, ERR_FINISHED } from "./errors";
-import { Assigned, Mutation, Request, Response, TxnContext } from "./types";
+import { Assigned, Mutation, Request, Response, TxnContext, TxnOptions } from "./types";
 import {
     isAbortedError,
     isConflictError,
@@ -27,12 +27,20 @@ export class Txn {
     private finished: boolean = false;
     private mutated: boolean = false;
 
-    constructor(dc: DgraphClient) {
+    constructor(dc: DgraphClient, options?: TxnOptions) {
         this.dc = dc;
+
+        if (options.bestEffort && !options.readOnly) {
+            this.dc.debug('Best effort only works with read-only queries.');
+            throw ERR_ABORTED;
+        }
+
         this.ctx = {
           start_ts: 0,
           keys: [],
           preds: [],
+          readOnly: options.readOnly || false,
+          bestEffort: options.bestEffort || false
         };
     }
 
@@ -41,7 +49,7 @@ export class Txn {
      * need to be made in the same transaction, it's convenient to chain the method,
      * e.g. client.newTxn().query("...").
      */
-    public query(q: string, options?: { debug?: boolean, readOnly?: boolean, bestEffort?: boolean }): Promise<Response> {
+    public query(q: string, options?: { debug?: boolean }): Promise<Response> {
         return this.queryWithVars(q, undefined, options);
     }
 
@@ -52,15 +60,10 @@ export class Txn {
     public async queryWithVars(
         q: string,
         vars?: { [k: string]: any }, // tslint:disable-line no-any
-        options: { debug?: boolean, readOnly?: boolean, bestEffort?: boolean } = {},
+        options: { debug?: boolean } = {},
     ): Promise<Response> {
         if (this.finished) {
             this.dc.debug(`Query request (ERR_FINISHED):\nquery = ${q}\nvars = ${vars}`);
-            throw ERR_FINISHED;
-        }
-
-        if (options.bestEffort && !options.readOnly) {
-            this.dc.debug('Best effort only works with read-only queries.');
             throw ERR_FINISHED;
         }
 
@@ -69,8 +72,8 @@ export class Txn {
             startTs: this.ctx.start_ts,
             timeout: this.dc.getQueryTimeout(),
             debug: options.debug,
-            readOnly: options.readOnly,
-            bestEffort: options.bestEffort
+            readOnly: this.ctx.readOnly,
+            bestEffort: this.ctx.bestEffort
         };
         if (vars !== undefined) {
             const varsObj: { [k: string]: string } = {};

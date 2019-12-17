@@ -1,11 +1,11 @@
 import { DgraphClient } from "./client";
-import { Assigned, Mutation, Response } from "./types";
+import { Assigned, Mutation, Response, TxnOptions } from "./types";
 export declare class Txn {
     private readonly dc;
     private readonly ctx;
     private finished;
     private mutated;
-    constructor(dc: DgraphClient);
+    constructor(dc: DgraphClient, options?: TxnOptions);
     query(q: string, options?: {
         debug?: boolean;
     }): Promise<Response>;
@@ -13,8 +13,6 @@ export declare class Txn {
         [k: string]: any;
     }, options?: {
         debug?: boolean;
-        readOnly?: boolean;
-        bestEffort?: boolean;
     }): Promise<Response>;
     mutate(mu: Mutation): Promise<Assigned>;
     commit(): Promise<void>;
