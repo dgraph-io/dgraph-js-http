@@ -14,8 +14,6 @@ and understand how to run and work with Dgraph.
 
 ## Table of contents
 
-- [dgraph-js-http <img src="https://img.shields.io/npm/v/dgraph-js-http.svg?style=flat" alt="npm version"> <img src="https://img.shields.io/travis/dgraph-io/dgraph-js-http/master.svg?style=flat" alt="Build Status"> <img src="https://img.shields.io/coveralls/github/dgraph-io/dgraph-js-http/master.svg?style=flat" alt="Coverage Status">](#dgraph-js-http-img-src%22httpsimgshieldsionpmvdgraph-js-httpsvgstyleflat%22-alt%22npm-version%22-img-src%22httpsimgshieldsiotravisdgraph-iodgraph-js-httpmastersvgstyleflat%22-alt%22build-status%22-img-src%22httpsimgshieldsiocoverallsgithubdgraph-iodgraph-js-httpmastersvgstyleflat%22-alt%22coverage-status%22)
-  - [Table of contents](#table-of-contents)
   - [Install](#install)
   - [Quickstart](#quickstart)
   - [Using a client](#using-a-client)
@@ -151,6 +149,16 @@ try {
 }
 ```
 
+You can make queries read-only and best effort by passing ```options``` to ```DgraphClient#newTxn```. For example:
+
+```js
+const options = { readOnly: true, bestEffort: true };
+const res = await dgraphClient.newTxn(options).query(query);
+```
+
+Read-only transactions are useful to increase read speed because they can circumvent the usual consensus protocol. Best effort queries can also increase read speed in read bound system. Please note that best effort requires readonly.
+
+
 ### Run a mutation
 
 `Txn#mutate(Mutation)` runs a mutation. It takes in a `Mutation` object, which
@@ -184,6 +192,7 @@ mutation must be immediately committed.
 // Run mutation.
 await txn.mutate({ setJson: p, commitNow: true });
 ```
+
 
 ### Run a query
 
@@ -232,14 +241,6 @@ Number of people named "Alice": 1
 Alice
 ```
 
-Read-only and best effort queries can be called by passing ```options``` to ```Txn.query``` and ```Txn.queryWithVars```. For example:
-
-```js
-const options = { readOnly: true, bestEffort: true };
-const res = await dgraphClient.newTxn().query(query, options);
-```
-
-Read-only transactions are useful to increase read speed because they can circumvent the usual consensus protocol. Best effort queries can also increase read speed in read bound system. 
 
 ### Commit a transaction
 
