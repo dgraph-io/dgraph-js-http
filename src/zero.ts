@@ -26,6 +26,10 @@ export class DgraphZero {
         return this.callAPI("state", {});
     }
 
+    getClusterHealth() : Promise<Response> {
+        return this.callAPI("health?all", {});
+    }
+
     private async callAPI<T>(path: string, config: { method?: string; body?: string; headers?: { [k: string]: string } }): Promise<T> {
         const url = this.getURL(path);
 
