@@ -1,7 +1,7 @@
 import { DgraphClientStub } from "./clientStub";
 import { ERR_NO_CLIENTS } from "./errors";
 import { Txn } from "./txn";
-import { Operation, Payload, UiKeywords } from "./types";
+import { Operation, Payload, UiKeywords, TxnOptions } from "./types";
 import { stringifyMessage } from "./util";
 
 /**
@@ -76,8 +76,8 @@ export class DgraphClient {
     /**
      * newTxn creates a new transaction.
      */
-    public newTxn(): Txn {
-        return new Txn(this);
+    public newTxn(options?: TxnOptions): Txn {
+        return new Txn(this, options);
     }
 
     /**

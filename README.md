@@ -14,20 +14,21 @@ and understand how to run and work with Dgraph.
 
 ## Table of contents
 
-- [Install](#install)
-- [Quickstart](#quickstart)
-- [Using a client](#using-a-client)
-  - [Create a client](#create-a-client)
-  - [Alter the database](#alter-the-database)
-  - [Create a transaction](#create-a-transaction)
-  - [Run a mutation](#run-a-mutation)
-  - [Run a query](#run-a-query)
-  - [Commit a transaction](#commit-a-transaction)
-  - [Check request latency](#check-request-latency)
-  - [Debug mode](#debug-mode)
-- [Development](#development)
-  - [Building the source](#building-the-source)
-  - [Running tests](#running-tests)
+  - [Install](#install)
+  - [Quickstart](#quickstart)
+  - [Using a client](#using-a-client)
+    - [Create a client](#create-a-client)
+    - [Login into Dgraph](#login-into-dgraph)
+    - [Alter the database](#alter-the-database)
+    - [Create a transaction](#create-a-transaction)
+    - [Run a mutation](#run-a-mutation)
+    - [Run a query](#run-a-query)
+    - [Commit a transaction](#commit-a-transaction)
+    - [Check request latency](#check-request-latency)
+    - [Debug mode](#debug-mode)
+  - [Development](#development)
+    - [Building the source](#building-the-source)
+    - [Running tests](#running-tests)
 
 ## Install
 
@@ -148,6 +149,16 @@ try {
 }
 ```
 
+You can make queries read-only and best effort by passing ```options``` to ```DgraphClient#newTxn```. For example:
+
+```js
+const options = { readOnly: true, bestEffort: true };
+const res = await dgraphClient.newTxn(options).query(query);
+```
+
+Read-only transactions are useful to increase read speed because they can circumvent the usual consensus protocol. Best effort queries can also increase read speed in read bound system. Please note that best effort requires readonly.
+
+
 ### Run a mutation
 
 `Txn#mutate(Mutation)` runs a mutation. It takes in a `Mutation` object, which
@@ -181,6 +192,7 @@ mutation must be immediately committed.
 // Run mutation.
 await txn.mutate({ setJson: p, commitNow: true });
 ```
+
 
 ### Run a query
 
@@ -228,6 +240,7 @@ This should print:
 Number of people named "Alice": 1
 Alice
 ```
+
 
 ### Commit a transaction
 

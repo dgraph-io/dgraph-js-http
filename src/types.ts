@@ -14,6 +14,8 @@ export interface Request {
     startTs?: number;
     timeout?: number;
     debug?: boolean;
+    readOnly?: boolean;
+    bestEffort?: boolean;
 }
 
 export interface Response {
@@ -64,10 +66,17 @@ export interface TxnContext {
     aborted?: boolean | null;
     keys?: string[] | null;
     preds?: string[] | null;
+    readOnly: boolean;
+    bestEffort: boolean;
 }
 
 export interface Latency {
     parsing_ns?: number | null;
     processing_ns?: number | null;
     encoding_ns?: number | null;
+}
+
+export interface TxnOptions {
+    readOnly?: boolean,
+    bestEffort?: boolean
 }
