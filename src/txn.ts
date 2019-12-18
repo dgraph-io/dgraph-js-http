@@ -40,7 +40,7 @@ export class Txn {
           keys: [],
           preds: [],
           readOnly: options && options.readOnly,
-          bestEffort: options && options.bestEffort
+          bestEffort: options && options.bestEffort,
         };
     }
 
