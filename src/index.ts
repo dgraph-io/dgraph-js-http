@@ -11,10 +11,7 @@ export * from "./client";
 export * from "./txn";
 
 // Export error constants.
-export * from "./errors";
-
-// Export DgraphCluster class
-export * from './cluster'
+export * from "./errors"
 
 // Export DgraphZero class
-export * from './zero'
+export * from "./zero"

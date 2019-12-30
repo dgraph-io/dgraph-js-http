@@ -1,7 +1,7 @@
 import { DgraphClientStub } from "./clientStub";
 import { ERR_NO_CLIENTS } from "./errors";
 import { Txn } from "./txn";
-import { Operation, Payload, UiKeywords, TxnOptions } from "./types";
+import { Operation, Payload, UiKeywords, TxnOptions, Response } from "./types";
 import { stringifyMessage } from "./util";
 
 /**
@@ -90,6 +90,14 @@ export class DgraphClient {
 
     public fetchUiKeywords(): Promise<UiKeywords> {
       return this.anyClient().fetchUiKeywords();
+    }
+
+    public async getHealth(all: boolean = true): Promise<Response> {
+      return await this.anyClient().getHealth(all);
+    }
+
+    public async getState(): Promise<Response> {
+      return await this.anyClient().getState();
     }
 
     /**

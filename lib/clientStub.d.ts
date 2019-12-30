@@ -27,15 +27,11 @@ export declare class DgraphClientStub {
         refreshToken?: string;
     };
     fetchUiKeywords(): Promise<UiKeywords>;
+    getHealth(all?: boolean): Promise<Response>;
+    getState(): Promise<Response>;
     setAutoRefresh(val: boolean): void;
     private cancelRefreshTimer;
     private maybeStartRefreshTimer;
-    callAPI<T>(path: string, config: {
-        method?: string;
-        body?: string;
-        headers?: {
-            [k: string]: string;
-        };
-    }): Promise<T>;
+    private callAPI;
     private getURL;
 }

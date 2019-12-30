@@ -21,13 +21,14 @@ export class DgraphZero {
             this.addr = addr;
         }
     }
-
-    public getState(): Promise<Response> {
-        return this.callAPI("state", {});
+    
+    public async getState(): Promise<Response> {
+        return await this.callAPI("state", {});
     }
 
-    getClusterHealth() : Promise<Response> {
-        return this.callAPI("health?all", {});
+    public async getHealth(all: boolean = false) : Promise<Response> {
+        const url = "health" + (all? "?all" : "");
+        return this.callAPI(url, {});
     }
 
     private async callAPI<T>(path: string, config: { method?: string; body?: string; headers?: { [k: string]: string } }): Promise<T> {

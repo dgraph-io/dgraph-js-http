@@ -296,6 +296,35 @@ export class DgraphClientStub {
       return this.callAPI("ui/keywords", {});
     }
 
+
+    /**
+     * Gets instance or cluster health, based on the all param
+     *
+     * @param {boolean} [all=false] Whether to get the health of the full cluster 
+     * @returns {Promise<Response>} Health in JSON
+     * @memberof DgraphClientStub
+     */
+    public async getHealth(all: boolean = false): Promise<Response> {
+      const url = "health" + (all? "?all" : "");
+
+      return await this.callAPI(url, {
+        method: "GET",
+      });
+    }
+
+    /**
+     * Gets the state of the cluster
+     *
+     * @returns {Promise<Response>} State in JSON
+     * @memberof DgraphClientStub
+     */
+    public async getState(): Promise<Response> {
+      return await this.callAPI("state", {
+        method: "GET",
+      });
+    }
+
+
     public setAutoRefresh(val: boolean) {
         if (!val) {
           this.cancelRefreshTimer();
@@ -328,7 +357,7 @@ export class DgraphClientStub {
       );
     }
 
-    public async callAPI<T>(path: string, config: { method?: string; body?: string; headers?: { [k: string]: string } }): Promise<T> {
+    private async callAPI<T>(path: string, config: { method?: string; body?: string; headers?: { [k: string]: string } }): Promise<T> {
         const url = this.getURL(path);
         if (this.accessToken !== undefined && path !== "login") {
           config.headers = config.headers !== undefined ? config.headers : {};
