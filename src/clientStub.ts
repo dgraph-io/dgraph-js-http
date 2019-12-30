@@ -364,21 +364,20 @@ export class DgraphClientStub {
           config.headers["X-Dgraph-AccessToken"] = this.accessToken;
         }
 
-        return fetch(url, config) // tslint:disable-line no-unsafe-any
-            .then((response: { status: number; json(): T }) => {
-                if (response.status >= 300 || response.status < 200) {
-                    throw new Error(`Invalid status code = ${response.status}`);
-                }
-                return response.json();
-            })
-            .then((json: T) => {
-                const errors = (<{ errors: APIResultError[] }><any>json).errors; // tslint:disable-line no-any
-                if (errors !== undefined) {
-                    throw new APIError(url, errors);
-                }
+        const response = await fetch(url, config);
 
-                return json;
-            });
+        if (response.status >= 300 || response.status < 200) {
+            throw new Error(`Invalid status code = ${response.status}`);
+        }
+
+        const json = await response.json();
+        const errors = (<{ errors: APIResultError[] }><any>json).errors; // tslint:disable-line no-any
+
+        if (errors !== undefined) {
+            throw new APIError(url, errors);
+        }
+
+        return json;
     }
 
     private getURL(path: string): string {

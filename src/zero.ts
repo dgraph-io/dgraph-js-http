@@ -28,27 +28,25 @@ export class DgraphZero {
 
     public async getHealth(all: boolean = false) : Promise<Response> {
         const url = "health" + (all? "?all" : "");
-        return this.callAPI(url, {});
+        return await this.callAPI(url, {});
     }
 
     private async callAPI<T>(path: string, config: { method?: string; body?: string; headers?: { [k: string]: string } }): Promise<T> {
         const url = this.getURL(path);
+        const response = await fetch(url, config);
 
-        return fetch(url, config) // tslint:disable-line no-unsafe-any
-            .then((response: { status: number; json(): T }) => {
-                if (response.status >= 300 || response.status < 200) {
-                    throw new Error(`Invalid status code = ${response.status}`);
-                }
-                return response.json();
-            })
-            .then((json: T) => {
-                const errors = (<{ errors: APIResultError[] }><any>json).errors; // tslint:disable-line no-any
-                if (errors !== undefined) {
-                    throw new APIError(url, errors);
-                }
+        if (response.status >= 300 || response.status < 200) {
+            throw new Error(`Invalid status code = ${response.status}`);
+        }
 
-                return json;
-            });
+        const json = await response.json();
+        const errors = (<{ errors: APIResultError[] }><any>json).errors; // tslint:disable-line no-any
+
+        if (errors !== undefined) {
+            throw new APIError(url, errors);
+        }
+
+        return json;
     }
 
     private getURL(path: string): string {
