@@ -124,4 +124,23 @@ describe("clientStub", () => {
 
         });
     });
+
+    describe("health", () => {
+        it("should return health info", async () => {
+            const client = await setup();
+            await client.getHealth();
+        });
+
+        it("should return cluster health info", async () => {
+            const client = await setup();
+            await client.getHealth(true);
+        });
+    });
+
+    describe("state", () => {
+        it("should return state info", async () => {
+            const client = await setup();
+            await client.getState();
+        });
+    });
 });

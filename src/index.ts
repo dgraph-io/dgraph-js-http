@@ -11,4 +11,7 @@ export * from "./client";
 export * from "./txn";
 
 // Export error constants.
-export * from "./errors";
+export * from "./errors"
+
+// Export DgraphZero class
+export * from "./zero"

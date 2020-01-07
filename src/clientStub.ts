@@ -296,6 +296,35 @@ export class DgraphClientStub {
       return this.callAPI("ui/keywords", {});
     }
 
+
+    /**
+     * Gets instance or cluster health, based on the all param
+     *
+     * @param {boolean} [all=false] Whether to get the health of the full cluster 
+     * @returns {Promise<Response>} Health in JSON
+     * @memberof DgraphClientStub
+     */
+    public async getHealth(all: boolean = false): Promise<Response> {
+      const url = "health" + (all? "?all" : "");
+
+      return await this.callAPI(url, {
+        method: "GET",
+      });
+    }
+
+    /**
+     * Gets the state of the cluster
+     *
+     * @returns {Promise<Response>} State in JSON
+     * @memberof DgraphClientStub
+     */
+    public async getState(): Promise<Response> {
+      return await this.callAPI("state", {
+        method: "GET",
+      });
+    }
+
+
     public setAutoRefresh(val: boolean) {
         if (!val) {
           this.cancelRefreshTimer();
@@ -335,21 +364,20 @@ export class DgraphClientStub {
           config.headers["X-Dgraph-AccessToken"] = this.accessToken;
         }
 
-        return fetch(url, config) // tslint:disable-line no-unsafe-any
-            .then((response: { status: number; json(): T }) => {
-                if (response.status >= 300 || response.status < 200) {
-                    throw new Error(`Invalid status code = ${response.status}`);
-                }
-                return response.json();
-            })
-            .then((json: T) => {
-                const errors = (<{ errors: APIResultError[] }><any>json).errors; // tslint:disable-line no-any
-                if (errors !== undefined) {
-                    throw new APIError(url, errors);
-                }
+        const response = await fetch(url, config);
 
-                return json;
-            });
+        if (response.status >= 300 || response.status < 200) {
+            throw new Error(`Invalid status code = ${response.status}`);
+        }
+
+        const json = await response.json();
+        const errors = (<{ errors: APIResultError[] }><any>json).errors; // tslint:disable-line no-any
+
+        if (errors !== undefined) {
+            throw new APIError(url, errors);
+        }
+
+        return json;
     }
 
     private getURL(path: string): string {

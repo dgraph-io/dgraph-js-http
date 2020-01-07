@@ -27,6 +27,8 @@ export declare class DgraphClientStub {
         refreshToken?: string;
     };
     fetchUiKeywords(): Promise<UiKeywords>;
+    getHealth(all?: boolean): Promise<Response>;
+    getState(): Promise<Response>;
     setAutoRefresh(val: boolean): void;
     private cancelRefreshTimer;
     private maybeStartRefreshTimer;
