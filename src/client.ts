@@ -92,10 +92,16 @@ export class DgraphClient {
       return this.anyClient().fetchUiKeywords();
     }
 
+    /**
+     * getHealth gets client or cluster health
+     */
     public async getHealth(all: boolean = true): Promise<Response> {
       return await this.anyClient().getHealth(all);
     }
 
+    /**
+     * getState gets cluster state
+     */
     public async getState(): Promise<Response> {
       return await this.anyClient().getState();
     }
