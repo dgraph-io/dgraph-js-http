@@ -12,6 +12,3 @@ export * from "./txn";
 
 // Export error constants.
 export * from "./errors"
-
-// Export DgraphZero class
-export * from "./zero"
