@@ -17,6 +17,7 @@ and understand how to run and work with Dgraph.
 ## Table of contents
 
   - [Install](#install)
+  - [Supported Versions](#supported-versions)
   - [Quickstart](#quickstart)
   - [Using a client](#using-a-client)
     - [Create a client](#create-a-client)
@@ -50,6 +51,16 @@ You will also need a Promise polyfill for
 [older browsers](http://caniuse.com/#feat=promises) and Node.js v5 and below.
 We recommend [taylorhakes/promise-polyfill](https://github.com/taylorhakes/promise-polyfill)
 for its small size and Promises/A+ compatibility.
+
+## Supported Versions
+
+Depending on the version of Dgraph that you are connecting to, you will have to
+use a different version of this client.
+
+| Dgraph version | dgraph-js-http version |
+|:--------------:|:----------------------:|
+|     <= 1.0.8   |        < *0.2.0*       |
+|     >= 1.0.9   |        >= *0.2.0*      |
 
 ## Quickstart
 
