@@ -3,7 +3,9 @@
 A Dgraph client implementation for javascript using HTTP. It supports both
 browser and Node.js environments.
 
-This client follows the [Dgraph Javascript GRPC client][grpcclient] closely.
+**Looking for gRPC support? Check out [dgraph-js][grpcclient].**
+
+This client follows the [Dgraph Javascript gRPC client][grpcclient] closely.
 
 [grpcclient]: https://github.com/dgraph-io/dgraph-js
 
