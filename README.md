@@ -58,9 +58,8 @@ Depending on the version of Dgraph that you are connecting to, you will have to
 use a different version of this client.
 
 | Dgraph version | dgraph-js-http version |
-|:--------------:|:----------------------:|
-|     <= 1.0.8   |        < *0.2.0*       |
-|     >= 1.0.9   |        >= *0.2.0*      |
+|:--------------------:|:------------------------------:|
+|        >= 1.1       |            >= *1.1.1*           |
 
 ## Quickstart
 
