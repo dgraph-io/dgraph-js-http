@@ -59,7 +59,7 @@ use a different version of this client.
 
 | Dgraph version | dgraph-js-http version |
 |:--------------------:|:------------------------------:|
-|        >= 1.1       |            >= *1.1.1*           |
+|        >= 1.1       |            >= *1.1.0*           |
 
 ## Quickstart
 
