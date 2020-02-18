@@ -40,9 +40,19 @@ export class DgraphClientStub {
     }
 
     public async detectApiVersion(): Promise<string> {
-        const health = await this.health();
-        this.legacyApi = health.version.startsWith("1.0.");
-        return health.version;
+      try {
+        const response = await this.getHealth();
+        
+        if (response.data === "OK") {
+          this.legacyApi = true;
+          return "1.0.x"
+        } else {
+          return response.data["version"];
+        }
+      } 
+      catch (err) {
+        throw new Error("Failed to obtain alpha health.");
+      }
     }
 
     public alter(op: Operation): Promise<Payload> {
@@ -230,27 +240,6 @@ export class DgraphClientStub {
             : `/abort/${ctx.start_ts}`;
 
         return this.callAPI(url, { method: "POST" });
-    }
-
-    public async health(): Promise<{ health: string; version: string; instance?: string; uptime?: number }> {
-        const response: { status: number; text(): Promise<string> } =
-            await fetch(this.getURL("health"), { // tslint:disable-line no-unsafe-any
-                method: "GET",
-            });
-        if (response.status >= 300 || response.status < 200) {
-            throw new Error(`Invalid status code = ${response.status}`);
-        }
-        const text = await response.text();
-        if (text === "OK") {
-          return {
-            health: text,
-            version: "1.0.x",
-          };
-        }
-        return {
-          ...JSON.parse(text),
-          health: "OK",
-        };
     }
 
     public async login(userid?: string, password?: string, refreshToken?: string): Promise<boolean> {

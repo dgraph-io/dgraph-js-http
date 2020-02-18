@@ -14,12 +14,6 @@ export declare class DgraphClientStub {
     mutate(mu: Mutation): Promise<Assigned>;
     commit(ctx: TxnContext): Promise<TxnContext>;
     abort(ctx: TxnContext): Promise<TxnContext>;
-    health(): Promise<{
-        health: string;
-        version: string;
-        instance?: string;
-        uptime?: number;
-    }>;
     login(userid?: string, password?: string, refreshToken?: string): Promise<boolean>;
     logout(): void;
     getAuthTokens(): {
