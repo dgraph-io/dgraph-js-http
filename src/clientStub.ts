@@ -42,15 +42,17 @@ export class DgraphClientStub {
     public async detectApiVersion(): Promise<string> {
       try {
         const response = await this.getHealth();
-        
-        if (response.data === "OK") {
-          this.legacyApi = true;
-          return "1.0.x"
-        } else {
-          return response.data["version"];
-        }
+        return response.data["version"];
       } 
       catch (err) {
+        // Check if the the response is OK, but not JSON. If it is, enable the legacy api
+        if (err.name === "FetchError") {
+          if (err.response.status === 200) {
+            this.legacyApi = true;
+            return "1.0.x";
+          }
+        }
+        
         throw new Error("Failed to obtain alpha health.");
       }
     }
@@ -293,10 +295,10 @@ export class DgraphClientStub {
      * @returns {Promise<Response>} Health in JSON
      * @memberof DgraphClientStub
      */
-    public async getHealth(all: boolean = false): Promise<Response> {
+    public getHealth(all: boolean = false): Promise<Response> {
       const url = "health" + (all? "?all" : "");
 
-      return await this.callAPI(url, {
+      return this.callAPI(url, {
         method: "GET",
       });
     }
@@ -307,8 +309,8 @@ export class DgraphClientStub {
      * @returns {Promise<Response>} State in JSON
      * @memberof DgraphClientStub
      */
-    public async getState(): Promise<Response> {
-      return await this.callAPI("state", {
+    public getState(): Promise<Response> {
+      return this.callAPI("state", {
         method: "GET",
       });
     }
@@ -347,26 +349,35 @@ export class DgraphClientStub {
     }
 
     private async callAPI<T>(path: string, config: { method?: string; body?: string; headers?: { [k: string]: string } }): Promise<T> {
-        const url = this.getURL(path);
-        if (this.accessToken !== undefined && path !== "login") {
-          config.headers = config.headers !== undefined ? config.headers : {};
-          config.headers["X-Dgraph-AccessToken"] = this.accessToken;
-        }
+      const url = this.getURL(path);
+      if (this.accessToken !== undefined && path !== "login") {
+        config.headers = config.headers !== undefined ? config.headers : {};
+        config.headers["X-Dgraph-AccessToken"] = this.accessToken;
+      }
 
-        const response = await fetch(url, config);
+      const response = await fetch(url, config);
 
-        if (response.status >= 300 || response.status < 200) {
-            throw new Error(`Invalid status code = ${response.status}`);
-        }
+      if (response.status >= 300 || response.status < 200) {
+          throw new Error(`Invalid status code = ${response.status}`);
+      }
 
-        const json = await response.json();
-        const errors = (<{ errors: APIResultError[] }><any>json).errors; // tslint:disable-line no-any
+      // Include response in err for legacy purposes
+      let json;
+      try {
+        json = await response.json();
+      }
+      catch (err) {
+        err.response = response;
+        throw err;
+      }
 
-        if (errors !== undefined) {
-            throw new APIError(url, errors);
-        }
+      const errors = (<{ errors: APIResultError[] }><any>json).errors; // tslint:disable-line no-any
 
-        return json;
+      if (errors !== undefined) {
+          throw new APIError(url, errors);
+      }
+
+      return json;
     }
 
     private getURL(path: string): string {
