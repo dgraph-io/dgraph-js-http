@@ -40,9 +40,9 @@ export class DgraphClientStub {
     }
 
     public async detectApiVersion(): Promise<string> {
-        const health = await this.health();
+        const health = await this.getHealth();
         // tslint:disable-next-line
-        const version: string = health.version || health[0].version;
+        const version: string = health["version"] || health[0].version;
         this.legacyApi = version.startsWith("1.0.");
         return version;
     }
@@ -234,27 +234,6 @@ export class DgraphClientStub {
         return this.callAPI(url, { method: "POST" });
     }
 
-    public async health(): Promise<{ health: string; version: string; instance?: string; uptime?: number }> {
-        const response: { status: number; text(): Promise<string> } =
-            await fetch(this.getURL("health"), { // tslint:disable-line no-unsafe-any
-                method: "GET",
-            });
-        if (response.status >= 300 || response.status < 200) {
-            throw new Error(`Invalid status code = ${response.status}`);
-        }
-        const text = await response.text();
-        if (text === "OK") {
-          return {
-            health: text,
-            version: "1.0.x",
-          };
-        }
-        return {
-          ...JSON.parse(text),
-          health: "OK",
-        };
-    }
-
     public async login(userid?: string, password?: string, refreshToken?: string): Promise<boolean> {
       if (this.legacyApi) {
         throw new Error("Pre v1.1 clients do not support Login methods");
@@ -322,7 +301,8 @@ export class DgraphClientStub {
 
     private cancelRefreshTimer() {
       if (this.autoRefreshTimer !== undefined) {
-        clearTimeout(this.autoRefreshTimer);
+        // tslint:disable-next-line
+        clearTimeout(<any>this.autoRefreshTimer);
         this.autoRefreshTimer = undefined;
       }
     }
@@ -335,42 +315,43 @@ export class DgraphClientStub {
 
       const timeToWait = Math.max(
           2000,
+          // tslint:disable-next-line no-unsafe-any
           (<{exp: number}>jwt.decode(accessToken)).exp * 1000 - Date.now()
               - AUTO_REFRESH_PREFETCH_TIME);
 
-      // tslint:disable-next-line no-unsafe-any
-      this.autoRefreshTimer = setTimeout(
+      // tslint:disable-next-line no-unsafe-any no-any
+      this.autoRefreshTimer = <number><any>setTimeout(
           () => this.refreshToken !== undefined ? this.login() : 0,
           timeToWait,
       );
     }
 
     private async callAPI<T>(path: string, config: { method?: string; body?: string; headers?: { [k: string]: string } }): Promise<T> {
-        const url = this.getURL(path);
-        if (this.accessToken !== undefined && path !== "login") {
-          config.headers = config.headers !== undefined ? config.headers : {};
-          config.headers["X-Dgraph-AccessToken"] = this.accessToken;
-        }
+      const url = this.getURL(path);
+      if (this.accessToken !== undefined && path !== "login") {
+        config.headers = config.headers !== undefined ? config.headers : {};
+        config.headers["X-Dgraph-AccessToken"] = this.accessToken;
+      }
 
-        // tslint:disable-next-line no-unsafe-any
-        const response = await fetch(url, config);
+      // tslint:disable-next-line no-unsafe-any
+      const response = await fetch(url, config);
 
-        // tslint:disable-next-line no-unsafe-any
-        if (response.status >= 300 || response.status < 200) {
-            // tslint:disable-next-line no-unsafe-any
-            throw new Error(`Invalid status code = ${response.status}`);
-        }
+      // tslint:disable-next-line no-unsafe-any
+      if (response.status >= 300 || response.status < 200) {
+          // tslint:disable-next-line no-unsafe-any
+          throw new Error(`Invalid status code = ${response.status}`);
+      }
 
-        // tslint:disable-next-line no-unsafe-any
-        const json = await response.json();
-        // tslint:disable-next-line no-unsafe-any
-        const errors = (<{ errors: APIResultError[] }>json).errors;
+      // tslint:disable-next-line no-unsafe-any
+      const json = await response.json();
+      // tslint:disable-next-line no-unsafe-any
+      const errors = (<{ errors: APIResultError[] }>json).errors;
 
-        if (errors !== undefined) {
-            throw new APIError(url, errors);
-        }
+      if (errors !== undefined) {
+          throw new APIError(url, errors);
+      }
 
-        return <T>json;
+      return <T>json;
     }
 
     private getURL(path: string): string {

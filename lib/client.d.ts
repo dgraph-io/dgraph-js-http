@@ -1,6 +1,6 @@
 import { DgraphClientStub } from "./clientStub";
 import { Txn } from "./txn";
-import { Operation, Payload, UiKeywords, TxnOptions, Response } from "./types";
+import { Operation, Payload, Response, TxnOptions, UiKeywords } from "./types";
 export declare class DgraphClient {
     private readonly clients;
     private debugMode;

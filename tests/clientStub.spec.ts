@@ -4,7 +4,7 @@ import { Request } from "../src/types";
 import { setup } from "./helper";
 
 async function checkHealth(stub: dgraph.DgraphClientStub): Promise<void> {
-    await expect(stub.health()).resolves.toHaveProperty("health", "OK");
+    await expect(stub.getHealth()).resolves.toHaveProperty("0.status", "healthy");
 }
 
 describe("clientStub", () => {
