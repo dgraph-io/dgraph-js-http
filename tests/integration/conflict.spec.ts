@@ -8,7 +8,7 @@ describe("conflict", () => {
         const txn1 = client.newTxn();
 
         const ag = await txn1.mutate({ setJson: { name: "Alice" } });
-        const uid = ag.data.uids["blank-0"];
+        const uid = Object.entries(ag.data.uids)[0][1];
 
         const txn2 = client.newTxn();
         await txn2.mutate({ setJson: { uid, name: "Alice" } });

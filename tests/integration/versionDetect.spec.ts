@@ -7,6 +7,6 @@ describe("clientStub version detection", () => {
         const stub = new DgraphClientStub(SERVER_ADDR, USE_LEGACY_API);
         return expect(stub.detectApiVersion())
             .resolves
-            .toBe("master");
+            .toMatch(/^v[0-9]+(.[0-9]+){2}.*/);
     });
 });

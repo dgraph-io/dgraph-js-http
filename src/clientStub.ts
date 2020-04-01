@@ -41,8 +41,10 @@ export class DgraphClientStub {
 
     public async detectApiVersion(): Promise<string> {
         const health = await this.health();
-        this.legacyApi = health.version.startsWith("1.0.");
-        return health.version;
+        // tslint:disable-next-line
+        const version: string = health.version || health[0].version;
+        this.legacyApi = version.startsWith("1.0.");
+        return version;
     }
 
     public alter(op: Operation): Promise<Payload> {
@@ -296,34 +298,19 @@ export class DgraphClientStub {
       return this.callAPI("ui/keywords", {});
     }
 
-
     /**
      * Gets instance or cluster health, based on the all param
-     *
-     * @param {boolean} [all=false] Whether to get the health of the full cluster 
-     * @returns {Promise<Response>} Health in JSON
-     * @memberof DgraphClientStub
      */
     public async getHealth(all: boolean = false): Promise<Response> {
-      const url = "health" + (all? "?all" : "");
-
-      return await this.callAPI(url, {
-        method: "GET",
-      });
+      return this.callAPI(`health${all ? "?all" : ""}`, {});
     }
 
     /**
      * Gets the state of the cluster
-     *
-     * @returns {Promise<Response>} State in JSON
-     * @memberof DgraphClientStub
      */
     public async getState(): Promise<Response> {
-      return await this.callAPI("state", {
-        method: "GET",
-      });
+      return this.callAPI("state", {});
     }
-
 
     public setAutoRefresh(val: boolean) {
         if (!val) {
@@ -335,7 +322,7 @@ export class DgraphClientStub {
 
     private cancelRefreshTimer() {
       if (this.autoRefreshTimer !== undefined) {
-        clearTimeout(<any>this.autoRefreshTimer);
+        clearTimeout(this.autoRefreshTimer);
         this.autoRefreshTimer = undefined;
       }
     }
@@ -348,11 +335,12 @@ export class DgraphClientStub {
 
       const timeToWait = Math.max(
           2000,
-          jwt.decode(accessToken).exp * 1000 - Date.now()
+          (<{exp: number}>jwt.decode(accessToken)).exp * 1000 - Date.now()
               - AUTO_REFRESH_PREFETCH_TIME);
 
-      this.autoRefreshTimer = <any>setTimeout(
-          () => this.refreshToken && this.login(),
+      // tslint:disable-next-line no-unsafe-any
+      this.autoRefreshTimer = setTimeout(
+          () => this.refreshToken !== undefined ? this.login() : 0,
           timeToWait,
       );
     }
@@ -364,20 +352,25 @@ export class DgraphClientStub {
           config.headers["X-Dgraph-AccessToken"] = this.accessToken;
         }
 
+        // tslint:disable-next-line no-unsafe-any
         const response = await fetch(url, config);
 
+        // tslint:disable-next-line no-unsafe-any
         if (response.status >= 300 || response.status < 200) {
+            // tslint:disable-next-line no-unsafe-any
             throw new Error(`Invalid status code = ${response.status}`);
         }
 
+        // tslint:disable-next-line no-unsafe-any
         const json = await response.json();
-        const errors = (<{ errors: APIResultError[] }><any>json).errors; // tslint:disable-line no-any
+        // tslint:disable-next-line no-unsafe-any
+        const errors = (<{ errors: APIResultError[] }>json).errors;
 
         if (errors !== undefined) {
             throw new APIError(url, errors);
         }
 
-        return json;
+        return <T>json;
     }
 
     private getURL(path: string): string {

@@ -73,9 +73,6 @@ describe("txn", () => {
           });
           await txn.commit();
 
-          // This shouldn't be necessary, but https://github.com/dgraph-io/dgraph/issues/3622
-          client.logout();
-
           const queryTxn = client.newTxn();
 
           const resp = queryTxn.query(

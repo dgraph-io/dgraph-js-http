@@ -5,7 +5,7 @@ describe("delete", () => {
         const client = await setup();
 
         const ag = await client.newTxn().mutate({ setJson: { name: "Alice" }, commitNow: true });
-        const uid = ag.data.uids["blank-0"];
+        const uid = Object.entries(ag.data.uids)[0][1];
 
         const q = `{
             find_bob(func: uid(${uid})) {
@@ -48,7 +48,7 @@ describe("delete", () => {
             },
             commitNow: true,
         });
-        const uid = ag.data.uids["blank-0"];
+        const uid = Object.entries(ag.data.uids)[0][1];
 
         const q = `{
             me(func: uid(${uid})) {

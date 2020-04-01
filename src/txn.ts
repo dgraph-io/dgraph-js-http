@@ -1,5 +1,5 @@
 import { DgraphClient } from "./client";
-import { ERR_ABORTED, ERR_FINISHED, ERR_BEST_EFFORT_REQUIRED_READ_ONLY } from "./errors";
+import { ERR_ABORTED, ERR_BEST_EFFORT_REQUIRED_READ_ONLY, ERR_FINISHED } from "./errors";
 import { Assigned, Mutation, Request, Response, TxnContext, TxnOptions } from "./types";
 import {
     isAbortedError,
@@ -27,11 +27,11 @@ export class Txn {
     private finished: boolean = false;
     private mutated: boolean = false;
 
-    constructor(dc: DgraphClient, options?: TxnOptions) {
+    constructor(dc: DgraphClient, options: TxnOptions = {}) {
         this.dc = dc;
 
-        if (options && options.bestEffort && !options.readOnly) {
-            this.dc.debug('Client attempted to query using best-effort without setting the transaction to read-only');
+        if (options.bestEffort && !options.readOnly) {
+            this.dc.debug("Client attempted to query using best-effort without setting the transaction to read-only");
             throw ERR_BEST_EFFORT_REQUIRED_READ_ONLY;
         }
 
@@ -39,8 +39,8 @@ export class Txn {
           start_ts: 0,
           keys: [],
           preds: [],
-          readOnly: options && options.readOnly,
-          bestEffort: options && options.bestEffort,
+          readOnly: options.readOnly,
+          bestEffort: options.bestEffort,
         };
     }
 
@@ -73,7 +73,7 @@ export class Txn {
             timeout: this.dc.getQueryTimeout(),
             debug: options.debug,
             readOnly: this.ctx.readOnly,
-            bestEffort: this.ctx.bestEffort
+            bestEffort: this.ctx.bestEffort,
         };
         if (vars !== undefined) {
             const varsObj: { [k: string]: string } = {};

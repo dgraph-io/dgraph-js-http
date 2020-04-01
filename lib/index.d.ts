@@ -3,4 +3,3 @@ export * from "./clientStub";
 export * from "./client";
 export * from "./txn";
 export * from "./errors";
-export * from "./zero";

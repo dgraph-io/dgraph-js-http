@@ -77,6 +77,6 @@ export interface Latency {
 }
 
 export interface TxnOptions {
-    readOnly?: boolean,
-    bestEffort?: boolean
+    readOnly?: boolean;
+    bestEffort?: boolean;
 }
