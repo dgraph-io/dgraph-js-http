@@ -59,6 +59,7 @@ use a different version of this client.
 
 | Dgraph version | dgraph-js-http version |
 |:--------------------:|:------------------------------:|
+|      >= 20.03.0      |           >= *20.3.0*          |
 |        >= 1.1       |            >= *1.1.0*           |
 
 ## Quickstart
