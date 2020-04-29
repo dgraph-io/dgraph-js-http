@@ -4,9 +4,11 @@ import * as jwt from "jsonwebtoken";
 import { APIError, APIResultError } from "./errors";
 import {
     Assigned,
+    Config,
     LoginResponse,
     Mutation,
     Operation,
+    Options,
     Payload,
     Request,
     Response,
@@ -24,18 +26,26 @@ const AUTO_REFRESH_PREFETCH_TIME = 5000;
  */
 export class DgraphClientStub {
     private readonly addr: string;
+    private readonly options: Options;
     private legacyApi: boolean;
     private accessToken: string;
     private refreshToken: string;
     private autoRefresh: boolean;
     private autoRefreshTimer?: number;
 
-    constructor(addr?: string, legacyApi?: boolean) {
+    constructor(addr?: string, legacyApi?: boolean, options?: Options) {
         if (addr === undefined) {
             this.addr = "http://localhost:8080"; // tslint:disable-line no-http-string
         } else {
             this.addr = addr;
         }
+
+        if (options === undefined) {
+            this.options = {};
+        } else {
+            this.options = options;
+        }
+
         this.legacyApi = !!legacyApi;
     }
 
@@ -59,10 +69,8 @@ export class DgraphClientStub {
             return Promise.reject("Invalid op argument in alter");
         }
 
-        return this.callAPI("alter", {
-            method: "POST",
-            body,
-        });
+        const config = {method: "POST", body, ...this.options};
+        return this.callAPI("alter", config);
     }
 
     public query(req: Request): Promise<Response> {
@@ -130,12 +138,13 @@ export class DgraphClientStub {
               ).join("&");
           }
         }
-
-        return this.callAPI(url, {
+        const config = {
             method: "POST",
             body: req.query,
             headers,
-        });
+            ...this.options,
+        };
+        return this.callAPI(url, config);
     }
 
     public mutate(mu: Mutation): Promise<Assigned> {
@@ -201,11 +210,13 @@ export class DgraphClientStub {
             }
         }
 
-        return this.callAPI(url, {
+        const config = {
             method: "POST",
             body,
             headers,
-        });
+            ...this.options,
+        };
+        return this.callAPI(url, config);
     }
 
     public commit(ctx: TxnContext): Promise<TxnContext> {
@@ -220,10 +231,12 @@ export class DgraphClientStub {
             ? `commit?startTs=${ctx.start_ts}`
             : `commit/${ctx.start_ts}`;
 
-        return this.callAPI(url, {
+        const options = {
             method: "POST",
             body,
-        });
+            ...this.options,
+        };
+        return this.callAPI(url, options);
     }
 
     public abort(ctx: TxnContext): Promise<TxnContext> {
@@ -231,7 +244,8 @@ export class DgraphClientStub {
             ? `commit?startTs=${ctx.start_ts}&abort=true`
             : `/abort/${ctx.start_ts}`;
 
-        return this.callAPI(url, { method: "POST" });
+        const options = { method: "POST", ...this.options };
+        return this.callAPI(url, options);
     }
 
     public async login(userid?: string, password?: string, refreshToken?: string): Promise<boolean> {
@@ -274,21 +288,21 @@ export class DgraphClientStub {
     }
 
     public async fetchUiKeywords(): Promise<UiKeywords> {
-      return this.callAPI("ui/keywords", {});
+      return this.callAPI("ui/keywords", {...this.options});
     }
 
     /**
      * Gets instance or cluster health, based on the all param
      */
     public async getHealth(all: boolean = false): Promise<Response> {
-      return this.callAPI(`health${all ? "?all" : ""}`, {});
+      return this.callAPI(`health${all ? "?all" : ""}`, {...this.options});
     }
 
     /**
      * Gets the state of the cluster
      */
     public async getState(): Promise<Response> {
-      return this.callAPI("state", {});
+      return this.callAPI("state", {...this.options});
     }
 
     public setAutoRefresh(val: boolean) {
@@ -326,7 +340,7 @@ export class DgraphClientStub {
       );
     }
 
-    private async callAPI<T>(path: string, config: { method?: string; body?: string; headers?: { [k: string]: string } }): Promise<T> {
+    private async callAPI<T>(path: string, config: Config): Promise<T> {
       const url = this.getURL(path);
       if (this.accessToken !== undefined && path !== "login") {
         config.headers = config.headers !== undefined ? config.headers : {};
