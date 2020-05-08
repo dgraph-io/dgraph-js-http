@@ -93,5 +93,6 @@ export interface Options extends https.RequestOptions {
 }
 
 export interface Config extends Options {
+    acceptRawText?: boolean;
     body?: string;
 }

@@ -4,10 +4,12 @@ import * as jwt from "jsonwebtoken";
 import { APIError, APIResultError } from "./errors";
 import {
     Assigned,
+    Config,
     ErrorNonJson,
     LoginResponse,
     Mutation,
     Operation,
+    Options,
     Payload,
     Request,
     Response,
@@ -23,18 +25,26 @@ const AUTO_REFRESH_PREFETCH_TIME = 5000;
  */
 export class DgraphClientStub {
     private readonly addr: string;
+    private readonly options: Options;
     private legacyApi: boolean;
     private accessToken: string;
     private refreshToken: string;
     private autoRefresh: boolean;
     private autoRefreshTimer?: number;
 
-    constructor(addr?: string, legacyApi?: boolean) {
+    constructor(addr?: string, legacyApi?: boolean, options?: Options) {
         if (addr === undefined) {
             this.addr = "http://localhost:8080"; // tslint:disable-line no-http-string
         } else {
             this.addr = addr;
         }
+
+        if (options === undefined) {
+            this.options = {};
+        } else {
+            this.options = options;
+        }
+
         this.legacyApi = !!legacyApi;
     }
 
@@ -62,6 +72,7 @@ export class DgraphClientStub {
         }
 
         return this.callAPI("alter", {
+            ...this.options,
             method: "POST",
             body,
         });
@@ -142,6 +153,7 @@ export class DgraphClientStub {
         }
 
         return this.callAPI(url, {
+            ...this.options,
             method: "POST",
             body: req.query,
             headers,
@@ -224,6 +236,7 @@ export class DgraphClientStub {
         }
 
         return this.callAPI(url, {
+            ...this.options,
             method: "POST",
             body,
             headers,
@@ -243,6 +256,7 @@ export class DgraphClientStub {
             : `commit/${ctx.start_ts}`;
 
         return this.callAPI(url, {
+            ...this.options,
             method: "POST",
             body,
         });
@@ -253,7 +267,7 @@ export class DgraphClientStub {
             ? `commit?startTs=${ctx.start_ts}&abort=true`
             : `/abort/${ctx.start_ts}`;
 
-        return this.callAPI(url, { method: "POST" });
+        return this.callAPI(url, { ...this.options, method: "POST" });
     }
 
     public async login(
@@ -307,7 +321,7 @@ export class DgraphClientStub {
     }
 
     public async fetchUiKeywords(): Promise<UiKeywords> {
-        return this.callAPI("ui/keywords", {});
+        return this.callAPI("ui/keywords", this.options);
     }
 
     /**
@@ -315,6 +329,7 @@ export class DgraphClientStub {
      */
     public async getHealth(all: boolean = false): Promise<Response> {
         return this.callAPI(`health${all ? "?all" : ""}`, {
+            ...this.options,
             acceptRawText: true,
         });
     }
@@ -323,7 +338,7 @@ export class DgraphClientStub {
      * Gets the state of the cluster
      */
     public async getState(): Promise<Response> {
-        return this.callAPI("state", {});
+        return this.callAPI("state", this.options);
     }
 
     public setAutoRefresh(val: boolean) {
@@ -369,12 +384,7 @@ export class DgraphClientStub {
 
     private async callAPI<T>(
         path: string,
-        config: {
-            acceptRawText?: boolean;
-            method?: string;
-            body?: string;
-            headers?: { [k: string]: string };
-        },
+        config: Config,
     ): Promise<T> {
         const url = this.getURL(path);
         if (this.accessToken !== undefined && path !== "login") {

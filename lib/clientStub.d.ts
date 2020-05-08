@@ -1,12 +1,13 @@
-import { Assigned, Mutation, Operation, Payload, Request, Response, TxnContext, UiKeywords } from "./types";
+import { Assigned, Mutation, Operation, Options, Payload, Request, Response, TxnContext, UiKeywords } from "./types";
 export declare class DgraphClientStub {
     private readonly addr;
+    private readonly options;
     private legacyApi;
     private accessToken;
     private refreshToken;
     private autoRefresh;
     private autoRefreshTimer?;
-    constructor(addr?: string, legacyApi?: boolean);
+    constructor(addr?: string, legacyApi?: boolean, options?: Options);
     detectApiVersion(): Promise<string>;
     alter(op: Operation): Promise<Payload>;
     query(req: Request): Promise<Response>;
