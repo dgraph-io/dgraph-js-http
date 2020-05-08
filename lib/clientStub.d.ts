@@ -1,4 +1,3 @@
-import "isomorphic-fetch";
 import { Assigned, Mutation, Operation, Payload, Request, Response, TxnContext, UiKeywords } from "./types";
 export declare class DgraphClientStub {
     private readonly addr;

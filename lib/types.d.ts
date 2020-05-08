@@ -23,7 +23,7 @@ export interface Response {
 }
 export interface UiKeywords {
     keywords: {
-        "type": string;
+        type: string;
         name: string;
     }[];
 }
@@ -72,4 +72,7 @@ export interface Latency {
 export interface TxnOptions {
     readOnly?: boolean;
     bestEffort?: boolean;
+}
+export interface ErrorNonJson extends Error {
+    responseText?: string;
 }

@@ -1,6 +1,6 @@
 {
   "name": "dgraph-js-http",
-  "version": "20.03.0",
+  "version": "20.3.1-rc5",
   "description": "A javascript HTTP client for Dgraph",
   "license": "Apache-2.0",
   "repository": {
@@ -42,5 +42,18 @@
   "dependencies": {
     "isomorphic-fetch": "^2.2.1",
     "jsonwebtoken": "^8.5.1"
+  },
+  "prettier": {
+    "arrowParens": "avoid",
+    "tabWidth": 4,
+    "trailingComma": "all",
+    "overrides": [
+      {
+        "files": "*.{json,yml}",
+        "options": {
+          "tabWidth": 2
+        }
+      }
+    ]
   }
 }

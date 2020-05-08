@@ -24,13 +24,14 @@ export interface Response {
 }
 
 export interface UiKeywords {
-  keywords: { "type": string; name: string }[];
+    // tslint:disable-next-line no-reserved-keywords
+    keywords: { type: string; name: string }[];
 }
 
 export interface LoginResponse {
     data: {
-      accessJWT: string;
-      refreshJWT: string;
+        accessJWT: string;
+        refreshJWT: string;
     };
 }
 
@@ -79,4 +80,8 @@ export interface Latency {
 export interface TxnOptions {
     readOnly?: boolean;
     bestEffort?: boolean;
+}
+
+export interface ErrorNonJson extends Error {
+    responseText?: string;
 }
