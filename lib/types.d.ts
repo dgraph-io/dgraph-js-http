@@ -1,3 +1,5 @@
+/// <reference types="node" />
+import * as https from "https";
 export interface Operation {
     schema?: string | null;
     dropAttr?: string | null;
@@ -75,4 +77,11 @@ export interface TxnOptions {
 }
 export interface ErrorNonJson extends Error {
     responseText?: string;
+}
+export interface Options extends https.RequestOptions {
+    agent?: https.Agent;
+}
+export interface Config extends Options {
+    acceptRawText?: boolean;
+    body?: string;
 }

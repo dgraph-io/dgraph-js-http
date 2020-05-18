@@ -116,6 +116,30 @@ you need to `login` again on a periodic basis:
 await clientStub.login();
 ```
 
+### Create https connection
+
+If your cluster is using tls/mtls you can pass a node `https.Agent` configured with you
+certificates as follows:
+
+```js
+const https = require('https');
+const fs = require('fs');
+// read your certificates
+const cert = fs.readFileSync('./certs/client.crt', 'utf8');
+const ca = fs.readFileSync('./certs/ca.crt', 'utf8');
+const key = fs.readFileSync('./certs/client.key', 'utf8');
+
+// create your https.Agent
+const agent = https.Agent({
+    cert,
+    ca,
+    key,
+})
+
+const clientStub = new dgraph.DgraphClientStub('https://localhost:8080', false, {agent});
+const dgraphClient = new dgraph.DgraphClient(clientStub);
+```
+
 
 ### Alter the database
 
