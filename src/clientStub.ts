@@ -26,15 +26,26 @@ const AUTO_REFRESH_PREFETCH_TIME = 5000;
 export class DgraphClientStub {
     private readonly addr: string;
     private readonly options: Options;
+    // tslint:disable-next-line no-any
+    private readonly jsonParser: (text: string) => any;
     private legacyApi: boolean;
     private accessToken: string;
     private refreshToken: string;
     private autoRefresh: boolean;
     private autoRefreshTimer?: number;
 
-    constructor(addr?: string, legacyApi?: boolean, options?: Options) {
+    constructor(
+        addr?: string,
+        stubConfig: {
+            legacyApi?: boolean;
+            // tslint:disable-next-line no-any
+            jsonParser?(text: string): any;
+        } = {},
+        options?: Options,
+    ) {
         if (addr === undefined) {
-            this.addr = "http://localhost:8080"; // tslint:disable-line no-http-string
+            // tslint:disable-next-line no-http-string
+            this.addr = "http://localhost:8080";
         } else {
             this.addr = addr;
         }
@@ -45,7 +56,12 @@ export class DgraphClientStub {
             this.options = options;
         }
 
-        this.legacyApi = !!legacyApi;
+        this.legacyApi = !!stubConfig.legacyApi;
+        this.jsonParser =
+            stubConfig.jsonParser !== undefined
+                ? stubConfig.jsonParser
+                : // tslint:disable-next-line no-unsafe-any
+                  JSON.parse.bind(JSON);
     }
 
     public async detectApiVersion(): Promise<string> {
@@ -382,10 +398,7 @@ export class DgraphClientStub {
         );
     }
 
-    private async callAPI<T>(
-        path: string,
-        config: Config,
-    ): Promise<T> {
+    private async callAPI<T>(path: string, config: Config): Promise<T> {
         const url = this.getURL(path);
         if (this.accessToken !== undefined && path !== "login") {
             config.headers = config.headers !== undefined ? config.headers : {};
@@ -407,7 +420,7 @@ export class DgraphClientStub {
 
         try {
             // tslint:disable-next-line no-unsafe-any
-            json = JSON.parse(responseText);
+            json = this.jsonParser(responseText);
         } catch (e) {
             if (config.acceptRawText) {
                 return <T>(<unknown>responseText);

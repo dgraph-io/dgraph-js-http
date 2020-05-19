@@ -1,16 +1,31 @@
 import * as dgraph from "../src";
 import { Request } from "../src/types";
 
-import { setup } from "./helper";
+import { SERVER_ADDR, setup } from "./helper";
 
 async function checkHealth(stub: dgraph.DgraphClientStub): Promise<void> {
-    await expect(stub.getHealth()).resolves.toHaveProperty("0.status", "healthy");
+    await expect(stub.getHealth()).resolves.toHaveProperty(
+        "0.status",
+        "healthy",
+    );
 }
 
 describe("clientStub", () => {
     describe("constructor", () => {
         it("should accept undefined argument", async () => {
             await checkHealth(new dgraph.DgraphClientStub());
+        });
+        it("should accept custom JSON parser", async () => {
+            const mockParser = jest.fn((input: string) => ({ input }));
+            const stub = new dgraph.DgraphClientStub(SERVER_ADDR, {
+                jsonParser: mockParser,
+            });
+            await expect(
+                stub.query({
+                    query: "{ q(func: uid(1)) { uid } }",
+                }),
+            ).resolves.toBeTruthy();
+            expect(mockParser.mock.calls.length).toBe(1);
         });
     });
 
@@ -24,9 +39,9 @@ describe("clientStub", () => {
     describe("fetchUiKeywords", () => {
         it("should return keywords object", async () => {
             const client = await setup();
-            await expect(client.anyClient().fetchUiKeywords())
-                .resolves
-                .toHaveProperty("keywords");
+            await expect(
+                client.anyClient().fetchUiKeywords(),
+            ).resolves.toHaveProperty("keywords");
             const resp = await client.anyClient().fetchUiKeywords();
             expect(resp.keywords).toContainEqual({
                 type: "",
@@ -53,7 +68,9 @@ describe("clientStub", () => {
             // tslint:disable-next-line no-any
             expect((<any>stub).callAPI).toHaveBeenCalledTimes(1);
             // tslint:disable-next-line no-unsafe-any no-any
-            expect((<any>stub).callAPI.mock.calls[0][0]).toContain("timeout=777s");
+            expect((<any>stub).callAPI.mock.calls[0][0]).toContain(
+                "timeout=777s",
+            );
 
             req.timeout = 0;
             req.startTs = 0;
@@ -80,8 +97,10 @@ describe("clientStub", () => {
             // tslint:disable-next-line no-any
             expect((<any>stub).callAPI).toHaveBeenCalledTimes(1);
             // tslint:disable-next-line no-unsafe-any no-any
-            expect((<any>stub).callAPI.mock.calls[0][1].headers)
-                .toHaveProperty("Content-Type", "application/rdf");
+            expect((<any>stub).callAPI.mock.calls[0][1].headers).toHaveProperty(
+                "Content-Type",
+                "application/rdf",
+            );
 
             await stub.mutate({
                 mutation: '{ "setJson": { "name": "Alice" } }',
@@ -90,9 +109,10 @@ describe("clientStub", () => {
             // tslint:disable-next-line no-any
             expect((<any>stub).callAPI).toHaveBeenCalledTimes(2);
             // tslint:disable-next-line no-unsafe-any no-any
-            expect((<any>stub).callAPI.mock.calls[1][1].headers)
-                .toHaveProperty("Content-Type", "application/json");
-
+            expect((<any>stub).callAPI.mock.calls[1][1].headers).toHaveProperty(
+                "Content-Type",
+                "application/json",
+            );
         });
 
         it("should use specified Content-Type if present", async () => {
@@ -108,8 +128,10 @@ describe("clientStub", () => {
             // tslint:disable-next-line no-any
             expect((<any>stub).callAPI).toHaveBeenCalledTimes(1);
             // tslint:disable-next-line no-unsafe-any no-any
-            expect((<any>stub).callAPI.mock.calls[0][1].headers)
-                .toHaveProperty("Content-Type", "application/json");
+            expect((<any>stub).callAPI.mock.calls[0][1].headers).toHaveProperty(
+                "Content-Type",
+                "application/json",
+            );
 
             await stub.mutate({
                 mutation: '{ "setJson": { "name": "Alice" } }',
@@ -119,9 +141,10 @@ describe("clientStub", () => {
             // tslint:disable-next-line no-any
             expect((<any>stub).callAPI).toHaveBeenCalledTimes(2);
             // tslint:disable-next-line no-unsafe-any no-any
-            expect((<any>stub).callAPI.mock.calls[1][1].headers)
-                .toHaveProperty("Content-Type", "application/rdf");
-
+            expect((<any>stub).callAPI.mock.calls[1][1].headers).toHaveProperty(
+                "Content-Type",
+                "application/rdf",
+            );
         });
     });
 
