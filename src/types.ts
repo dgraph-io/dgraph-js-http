@@ -1,9 +1,9 @@
 import * as https from "https";
 
 export interface Operation {
-    schema?: string | null;
-    dropAttr?: string | null;
-    dropAll?: boolean | null;
+    schema?: string;
+    dropAttr?: string;
+    dropAll?: boolean;
 }
 
 export interface Payload {
@@ -12,7 +12,7 @@ export interface Payload {
 
 export interface Request {
     query: string;
-    vars?: { [k: string]: string } | null;
+    vars?: { [k: string]: string };
     startTs?: number;
     timeout?: number;
     debug?: boolean;
@@ -38,14 +38,14 @@ export interface LoginResponse {
 }
 
 export interface Mutation {
-    setJson?: object | null;
-    deleteJson?: object | null;
-    setNquads?: string | null;
-    deleteNquads?: string | null;
+    setJson?: object;
+    deleteJson?: object;
+    setNquads?: string;
+    deleteNquads?: string;
     startTs?: number;
-    commitNow?: boolean | null;
+    commitNow?: boolean;
     // Raw mutation text to send;
-    mutation?: string | null;
+    mutation?: string;
     // Set to true if `mutation` field (above) contains a JSON mutation.
     isJsonString?: boolean;
 }
@@ -66,17 +66,17 @@ export interface Extensions {
 
 export interface TxnContext {
     start_ts: number;
-    aborted?: boolean | null;
-    keys?: string[] | null;
-    preds?: string[] | null;
+    aborted?: boolean;
+    keys?: string[];
+    preds?: string[];
     readOnly: boolean;
     bestEffort: boolean;
 }
 
 export interface Latency {
-    parsing_ns?: number | null;
-    processing_ns?: number | null;
-    encoding_ns?: number | null;
+    parsing_ns?: number;
+    processing_ns?: number;
+    encoding_ns?: number;
 }
 
 export interface TxnOptions {

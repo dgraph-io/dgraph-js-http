@@ -1,9 +1,9 @@
 /// <reference types="node" />
 import * as https from "https";
 export interface Operation {
-    schema?: string | null;
-    dropAttr?: string | null;
-    dropAll?: boolean | null;
+    schema?: string;
+    dropAttr?: string;
+    dropAll?: boolean;
 }
 export interface Payload {
     data: {};
@@ -12,7 +12,7 @@ export interface Request {
     query: string;
     vars?: {
         [k: string]: string;
-    } | null;
+    };
     startTs?: number;
     timeout?: number;
     debug?: boolean;
@@ -36,13 +36,13 @@ export interface LoginResponse {
     };
 }
 export interface Mutation {
-    setJson?: object | null;
-    deleteJson?: object | null;
-    setNquads?: string | null;
-    deleteNquads?: string | null;
+    setJson?: object;
+    deleteJson?: object;
+    setNquads?: string;
+    deleteNquads?: string;
     startTs?: number;
-    commitNow?: boolean | null;
-    mutation?: string | null;
+    commitNow?: boolean;
+    mutation?: string;
     isJsonString?: boolean;
 }
 export interface Assigned {
@@ -60,16 +60,16 @@ export interface Extensions {
 }
 export interface TxnContext {
     start_ts: number;
-    aborted?: boolean | null;
-    keys?: string[] | null;
-    preds?: string[] | null;
+    aborted?: boolean;
+    keys?: string[];
+    preds?: string[];
     readOnly: boolean;
     bestEffort: boolean;
 }
 export interface Latency {
-    parsing_ns?: number | null;
-    processing_ns?: number | null;
-    encoding_ns?: number | null;
+    parsing_ns?: number;
+    processing_ns?: number;
+    encoding_ns?: number;
 }
 export interface TxnOptions {
     readOnly?: boolean;
