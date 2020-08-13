@@ -30,6 +30,7 @@ and understand how to run and work with Dgraph.
     - [Run a query](#run-a-query)
     - [Commit a transaction](#commit-a-transaction)
     - [Check request latency](#check-request-latency)
+    - [Using Dgraph's authentication token](#using-authentication-token)
     - [Debug mode](#debug-mode)
   - [Development](#development)
     - [Building the source](#building-the-source)
@@ -333,6 +334,16 @@ const assigned = await txn.mutate({ setJson: p });
 console.log(assigned.extensions.server_latency);
 // { parsing_ns: 132207,
 //   processing_ns: 84100996 }
+```
+
+### Using authentication token
+
+Dgraph's authentication token also known as "Poor man's ACL". Below is an example of how to set a header named "auth-token".
+
+```js
+// The following piece of code shows how one can set the authentication
+// token, to allow Alter operation, if the server requires it.
+await dgraphClient.alter({ schema: schema, authToken: "mySuperSecret" });
 ```
 
 ### Debug mode

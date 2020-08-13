@@ -4,6 +4,7 @@ export interface Operation {
     schema?: string;
     dropAttr?: string;
     dropAll?: boolean;
+    authToken?: string;
 }
 
 export interface Payload {

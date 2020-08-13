@@ -76,6 +76,7 @@ export class DgraphClientStub {
     }
 
     public alter(op: Operation): Promise<Payload> {
+        const headers: { [k: string]: string } = {};
         let body: string;
         if (op.schema !== undefined) {
             body = op.schema;
@@ -86,11 +87,15 @@ export class DgraphClientStub {
         } else {
             return Promise.reject("Invalid op argument in alter");
         }
+        if (op.authToken !== undefined) {
+            headers["X-Dgraph-AuthToken"] = op.authToken;
+        }
 
         return this.callAPI("alter", {
             ...this.options,
             method: "POST",
             body,
+            headers,
         });
     }
 
@@ -400,6 +405,7 @@ export class DgraphClientStub {
 
     private async callAPI<T>(path: string, config: Config): Promise<T> {
         const url = this.getURL(path);
+
         if (this.accessToken !== undefined && path !== "login") {
             config.headers = config.headers !== undefined ? config.headers : {};
             config.headers["X-Dgraph-AccessToken"] = this.accessToken;
