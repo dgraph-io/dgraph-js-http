@@ -41,7 +41,7 @@ export class DgraphClientStub {
             // tslint:disable-next-line no-any
             jsonParser?(text: string): any;
         } = {},
-        options?: Options,
+        options: Options = {},
     ) {
         if (addr === undefined) {
             // tslint:disable-next-line no-http-string
@@ -50,11 +50,7 @@ export class DgraphClientStub {
             this.addr = addr;
         }
 
-        if (options === undefined) {
-            this.options = {};
-        } else {
-            this.options = options;
-        }
+        this.options = options;
 
         this.legacyApi = !!stubConfig.legacyApi;
         this.jsonParser =
@@ -95,7 +91,10 @@ export class DgraphClientStub {
     }
 
     public query(req: Request): Promise<Response> {
-        const headers: { [k: string]: string } = {};
+        const headers = Object.assign(
+            {},
+            this.options.headers !== undefined ? this.options.headers : {},
+        );
         if (req.vars !== undefined) {
             if (this.legacyApi) {
                 headers["X-Dgraph-Vars"] = JSON.stringify(req.vars);
@@ -228,9 +227,14 @@ export class DgraphClientStub {
             return Promise.reject("Mutation has no data");
         }
 
-        const headers: { [k: string]: string } = {
-            "Content-Type": `application/${usingJSON ? "json" : "rdf"}`,
-        };
+        const headers = Object.assign(
+            {},
+            this.options.headers !== undefined ? this.options.headers : {},
+            {
+                "Content-Type": `application/${usingJSON ? "json" : "rdf"}`,
+            },
+        );
+
         if (usingJSON && this.legacyApi) {
             headers["X-Dgraph-MutationType"] = "json";
         }
@@ -314,6 +318,7 @@ export class DgraphClientStub {
         }
 
         const res: LoginResponse = await this.callAPI("login", {
+            ...this.options,
             method: "POST",
             body: JSON.stringify(body),
         });
