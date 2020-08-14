@@ -8,15 +8,15 @@ fi
 function quit {
     echo "Shutting down Dgraph alpha and zero."
     curl -s localhost:8080/admin/shutdown
-    # Kill Dgraph zero.
-    kill -9 $(pgrep -f "dgraph zero") > /dev/null
 
     if pgrep -x dgraph > /dev/null
     then
         while pgrep dgraph;
         do
             echo "Sleeping for 5 secs so that Dgraph can shutdown."
-            sleep 5
+            sleep 15
+            kill -9 $(pgrep -f "dgraph zero") > /dev/null     # Kill Dgraph zero.
+            kill -9 $(pgrep -f "dgraph alpha") > /dev/null    # I don't wanna wait "clean shutdown" on this context. Let's kill it please...
         done
     fi
 
@@ -26,7 +26,7 @@ function quit {
 
 function start {
     echo -e "Starting Dgraph alpha."
-    dgraph alpha -p data/p -w data/w --lru_mb 4096 --zero localhost:5080 > data/server.log 2>&1 &
+    dgraph alpha --acl_secret_file ./scripts/hmac-secret -p data/p -w data/w --lru_mb 4096 --zero localhost:5080 > data/alpha.log 2>&1 &
     # Wait for membership sync to happen.
     sleep $sleepTime
     return 0
