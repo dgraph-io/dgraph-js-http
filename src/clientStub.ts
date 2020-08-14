@@ -285,7 +285,7 @@ export class DgraphClientStub {
     public abort(ctx: TxnContext): Promise<TxnContext> {
         const url = !this.legacyApi
             ? `commit?startTs=${ctx.start_ts}&abort=true`
-            : `/abort/${ctx.start_ts}`;
+            : `abort/${ctx.start_ts}`;
 
         return this.callAPI(url, { ...this.options, method: "POST" });
     }
