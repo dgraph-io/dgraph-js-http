@@ -91,6 +91,7 @@ export class DgraphClientStub {
     }
 
     public query(req: Request): Promise<Response> {
+        /* tslint:disable-next-line */
         const headers = Object.assign(
             {},
             this.options.headers !== undefined ? this.options.headers : {},
@@ -226,7 +227,7 @@ export class DgraphClientStub {
         } else {
             return Promise.reject("Mutation has no data");
         }
-
+        /* tslint:disable-next-line */
         const headers = Object.assign(
             {},
             this.options.headers !== undefined ? this.options.headers : {},
