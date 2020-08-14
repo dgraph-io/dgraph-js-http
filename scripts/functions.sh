@@ -17,7 +17,7 @@ function quit {
         while pgrep dgraph;
         do
             echo "Sleeping for 5 secs so that Dgraph can shutdown."
-            sleep 15
+            sleep 5
         done
     fi
 
