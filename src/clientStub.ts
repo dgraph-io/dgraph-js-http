@@ -91,10 +91,10 @@ export class DgraphClientStub {
     }
 
     public query(req: Request): Promise<Response> {
-        const headers = Object.assign(
-            {},
-            this.options.headers !== undefined ? this.options.headers : {},
-        );
+        const headers =
+            this.options.headers !== undefined
+                ? { ...this.options.headers }
+                : {};
         if (req.vars !== undefined) {
             if (this.legacyApi) {
                 headers["X-Dgraph-Vars"] = JSON.stringify(req.vars);
@@ -227,13 +227,10 @@ export class DgraphClientStub {
             return Promise.reject("Mutation has no data");
         }
 
-        const headers = Object.assign(
-            {},
-            this.options.headers !== undefined ? this.options.headers : {},
-            {
-                "Content-Type": `application/${usingJSON ? "json" : "rdf"}`,
-            },
-        );
+        const headers = {
+            ...(this.options.headers !== undefined ? this.options.headers : {}),
+            "Content-Type": `application/${usingJSON ? "json" : "rdf"}`,
+        };
 
         if (usingJSON && this.legacyApi) {
             headers["X-Dgraph-MutationType"] = "json";
