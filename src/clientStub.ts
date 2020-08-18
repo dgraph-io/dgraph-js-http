@@ -91,11 +91,10 @@ export class DgraphClientStub {
     }
 
     public query(req: Request): Promise<Response> {
-        /* tslint:disable-next-line */
-        const headers = Object.assign(
-            {},
-            this.options.headers !== undefined ? this.options.headers : {},
-        );
+        const headers =
+            this.options.headers !== undefined
+                ? { ...this.options.headers }
+                : {};
         if (req.vars !== undefined) {
             if (this.legacyApi) {
                 headers["X-Dgraph-Vars"] = JSON.stringify(req.vars);
@@ -227,14 +226,11 @@ export class DgraphClientStub {
         } else {
             return Promise.reject("Mutation has no data");
         }
-        /* tslint:disable-next-line */
-        const headers = Object.assign(
-            {},
-            this.options.headers !== undefined ? this.options.headers : {},
-            {
-                "Content-Type": `application/${usingJSON ? "json" : "rdf"}`,
-            },
-        );
+
+        const headers = {
+            ...(this.options.headers !== undefined ? this.options.headers : {}),
+            "Content-Type": `application/${usingJSON ? "json" : "rdf"}`,
+        };
 
         if (usingJSON && this.legacyApi) {
             headers["X-Dgraph-MutationType"] = "json";

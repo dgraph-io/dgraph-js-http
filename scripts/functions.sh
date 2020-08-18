@@ -14,11 +14,8 @@ function quit {
 
     if pgrep -x dgraph > /dev/null
     then
-        while pgrep dgraph;
-        do
-            echo "Sleeping for 5 secs so that Dgraph can shutdown."
-            sleep 5
-        done
+      echo "Sleeping for 5 secs so that Dgraph can shutdown."
+      sleep 5
     fi
 
     echo "Clean shutdown done."
@@ -27,7 +24,8 @@ function quit {
 
 function start {
     echo -e "Starting Dgraph alpha."
-    dgraph alpha --acl_secret_file ./scripts/hmac-secret -p data/p -w data/w --lru_mb 4096 --zero localhost:5080 > data/alpha.log 2>&1 &
+    head -c 1024 /dev/random > data/acl-secret.txt
+    dgraph alpha -p data/p -w data/w --lru_mb 4096 --zero localhost:5080 --acl_secret_file data/acl-secret.txt > data/server.log 2>&1 &
     # Wait for membership sync to happen.
     sleep $sleepTime
     return 0
