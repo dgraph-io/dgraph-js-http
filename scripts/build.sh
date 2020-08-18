@@ -9,7 +9,7 @@ init
 startZero
 start
 
-sleep 10 #Dgraph need some time to create Groot user
+sleep 10 # Dgraph need some time to create Groot user
 
 npm run build
 npm test
