@@ -13,11 +13,8 @@ function quit {
 
     if pgrep -x dgraph > /dev/null
     then
-        while pgrep dgraph;
-        do
-            echo "Sleeping for 5 secs so that Dgraph can shutdown."
-            sleep 5
-        done
+      echo "Sleeping for 5 secs so that Dgraph can shutdown."
+      sleep 5
     fi
 
     echo "Clean shutdown done."
