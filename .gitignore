@@ -37,6 +37,10 @@ coverage/
 Thumbs.db
 
 # Dgraph
-/zw/**
+
+data/**
+
+# For locally usage
+/zw/** 
 /w/**
 /p/**
