@@ -24,6 +24,7 @@ and understand how to run and work with Dgraph.
 -   [Using a client](#using-a-client)
     -   [Create a client](#create-a-client)
     -   [Login into Dgraph](#login-into-dgraph)
+    -   [Configure access tokens](#configure-access-tokens)
     -   [Alter the database](#alter-the-database)
     -   [Create a transaction](#create-a-transaction)
     -   [Run a mutation](#run-a-mutation)
