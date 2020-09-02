@@ -9,6 +9,8 @@ export declare class DgraphClient {
     setQueryTimeout(timeout: number): DgraphClient;
     getQueryTimeout(): number;
     alter(op: Operation): Promise<Payload>;
+    setAlphaAuthToken(authToken: string): void;
+    setSlashApiKey(apiKey: string): void;
     login(userid: string, password: string): Promise<boolean>;
     logout(): void;
     newTxn(options?: TxnOptions): Txn;

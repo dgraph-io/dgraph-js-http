@@ -20,6 +20,10 @@ import {
 // milliseconds before doing automatic token refresh
 const AUTO_REFRESH_PREFETCH_TIME = 5000;
 
+const ACL_TOKEN_HEADER = "X-Dgraph-AccessToken";
+const ALPHA_AUTH_TOKEN_HEADER = "X-Dgraph-AuthToken";
+const SLASH_API_KEY_HEADER = "X-Auth-Token";
+
 /**
  * Stub is a stub/client connecting to a single dgraph server instance.
  */
@@ -367,6 +371,14 @@ export class DgraphClientStub {
         this.maybeStartRefreshTimer(this.accessToken);
     }
 
+    public setAlphaAuthToken(authToken: string) {
+        this.options.headers[ALPHA_AUTH_TOKEN_HEADER] = authToken;
+    }
+
+    public setSlashApiKey(apiKey: string) {
+        this.options.headers[SLASH_API_KEY_HEADER] = apiKey;
+    }
+
     private cancelRefreshTimer() {
         if (this.autoRefreshTimer !== undefined) {
             // tslint:disable-next-line
@@ -404,7 +416,7 @@ export class DgraphClientStub {
         const url = this.getURL(path);
         if (this.accessToken !== undefined && path !== "login") {
             config.headers = config.headers !== undefined ? config.headers : {};
-            config.headers["X-Dgraph-AccessToken"] = this.accessToken;
+            config.headers[ACL_TOKEN_HEADER] = this.accessToken;
         }
 
         // tslint:disable-next-line no-unsafe-any

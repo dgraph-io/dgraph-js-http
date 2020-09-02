@@ -12,28 +12,28 @@ This client follows the [Dgraph Javascript gRPC client][grpcclient] closely.
 Before using this client, we highly recommend that you go through [docs.dgraph.io],
 and understand how to run and work with Dgraph.
 
-[docs.dgraph.io]:https://docs.dgraph.io
+[docs.dgraph.io]: https://docs.dgraph.io
 
 **Use [Discuss Issues](https://discuss.dgraph.io/c/issues/35) for reporting issues about this repository.**
 
 ## Table of contents
 
-  - [Install](#install)
-  - [Supported Versions](#supported-versions)
-  - [Quickstart](#quickstart)
-  - [Using a client](#using-a-client)
-    - [Create a client](#create-a-client)
-    - [Login into Dgraph](#login-into-dgraph)
-    - [Alter the database](#alter-the-database)
-    - [Create a transaction](#create-a-transaction)
-    - [Run a mutation](#run-a-mutation)
-    - [Run a query](#run-a-query)
-    - [Commit a transaction](#commit-a-transaction)
-    - [Check request latency](#check-request-latency)
-    - [Debug mode](#debug-mode)
-  - [Development](#development)
-    - [Building the source](#building-the-source)
-    - [Running tests](#running-tests)
+-   [Install](#install)
+-   [Supported Versions](#supported-versions)
+-   [Quickstart](#quickstart)
+-   [Using a client](#using-a-client)
+    -   [Create a client](#create-a-client)
+    -   [Login into Dgraph](#login-into-dgraph)
+    -   [Alter the database](#alter-the-database)
+    -   [Create a transaction](#create-a-transaction)
+    -   [Run a mutation](#run-a-mutation)
+    -   [Run a query](#run-a-query)
+    -   [Commit a transaction](#commit-a-transaction)
+    -   [Check request latency](#check-request-latency)
+    -   [Debug mode](#debug-mode)
+-   [Development](#development)
+    -   [Building the source](#building-the-source)
+    -   [Running tests](#running-tests)
 
 ## Install
 
@@ -60,9 +60,9 @@ Depending on the version of Dgraph that you are connecting to, you will have to
 use a different version of this client.
 
 | Dgraph version | dgraph-js-http version |
-|:--------------------:|:------------------------------:|
-|      >= 20.03.0      |           >= *20.3.0*          |
-|        >= 1.1       |            >= *1.1.0*           |
+| :------------: | :--------------------: |
+|   >= 20.03.0   |      >= _20.3.0_       |
+|     >= 1.1     |       >= _1.1.0_       |
 
 ## Quickstart
 
@@ -86,10 +86,10 @@ The following code snippet shows just one connection.
 const dgraph = require("dgraph-js-http");
 
 const clientStub = new dgraph.DgraphClientStub(
-  // addr: optional, default: "http://localhost:8080"
-  "http://localhost:8080",
-  // legacyApi: optional, default: false. Set to true when connecting to Dgraph v1.0.x
-  false,
+    // addr: optional, default: "http://localhost:8080"
+    "http://localhost:8080",
+    // legacyApi: optional, default: false. Set to true when connecting to Dgraph v1.0.x
+    false,
 );
 const dgraphClient = new dgraph.DgraphClient(clientStub);
 ```
@@ -118,30 +118,50 @@ you need to `login` again on a periodic basis:
 await clientStub.login();
 ```
 
+### Configure access tokens
+
+Some Dgraph configurations require extra access tokens.
+
+1. Alpha servers can be configured with [Secure Alter Operations](https://dgraph.io/docs/deploy/dgraph-administration/#securing-alter-operations).
+   In this case the token needs to be set on the client instance:
+
+```js
+dgraphClient.setAlphaAuthToken("My secret token value");
+```
+
+2. [Slash GraphQL](https://dgraph.io/slash-graphql) requires API key for HTTP access:
+
+```js
+dgraphClient.setSlashApiKey("Copy the Api Key from Slash GraphQL admin page");
+```
+
 ### Create https connection
 
 If your cluster is using tls/mtls you can pass a node `https.Agent` configured with you
 certificates as follows:
 
 ```js
-const https = require('https');
-const fs = require('fs');
+const https = require("https");
+const fs = require("fs");
 // read your certificates
-const cert = fs.readFileSync('./certs/client.crt', 'utf8');
-const ca = fs.readFileSync('./certs/ca.crt', 'utf8');
-const key = fs.readFileSync('./certs/client.key', 'utf8');
+const cert = fs.readFileSync("./certs/client.crt", "utf8");
+const ca = fs.readFileSync("./certs/ca.crt", "utf8");
+const key = fs.readFileSync("./certs/client.key", "utf8");
 
 // create your https.Agent
 const agent = https.Agent({
     cert,
     ca,
     key,
-})
+});
 
-const clientStub = new dgraph.DgraphClientStub('https://localhost:8080', false, {agent});
+const clientStub = new dgraph.DgraphClientStub(
+    "https://localhost:8080",
+    false,
+    { agent },
+);
 const dgraphClient = new dgraph.DgraphClient(clientStub);
 ```
-
 
 ### Alter the database
 
@@ -180,15 +200,15 @@ and you can call `Txn#discard()` multiple times with no additional side-effects.
 ```js
 const txn = dgraphClient.newTxn();
 try {
-  // Do something here
-  // ...
+    // Do something here
+    // ...
 } finally {
-  await txn.discard();
-  // ...
+    await txn.discard();
+    // ...
 }
 ```
 
-You can make queries read-only and best effort by passing ```options``` to ```DgraphClient#newTxn```. For example:
+You can make queries read-only and best effort by passing `options` to `DgraphClient#newTxn`. For example:
 
 ```js
 const options = { readOnly: true, bestEffort: true };
@@ -196,7 +216,6 @@ const res = await dgraphClient.newTxn(options).query(query);
 ```
 
 Read-only transactions are useful to increase read speed because they can circumvent the usual consensus protocol. Best effort queries can also increase read speed in read bound system. Please note that best effort requires readonly.
-
 
 ### Run a mutation
 
@@ -232,7 +251,6 @@ mutation must be immediately committed.
 await txn.mutate({ setJson: p, commitNow: true });
 ```
 
-
 ### Run a query
 
 You can run a query by calling `Txn#query(string)`. You will need to pass in a
@@ -243,7 +261,7 @@ the variables object as the second argument.
 The response would contain the `data` field, `Response#data`, which returns the response
 JSON.
 
-Let’s run the following query with a variable $a:
+Let’s run the following query with a variable \$a:
 
 ```console
 query all($a: string) {
@@ -270,7 +288,7 @@ const ppl = res.data;
 
 // Print results.
 console.log(`Number of people named "Alice": ${ppl.all.length}`);
-ppl.all.forEach((person) => console.log(person.name));
+ppl.all.forEach(person => console.log(person.name));
 ```
 
 This should print:
@@ -279,7 +297,6 @@ This should print:
 Number of people named "Alice": 1
 Alice
 ```
-
 
 ### Commit a transaction
 
@@ -294,21 +311,21 @@ transactions when they fail.
 ```js
 const txn = dgraphClient.newTxn();
 try {
-  // ...
-  // Perform any number of queries and mutations
-  // ...
-  // and finally...
-  await txn.commit();
+    // ...
+    // Perform any number of queries and mutations
+    // ...
+    // and finally...
+    await txn.commit();
 } catch (e) {
-  if (e === dgraph.ERR_ABORTED) {
-    // Retry or handle exception.
-  } else {
-    throw e;
-  }
+    if (e === dgraph.ERR_ABORTED) {
+        // Retry or handle exception.
+    } else {
+        throw e;
+    }
 } finally {
-  // Clean up. Calling this after txn.commit() is a no-op
-  // and hence safe.
-  await txn.discard();
+    // Clean up. Calling this after txn.commit() is a no-op
+    // and hence safe.
+    await txn.discard();
 }
 ```
 

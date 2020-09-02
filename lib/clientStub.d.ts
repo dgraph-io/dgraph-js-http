@@ -28,6 +28,8 @@ export declare class DgraphClientStub {
     getHealth(all?: boolean): Promise<Response>;
     getState(): Promise<Response>;
     setAutoRefresh(val: boolean): void;
+    setAlphaAuthToken(authToken: string): void;
+    setSlashApiKey(apiKey: string): void;
     private cancelRefreshTimer;
     private maybeStartRefreshTimer;
     private callAPI;

@@ -29,23 +29,21 @@ export class DgraphClient {
     /**
      * Set timeout applied to all queries made via this client.
      */
-     public setQueryTimeout(timeout: number): DgraphClient {
-       this.queryTimeout = timeout;
-       return this;
-     }
+    public setQueryTimeout(timeout: number): DgraphClient {
+        this.queryTimeout = timeout;
+        return this;
+    }
 
-     public getQueryTimeout(): number {
-       return this.queryTimeout;
-     }
+    public getQueryTimeout(): number {
+        return this.queryTimeout;
+    }
 
     /**
      * By setting various fields of api.Operation, alter can be used to do the
      * following:
      *
      * 1. Modify the schema.
-     *
      * 2. Drop a predicate.
-     *
      * 3. Drop the database.
      */
     public async alter(op: Operation): Promise<Payload> {
@@ -55,22 +53,32 @@ export class DgraphClient {
         return c.alter(op);
     }
 
+    public setAlphaAuthToken(authToken: string) {
+        this.clients.forEach((c: DgraphClientStub) =>
+            c.setAlphaAuthToken(authToken),
+        );
+    }
+
+    public setSlashApiKey(apiKey: string) {
+        this.clients.forEach((c: DgraphClientStub) => c.setSlashApiKey(apiKey));
+    }
+
     /**
      * login obtains access tokens from Dgraph Server
      */
     public async login(userid: string, password: string): Promise<boolean> {
-      this.debug(`Login request:\nuserid: ${userid}`);
+        this.debug(`Login request:\nuserid: ${userid}`);
 
-      const c = this.anyClient();
-      return c.login(userid, password); // tslint:disable-line no-unsafe-any
+        const c = this.anyClient();
+        return c.login(userid, password); // tslint:disable-line no-unsafe-any
     }
 
     /**
      * logout - forget all access tokens.
      */
     public logout(): void {
-      this.debug("Logout");
-      this.clients.forEach((c: DgraphClientStub) => c.logout());
+        this.debug("Logout");
+        this.clients.forEach((c: DgraphClientStub) => c.logout());
     }
 
     /**
@@ -89,21 +97,21 @@ export class DgraphClient {
     }
 
     public fetchUiKeywords(): Promise<UiKeywords> {
-      return this.anyClient().fetchUiKeywords();
+        return this.anyClient().fetchUiKeywords();
     }
 
     /**
      * getHealth gets client or cluster health
      */
     public async getHealth(all: boolean = true): Promise<Response> {
-      return this.anyClient().getHealth(all);
+        return this.anyClient().getHealth(all);
     }
 
     /**
      * getState gets cluster state
      */
     public async getState(): Promise<Response> {
-      return this.anyClient().getState();
+        return this.anyClient().getState();
     }
 
     /**
