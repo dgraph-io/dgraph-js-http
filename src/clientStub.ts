@@ -372,6 +372,7 @@ export class DgraphClientStub {
     }
 
     public setAlphaAuthToken(authToken: string) {
+        this.options.headers === undefined && (this.options.headers = {});
         this.options.headers[ALPHA_AUTH_TOKEN_HEADER] = authToken;
     }
 
