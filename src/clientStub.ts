@@ -372,12 +372,18 @@ export class DgraphClientStub {
     }
 
     public setAlphaAuthToken(authToken: string) {
+        if(this.options.headers === undefined) this.options.headers={};
         this.options.headers[ALPHA_AUTH_TOKEN_HEADER] = authToken;
     }
 
     public setSlashApiKey(apiKey: string) {
+        if(this.options.headers === undefined) this.options.headers={};
         this.options.headers[SLASH_API_KEY_HEADER] = apiKey;
     }
+    public setCustomHeader(header: string, value: string) {
+        if(this.options.headers === undefined) this.options.headers={};
+        this.options.headers[header] = value;
+    };
 
     private cancelRefreshTimer() {
         if (this.autoRefreshTimer !== undefined) {
