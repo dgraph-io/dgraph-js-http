@@ -11,6 +11,7 @@ export declare class DgraphClient {
     alter(op: Operation): Promise<Payload>;
     setAlphaAuthToken(authToken: string): void;
     setSlashApiKey(apiKey: string): void;
+    setCustomHeader(header: string, value: string): void;
     login(userid: string, password: string): Promise<boolean>;
     logout(): void;
     newTxn(options?: TxnOptions): Txn;
