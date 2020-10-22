@@ -90,6 +90,7 @@ export interface ErrorNonJson extends Error {
 
 export interface Options extends https.RequestOptions {
     agent?: https.Agent;
+    header?: {};
 }
 
 export interface Config extends Options {

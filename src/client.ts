@@ -63,6 +63,10 @@ export class DgraphClient {
         this.clients.forEach((c: DgraphClientStub) => c.setSlashApiKey(apiKey));
     }
 
+    public setCustomHeader (header: string, value: string) {
+        this.clients.forEach((c: DgraphClientStub) => c.setCustomHeader(header, value));
+    };
+
     /**
      * login obtains access tokens from Dgraph Server
      */

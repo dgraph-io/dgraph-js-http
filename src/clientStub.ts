@@ -55,7 +55,7 @@ export class DgraphClientStub {
         }
 
         this.options = options;
-
+        this.options.header = {};
         this.legacyApi = !!stubConfig.legacyApi;
         this.jsonParser =
             stubConfig.jsonParser !== undefined
@@ -372,12 +372,14 @@ export class DgraphClientStub {
     }
 
     public setAlphaAuthToken(authToken: string) {
-        this.options.headers === undefined && (this.options.headers = {});
         this.options.headers[ALPHA_AUTH_TOKEN_HEADER] = authToken;
     }
 
     public setSlashApiKey(apiKey: string) {
         this.options.headers[SLASH_API_KEY_HEADER] = apiKey;
+    }
+    public setCustomHeader(header: string, value: string) {
+        this.options.headers[header] = value;
     }
 
     private cancelRefreshTimer() {
