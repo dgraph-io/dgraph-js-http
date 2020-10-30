@@ -1,7 +1,7 @@
 import * as fetch from "isomorphic-fetch";
 import * as jwt from "jsonwebtoken";
 
-import { APIError, APIResultError } from "./errors";
+import { APIError, APIResultError, HTTPError } from "./errors";
 import {
     Assigned,
     Config,
@@ -426,7 +426,7 @@ export class DgraphClientStub {
         // tslint:disable-next-line no-unsafe-any
         if (response.status >= 300 || response.status < 200) {
             // tslint:disable-next-line no-unsafe-any
-            throw new Error(`Invalid status code = ${response.status}`);
+            throw new HTTPError(response);
         }
 
         let json;

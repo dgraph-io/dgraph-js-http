@@ -15,3 +15,7 @@ export declare class APIError extends CustomError {
     readonly errors: APIResultError[];
     constructor(url: string, errors: APIResultError[]);
 }
+export declare class HTTPError extends CustomError {
+    readonly errorResponse: Response;
+    constructor(response: Response);
+}

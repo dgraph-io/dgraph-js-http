@@ -1,9 +1,7 @@
 {
   "compilerOptions": {
-    "target": "es5",
-    "lib": [
-      "es2015"
-    ],
+    "target": "es6",
+    "lib": ["dom", "es6"],
     "moduleResolution": "node",
     "allowSyntheticDefaultImports": true,
     "alwaysStrict": true,
@@ -19,8 +17,5 @@
     "declaration": true,
     "baseUrl": "."
   },
-  "include": [
-    "src/**/*",
-    "tests/**/*"
-  ]
+  "include": ["src/**/*", "tests/**/*"]
 }
