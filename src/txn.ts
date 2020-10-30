@@ -200,8 +200,7 @@ export class Txn {
     }
 
     private mergeArrays(a: string[], b: string[]) {
-        const res = a.slice();
-        res.push(...b);
+        const res = a.slice().concat(b);
         res.sort();
         // Filter unique in a sorted array.
         return res.filter(
