@@ -377,6 +377,7 @@ export class DgraphClientStub {
     }
 
     public setSlashApiKey(apiKey: string) {
+        this.options.headers === undefined && (this.options.headers = {});
         this.options.headers[SLASH_API_KEY_HEADER] = apiKey;
     }
 
