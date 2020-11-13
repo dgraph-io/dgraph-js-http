@@ -38,6 +38,7 @@ export async function setup(
 
 export function wait(time: number): Promise<void> {
     return new Promise(
+        // @ts-ignore
         (resolve: () => void): void => setTimeout(resolve, time),
     );
 }
