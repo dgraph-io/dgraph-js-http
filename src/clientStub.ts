@@ -420,8 +420,8 @@ export class DgraphClientStub {
 
     private async callAPI<T>(path: string, config: Config): Promise<T> {
         const url = this.getURL(path);
+        config.headers = config.headers !== undefined ? config.headers : {};
         if (this.accessToken !== undefined && path !== "login") {
-            config.headers = config.headers !== undefined ? config.headers : {};
             config.headers[ACL_TOKEN_HEADER] = this.accessToken;
         }
 
