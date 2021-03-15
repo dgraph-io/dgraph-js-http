@@ -296,11 +296,20 @@ export class DgraphClientStub {
         password?: string,
         refreshToken?: string,
     ): Promise<boolean> {
+       return this.loginIntoNamespace(userid, password, 0, refreshToken)
+    }
+
+    public async loginIntoNamespace(
+        userid?: string,
+        password?: string,
+        namespace?: number,
+        refreshToken?: string,
+    ): Promise<boolean> {
         if (this.legacyApi) {
             throw new Error("Pre v1.1 clients do not support Login methods");
         }
 
-        const body: { [k: string]: string } = {};
+        const body: { [k: string ]: string | number} = {};
         if (
             userid === undefined &&
             refreshToken === undefined &&
@@ -316,6 +325,7 @@ export class DgraphClientStub {
         } else {
             body.userid = userid;
             body.password = password;
+            body.namespace = namespace;
         }
 
         const res: LoginResponse = await this.callAPI("login", {
