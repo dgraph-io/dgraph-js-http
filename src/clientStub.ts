@@ -296,7 +296,7 @@ export class DgraphClientStub {
         password?: string,
         refreshToken?: string,
     ): Promise<boolean> {
-       return this.loginIntoNamespace(userid, password, 0, refreshToken)
+        return this.loginIntoNamespace(userid, password, 0, refreshToken);
     }
 
     public async loginIntoNamespace(
