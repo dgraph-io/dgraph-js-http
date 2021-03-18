@@ -19,6 +19,7 @@ export declare class DgraphClientStub {
     commit(ctx: TxnContext): Promise<TxnContext>;
     abort(ctx: TxnContext): Promise<TxnContext>;
     login(userid?: string, password?: string, refreshToken?: string): Promise<boolean>;
+    loginIntoNamespace(userid?: string, password?: string, namespace?: number, refreshToken?: string): Promise<boolean>;
     logout(): void;
     getAuthTokens(): {
         accessToken?: string;
