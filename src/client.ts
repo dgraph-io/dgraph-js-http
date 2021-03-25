@@ -74,6 +74,20 @@ export class DgraphClient {
     }
 
     /**
+     * loginIntoNamespace obtains access tokens from Dgraph Server for the particular userid & namespace
+     */
+    public async loginIntoNamespace(
+        userid: string,
+        password: string,
+        namespace?: number,
+    ): Promise<boolean> {
+        this.debug(`Login request:\nuserid: ${userid}`);
+
+        const c = this.anyClient();
+        return c.loginIntoNamespace(userid, password, namespace); // tslint:disable-line no-unsafe-any
+    }
+
+    /**
      * logout - forget all access tokens.
      */
     public logout(): void {

@@ -296,7 +296,38 @@ export class DgraphClientStub {
         password?: string,
         refreshToken?: string,
     ): Promise<boolean> {
-        return this.loginIntoNamespace(userid, password, 0, refreshToken);
+         if (this.legacyApi) {
+             throw new Error("Pre v1.1 clients do not support Login methods");
+         }
+
+         const body: { [k: string]: string } = {};
+         if (
+             userid === undefined &&
+             refreshToken === undefined &&
+             this.refreshToken === undefined
+         ) {
+             throw new Error(
+                 "Cannot find login details: neither userid/password nor refresh token are specified",
+             );
+         }
+         if (userid === undefined) {
+             body.refresh_token =
+                 refreshToken !== undefined ? refreshToken : this.refreshToken;
+         } else {
+             body.userid = userid;
+             body.password = password;
+         }
+
+         const res: LoginResponse = await this.callAPI("login", {
+             ...this.options,
+             method: "POST",
+             body: JSON.stringify(body),
+         });
+         this.accessToken = res.data.accessJWT;
+         this.refreshToken = res.data.refreshJWT;
+
+         this.maybeStartRefreshTimer(this.accessToken);
+         return true;
     }
 
     public async loginIntoNamespace(
@@ -309,7 +340,7 @@ export class DgraphClientStub {
             throw new Error("Pre v1.1 clients do not support Login methods");
         }
 
-        const body: { [k: string ]: string | number} = {};
+        const body: { [k: string]: string | number } = {};
         if (
             userid === undefined &&
             refreshToken === undefined &&
