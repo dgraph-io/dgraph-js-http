@@ -12,6 +12,7 @@ export declare class DgraphClient {
     setAlphaAuthToken(authToken: string): void;
     setSlashApiKey(apiKey: string): void;
     login(userid: string, password: string): Promise<boolean>;
+    loginIntoNamespace(userid: string, password: string, namespace?: number): Promise<boolean>;
     logout(): void;
     newTxn(options?: TxnOptions): Txn;
     setDebugMode(mode?: boolean): void;
