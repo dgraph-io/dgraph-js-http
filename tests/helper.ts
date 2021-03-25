@@ -2,7 +2,6 @@ import * as dgraph from "../src";
 
 export const SERVER_ADDR = "http://localhost:8080"; // tslint:disable-line no-http-string
 export const USE_LEGACY_API = false;
-export const DEFAULT_NAMESPACE = 0;
 
 export function createClient(): dgraph.DgraphClient {
     return new dgraph.DgraphClient(
@@ -28,9 +27,9 @@ export async function setup(
     const c = createClient();
     if (!USE_LEGACY_API) {
         if (userid === undefined) {
-            await c.loginIntoNamespace("groot", "password", DEFAULT_NAMESPACE);
+            await c.login("groot", "password");
         } else {
-            await c.loginIntoNamespace(userid, password, DEFAULT_NAMESPACE);
+            await c.login(userid, password);
         }
     }
     await dropAll(c);

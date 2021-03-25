@@ -1,7 +1,6 @@
 import { setSchema, setup, USE_LEGACY_API } from "../helper";
 
 const data = ["200", "300", "400"];
-const DEFAULT_NAMESPACE = 0;
 
 describe("ACL Login", () => {
     it("should login and use JWT tokens", async () => {
@@ -12,21 +11,17 @@ describe("ACL Login", () => {
 
         const client = await setup("groot", "password");
 
-        await client.loginIntoNamespace("groot", "password", DEFAULT_NAMESPACE);
+        await client.login("groot", "password");
 
         try {
-            await client.loginIntoNamespace(
-                "groot",
-                "12345678",
-                DEFAULT_NAMESPACE,
-            );
+            await client.login("groot", "12345678");
             throw new Error("Server should not accept wrong password");
         } catch (e) {
           // Expected to throw an error for wrong password.
         }
 
         try {
-            await client.loginIntoNamespace("Groot", "password", DEFAULT_NAMESPACE);
+            await client.login("Groot", "password");
             throw new Error("Server should not accept wrong userid");
         } catch (e) {
           // Expected to throw an error for wrong password.
