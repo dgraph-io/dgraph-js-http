@@ -300,7 +300,7 @@ export class DgraphClientStub {
              throw new Error("Pre v1.1 clients do not support Login methods");
          }
 
-         const body: { [k: string]: string | number } = {};
+         const body: { [k: string]: string } = {};
          if (
              userid === undefined &&
              refreshToken === undefined &&
@@ -340,7 +340,7 @@ export class DgraphClientStub {
             throw new Error("Pre v1.1 clients do not support Login methods");
         }
 
-        const body: { [k: string ]: string | number} = {};
+        const body: { [k: string]: string | number } = {};
         if (
             userid === undefined &&
             refreshToken === undefined &&
