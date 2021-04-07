@@ -18,6 +18,7 @@ export interface Request {
     debug?: boolean;
     readOnly?: boolean;
     bestEffort?: boolean;
+    hash?: string;
 }
 export interface Response {
     data: {};
@@ -44,6 +45,7 @@ export interface Mutation {
     commitNow?: boolean;
     mutation?: string;
     isJsonString?: boolean;
+    hash?: string;
 }
 export interface Assigned {
     data: AssignedData;
@@ -65,6 +67,7 @@ export interface TxnContext {
     preds?: string[];
     readOnly: boolean;
     bestEffort: boolean;
+    hash?: string;
 }
 export interface Latency {
     parsing_ns?: number;

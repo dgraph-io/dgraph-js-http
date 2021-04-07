@@ -155,6 +155,12 @@ export class DgraphClientStub {
                     value: "true",
                 });
             }
+            if (req?.hash.length > 0) {
+                params.push({
+                    key: "hash",
+                    value: `${req.hash}`,
+                });
+            }
             if (params.length > 0) {
                 url += "?";
                 url += params
@@ -248,6 +254,12 @@ export class DgraphClientStub {
             nextDelim = "&";
         }
 
+        if (mu?.hash.length > 0) {
+            if (!this.legacyApi) {
+                url += `${nextDelim}hash=${mu.hash}`;
+            }
+        }
+
         if (mu.commitNow) {
             if (!this.legacyApi) {
                 url += `${nextDelim}commitNow=true`;
@@ -272,9 +284,15 @@ export class DgraphClientStub {
             body = JSON.stringify(ctx.keys);
         }
 
-        const url = !this.legacyApi
+        let url = !this.legacyApi
             ? `commit?startTs=${ctx.start_ts}`
             : `commit/${ctx.start_ts}`;
+
+        if (ctx?.hash.length > 0) {
+            if (!this.legacyApi) {
+                url += `&hash=${ctx.hash}`;
+            }
+        }
 
         return this.callAPI(url, {
             ...this.options,
@@ -284,11 +302,17 @@ export class DgraphClientStub {
     }
 
     public abort(ctx: TxnContext): Promise<TxnContext> {
-        const url = !this.legacyApi
+       let  url = !this.legacyApi
             ? `commit?startTs=${ctx.start_ts}&abort=true`
             : `abort/${ctx.start_ts}`;
 
-        return this.callAPI(url, { ...this.options, method: "POST" });
+       if (ctx?.hash.length > 0) {
+           if (!this.legacyApi) {
+                url += `&hash=${ctx.hash}`;
+           }
+       }
+
+       return this.callAPI(url, { ...this.options, method: "POST" });
     }
 
     public async login(
@@ -419,7 +443,12 @@ export class DgraphClientStub {
         this.options.headers[ALPHA_AUTH_TOKEN_HEADER] = authToken;
     }
 
+    /**
+     * @deprecated since v21.3 and will be removed in v21.07 release.
+     */
+
     public setSlashApiKey(apiKey: string) {
+        console.warn("This method is deprecated and will be removed in v21.07 release.");
         if (this.options.headers === undefined) {
             this.options.headers = {};
         }

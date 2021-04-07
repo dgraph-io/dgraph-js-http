@@ -59,7 +59,12 @@ export class DgraphClient {
         );
     }
 
+    /**
+     * @deprecated since v21.3 and will be removed in v21.07 release.
+     */
+
     public setSlashApiKey(apiKey: string) {
+        console.warn("This method is deprecated and will be removed in v21.07 release.");
         this.clients.forEach((c: DgraphClientStub) => c.setSlashApiKey(apiKey));
     }
 

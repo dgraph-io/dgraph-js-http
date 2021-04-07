@@ -18,6 +18,7 @@ export interface Request {
     debug?: boolean;
     readOnly?: boolean;
     bestEffort?: boolean;
+    hash?: string;
 }
 
 export interface Response {
@@ -48,6 +49,7 @@ export interface Mutation {
     mutation?: string;
     // Set to true if `mutation` field (above) contains a JSON mutation.
     isJsonString?: boolean;
+    hash?: string;
 }
 
 export interface Assigned {
@@ -71,6 +73,7 @@ export interface TxnContext {
     preds?: string[];
     readOnly: boolean;
     bestEffort: boolean;
+    hash?: string;
 }
 
 export interface Latency {
