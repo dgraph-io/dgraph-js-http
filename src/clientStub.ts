@@ -155,7 +155,7 @@ export class DgraphClientStub {
                     value: "true",
                 });
             }
-            if (req?.hash.length > 0) {
+            if (req?.hash?.length > 0) {
                 params.push({
                     key: "hash",
                     value: `${req.hash}`,
@@ -254,7 +254,7 @@ export class DgraphClientStub {
             nextDelim = "&";
         }
 
-        if (mu?.hash.length > 0) {
+        if (mu?.hash?.length > 0) {
             if (!this.legacyApi) {
                 url += `${nextDelim}hash=${mu.hash}`;
             }
@@ -288,7 +288,7 @@ export class DgraphClientStub {
             ? `commit?startTs=${ctx.start_ts}`
             : `commit/${ctx.start_ts}`;
 
-        if (ctx?.hash.length > 0) {
+        if (ctx?.hash?.length > 0) {
             if (!this.legacyApi) {
                 url += `&hash=${ctx.hash}`;
             }
@@ -306,7 +306,7 @@ export class DgraphClientStub {
             ? `commit?startTs=${ctx.start_ts}&abort=true`
             : `abort/${ctx.start_ts}`;
 
-       if (ctx?.hash.length > 0) {
+       if (ctx?.hash?.length > 0) {
            if (!this.legacyApi) {
                 url += `&hash=${ctx.hash}`;
            }
