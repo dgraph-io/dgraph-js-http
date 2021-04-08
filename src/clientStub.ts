@@ -444,11 +444,11 @@ export class DgraphClientStub {
     }
 
     /**
-     * @deprecated since v21.3 and will be removed in v21.07 release.
+     * @deprecated since v21.3 and will be removed in v21.07 release. For more details, see:
+     *     https://discuss.dgraph.io/t/regarding-slash-cloud-dgraph-endpoints-in-the-clients/13492
      */
 
     public setSlashApiKey(apiKey: string) {
-        console.warn("This method is deprecated and will be removed in v21.07 release.");
         if (this.options.headers === undefined) {
             this.options.headers = {};
         }
