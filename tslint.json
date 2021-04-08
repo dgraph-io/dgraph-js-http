@@ -9,6 +9,7 @@
     "no-relative-imports": false,
     "import-name": false,
     "export-name": false,
+    "cyclomatic-complexity": false,
     "promise-function-async": false,
     "no-void-expression": false,
     "newline-before-return": false,

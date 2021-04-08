@@ -41,6 +41,7 @@ export class Txn {
           preds: [],
           readOnly: options.readOnly,
           bestEffort: options.bestEffort,
+          hash: "",
         };
     }
 
@@ -74,6 +75,7 @@ export class Txn {
             debug: options.debug,
             readOnly: this.ctx.readOnly,
             bestEffort: this.ctx.bestEffort,
+            hash: this.ctx.hash,
         };
         if (vars !== undefined) {
             const varsObj: { [k: string]: string } = {};
@@ -117,6 +119,7 @@ export class Txn {
 
         this.mutated = true;
         mu.startTs = this.ctx.start_ts;
+        mu.hash = this.ctx.hash;
         this.dc.debug(`Mutate request:\n${stringifyMessage(mu)}`);
 
         const c = this.dc.anyClient();
@@ -212,6 +215,8 @@ export class Txn {
             // This condition will be true only if the server doesn't return a txn context after a query or mutation.
             return;
         }
+
+        this.ctx.hash = src.hash ?? "" ;
 
         if (this.ctx.start_ts === 0) {
             this.ctx.start_ts = src.start_ts;
