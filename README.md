@@ -62,6 +62,7 @@ use a different version of this client.
 
 | Dgraph version | dgraph-js-http version |
 | :------------: | :--------------------: |
+|   >= 21.03.0   |      >= _21.3.0_       |
 |   >= 20.03.0   |      >= _20.3.0_       |
 |     >= 1.1     |       >= _1.1.0_       |
 
@@ -96,6 +97,24 @@ const dgraphClient = new dgraph.DgraphClient(clientStub);
 ```
 
 To facilitate debugging, [debug mode](#debug-mode) can be enabled for a client.
+
+### Create a Client for Dgraph Cloud Endpoint
+
+If you want to connect to Dgraph running on your [Dgraph Cloud](https://cloud.dgraph.io) instance, then all you need is the URL of your Dgraph Cloud endpoint and the API key. You can get a client using them as follows:
+
+```js
+const dgraph = require("dgraph-js-http");
+
+//here we pass the cloud endpoint
+const clientStub = new dgraph.DgraphClientStub(
+    "https://super-pail.us-west-2.aws.cloud.dgraph.io",
+);
+
+const dgraphClient = new dgraph.DgraphClient(clientStub);
+
+//here we pass the API key
+dgraphClient.setSlashApiKey("<api-key>");
+```
 
 ### Login into Dgraph
 
