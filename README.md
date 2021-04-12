@@ -98,6 +98,21 @@ const dgraphClient = new dgraph.DgraphClient(clientStub);
 
 To facilitate debugging, [debug mode](#debug-mode) can be enabled for a client.
 
+### Multi-tenancy
+
+In [multi-tenancy](https://dgraph.io/docs/enterprise-features/multitenancy) environments, `dgraph-js-http` provides a new method `loginIntoNamespace()`,
+which will allow the users to login to a specific namespace.
+
+In order to create a JavaScript client, and make the client login into namespace `123`:
+
+```js
+const dgraphClientStub = new dgraph.DgraphClientStub("localhost:9080");
+await dgraphClientStub.loginIntoNamespace("groot", "password", 123); // where 123 is the namespaceId 
+```
+
+In the example above, the client logs into namespace `123` using username `groot` and password `password`.
+Once logged in, the client can perform all the operations allowed to the `groot` user of namespace `123`.
+
 ### Create a Client for Dgraph Cloud Endpoint
 
 If you want to connect to Dgraph running on your [Dgraph Cloud](https://cloud.dgraph.io) instance, then all you need is the URL of your Dgraph Cloud endpoint and the API key. You can get a client using them as follows:
