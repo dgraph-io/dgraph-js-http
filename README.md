@@ -131,6 +131,8 @@ const dgraphClient = new dgraph.DgraphClient(clientStub);
 dgraphClient.setSlashApiKey("<api-key>");
 ```
 
+**Note:** the `setSlashApiKey` method is deprecated and will be removed in the next release.
+
 ### Login into Dgraph
 
 If your Dgraph server has Access Control Lists enabled (Dgraph v1.1 or above),
