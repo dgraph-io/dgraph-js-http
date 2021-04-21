@@ -62,6 +62,7 @@ use a different version of this client.
 
 | Dgraph version | dgraph-js-http version |
 | :------------: | :--------------------: |
+|   >= 21.03.0   |      >= _21.3.0_       |
 |   >= 20.03.0   |      >= _20.3.0_       |
 |     >= 1.1     |       >= _1.1.0_       |
 
@@ -96,6 +97,41 @@ const dgraphClient = new dgraph.DgraphClient(clientStub);
 ```
 
 To facilitate debugging, [debug mode](#debug-mode) can be enabled for a client.
+
+### Multi-tenancy
+
+In [multi-tenancy](https://dgraph.io/docs/enterprise-features/multitenancy) environments, `dgraph-js-http` provides a new method `loginIntoNamespace()`,
+which will allow the users to login to a specific namespace.
+
+In order to create a JavaScript client, and make the client login into namespace `123`:
+
+```js
+const dgraphClientStub = new dgraph.DgraphClientStub("localhost:9080");
+await dgraphClientStub.loginIntoNamespace("groot", "password", 123); // where 123 is the namespaceId 
+```
+
+In the example above, the client logs into namespace `123` using username `groot` and password `password`.
+Once logged in, the client can perform all the operations allowed to the `groot` user of namespace `123`.
+
+### Create a Client for Dgraph Cloud Endpoint
+
+If you want to connect to Dgraph running on your [Dgraph Cloud](https://cloud.dgraph.io) instance, then all you need is the URL of your Dgraph Cloud endpoint and the API key. You can get a client using them as follows:
+
+```js
+const dgraph = require("dgraph-js-http");
+
+//here we pass the cloud endpoint
+const clientStub = new dgraph.DgraphClientStub(
+    "https://super-pail.us-west-2.aws.cloud.dgraph.io",
+);
+
+const dgraphClient = new dgraph.DgraphClient(clientStub);
+
+//here we pass the API key
+dgraphClient.setSlashApiKey("<api-key>");
+```
+
+**Note:** the `setSlashApiKey` method is deprecated and will be removed in the next release.
 
 ### Login into Dgraph
 
