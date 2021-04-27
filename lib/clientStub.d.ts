@@ -31,6 +31,7 @@ export declare class DgraphClientStub {
     setAutoRefresh(val: boolean): void;
     setAlphaAuthToken(authToken: string): void;
     setSlashApiKey(apiKey: string): void;
+    setCloudApiKey(apiKey: string): void;
     private cancelRefreshTimer;
     private maybeStartRefreshTimer;
     private callAPI;

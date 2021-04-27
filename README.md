@@ -128,10 +128,10 @@ const clientStub = new dgraph.DgraphClientStub(
 const dgraphClient = new dgraph.DgraphClient(clientStub);
 
 //here we pass the API key
-dgraphClient.setSlashApiKey("<api-key>");
+dgraphClient.setCloudApiKey("<api-key>");
 ```
 
-**Note:** the `setSlashApiKey` method is deprecated and will be removed in the next release.
+**Note:** the `setSlashApiKey` method is deprecated and will be removed in the next release. Instead use `setCloudApiKey` method.
 
 ### Login into Dgraph
 
@@ -166,10 +166,10 @@ Some Dgraph configurations require extra access tokens.
 dgraphClient.setAlphaAuthToken("My secret token value");
 ```
 
-2. [Slash GraphQL](https://dgraph.io/slash-graphql) requires API key for HTTP access:
+2. [Dgraph Cloud](https://cloud.dgraph.io) requires API key for HTTP access:
 
 ```js
-dgraphClient.setSlashApiKey("Copy the Api Key from Slash GraphQL admin page");
+dgraphClient.setCloudApiKey("Copy the Api Key from Dgraph Cloud admin page");
 ```
 
 ### Create https connection

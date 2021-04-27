@@ -22,7 +22,7 @@ const AUTO_REFRESH_PREFETCH_TIME = 5000;
 
 const ACL_TOKEN_HEADER = "X-Dgraph-AccessToken";
 const ALPHA_AUTH_TOKEN_HEADER = "X-Dgraph-AuthToken";
-const SLASH_API_KEY_HEADER = "X-Auth-Token";
+const DGRAPHCLOUD_API_KEY_HEADER = "X-Auth-Token";
 
 /**
  * Stub is a stub/client connecting to a single dgraph server instance.
@@ -302,17 +302,17 @@ export class DgraphClientStub {
     }
 
     public abort(ctx: TxnContext): Promise<TxnContext> {
-       let  url = !this.legacyApi
+        let url = !this.legacyApi
             ? `commit?startTs=${ctx.start_ts}&abort=true`
             : `abort/${ctx.start_ts}`;
 
-       if (ctx?.hash?.length > 0) {
-           if (!this.legacyApi) {
+        if (ctx?.hash?.length > 0) {
+            if (!this.legacyApi) {
                 url += `&hash=${ctx.hash}`;
-           }
-       }
+            }
+        }
 
-       return this.callAPI(url, { ...this.options, method: "POST" });
+        return this.callAPI(url, { ...this.options, method: "POST" });
     }
 
     public async login(
@@ -320,38 +320,38 @@ export class DgraphClientStub {
         password?: string,
         refreshToken?: string,
     ): Promise<boolean> {
-         if (this.legacyApi) {
-             throw new Error("Pre v1.1 clients do not support Login methods");
-         }
+        if (this.legacyApi) {
+            throw new Error("Pre v1.1 clients do not support Login methods");
+        }
 
-         const body: { [k: string]: string } = {};
-         if (
-             userid === undefined &&
-             refreshToken === undefined &&
-             this.refreshToken === undefined
-         ) {
-             throw new Error(
-                 "Cannot find login details: neither userid/password nor refresh token are specified",
-             );
-         }
-         if (userid === undefined) {
-             body.refresh_token =
-                 refreshToken !== undefined ? refreshToken : this.refreshToken;
-         } else {
-             body.userid = userid;
-             body.password = password;
-         }
+        const body: { [k: string]: string } = {};
+        if (
+            userid === undefined &&
+            refreshToken === undefined &&
+            this.refreshToken === undefined
+        ) {
+            throw new Error(
+                "Cannot find login details: neither userid/password nor refresh token are specified",
+            );
+        }
+        if (userid === undefined) {
+            body.refresh_token =
+                refreshToken !== undefined ? refreshToken : this.refreshToken;
+        } else {
+            body.userid = userid;
+            body.password = password;
+        }
 
-         const res: LoginResponse = await this.callAPI("login", {
-             ...this.options,
-             method: "POST",
-             body: JSON.stringify(body),
-         });
-         this.accessToken = res.data.accessJWT;
-         this.refreshToken = res.data.refreshJWT;
+        const res: LoginResponse = await this.callAPI("login", {
+            ...this.options,
+            method: "POST",
+            body: JSON.stringify(body),
+        });
+        this.accessToken = res.data.accessJWT;
+        this.refreshToken = res.data.refreshJWT;
 
-         this.maybeStartRefreshTimer(this.accessToken);
-         return true;
+        this.maybeStartRefreshTimer(this.accessToken);
+        return true;
     }
 
     public async loginIntoNamespace(
@@ -444,15 +444,19 @@ export class DgraphClientStub {
     }
 
     /**
-     * @deprecated since v21.3 and will be removed in v21.07 release. For more details, see:
-     *     https://discuss.dgraph.io/t/regarding-slash-cloud-dgraph-endpoints-in-the-clients/13492
+     * @deprecated since v21.3 and will be removed in v21.07 release.
+     *     Please use {@link setCloudApiKey} instead.
      */
 
     public setSlashApiKey(apiKey: string) {
+        this.setCloudApiKey(apiKey);
+    }
+
+    public setCloudApiKey(apiKey: string) {
         if (this.options.headers === undefined) {
             this.options.headers = {};
         }
-        this.options.headers[SLASH_API_KEY_HEADER] = apiKey;
+        this.options.headers[DGRAPHCLOUD_API_KEY_HEADER] = apiKey;
     }
 
     private cancelRefreshTimer() {

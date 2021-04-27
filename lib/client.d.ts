@@ -11,6 +11,7 @@ export declare class DgraphClient {
     alter(op: Operation): Promise<Payload>;
     setAlphaAuthToken(authToken: string): void;
     setSlashApiKey(apiKey: string): void;
+    setCloudApiKey(apiKey: string): void;
     login(userid: string, password: string): Promise<boolean>;
     loginIntoNamespace(userid: string, password: string, namespace?: number): Promise<boolean>;
     logout(): void;
