@@ -1,0 +1,7 @@
+{
+  "name": "latency",
+  "dependencies": {
+    "dgraph-js-http": "^21.3.0",
+    "minimist": "^1.2.5"
+  }
+}
