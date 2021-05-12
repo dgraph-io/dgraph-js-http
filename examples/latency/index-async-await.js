@@ -110,6 +110,7 @@ async function queryData(dgraphClient) {
     }`;
     const vars = { $a: "Alice" };
 
+    console.log("Query:", query.replace(/[\t\n ]+/gm, " "), "Vars:", vars);
     console.time('Query client latency');
     const res = await dgraphClient.newTxn().queryWithVars(query, vars);
     console.timeEnd('Query client latency');
