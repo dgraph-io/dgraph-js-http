@@ -88,6 +88,7 @@ async function createData(dgraphClient) {
 }
 
 // Query for data.
+// This function also logs the client-side and server-side latency for running the query.
 async function queryData(dgraphClient) {
     // Run query.
     const query = `query all($a: string) {
