@@ -60,12 +60,16 @@ export class DgraphClient {
     }
 
     /**
-     * @deprecated since v21.3 and will be removed in v21.07 release. For more details, see:
-     *     https://discuss.dgraph.io/t/regarding-slash-cloud-dgraph-endpoints-in-the-clients/13492
+     * @deprecated since v21.3 and will be removed in v21.07 release.
+     *     Please use {@link setCloudApiKey} instead.
      */
 
     public setSlashApiKey(apiKey: string) {
-        this.clients.forEach((c: DgraphClientStub) => c.setSlashApiKey(apiKey));
+        this.setCloudApiKey(apiKey);
+    }
+
+    public setCloudApiKey(apiKey: string) {
+        this.clients.forEach((c: DgraphClientStub) => c.setCloudApiKey(apiKey));
     }
 
     /**
