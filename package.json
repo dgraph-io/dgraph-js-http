@@ -1,6 +1,6 @@
 {
   "name": "dgraph-js-http",
-  "version": "21.03.0",
+  "version": "21.03.1",
   "description": "A javascript HTTP client for Dgraph",
   "license": "Apache-2.0",
   "repository": {
