@@ -1,9 +1,6 @@
 #!/bin/bash
 
 sleepTime=5
-if [[ "$TRAVIS" == true ]]; then
-    sleepTime=30
-fi
 
 function quit {
     echo "Shutting down Dgraph alpha and zero."
@@ -24,8 +21,8 @@ function quit {
 
 function start {
     echo -e "Starting Dgraph alpha."
-    head -c 1024 /dev/random > data/acl-secret.txt
-    dgraph alpha -p data/p -w data/w --lru_mb 4096 --acl_secret_file data/acl-secret.txt > data/alpha.log 2>&1 &
+    head -c 1024 /dev/random > ./scripts/data/acl-secret.txt
+    dgraph alpha -p ./scripts/data/p -w ./scripts/data/w --bindall --my localhost:7080 --acl "access-ttl=1h; refresh-ttl=1d; secret-file=./scripts/data/acl-secret.txt"> ./scripts/data/alpha.log 2>&1 &
     # Wait for membership sync to happen.
     sleep $sleepTime
     return 0
@@ -33,13 +30,12 @@ function start {
 
 function startZero {
     echo -e "Starting Dgraph zero.\n"
-    dgraph zero -w data/wz > data/zero.log 2>&1 &
+    dgraph zero --my localhost:5080 --bindall -w ./scripts/data/wz> ./scripts/data/zero.log 2>&1 &
     # To ensure Dgraph doesn't start before Dgraph zero.
-    # It takes time for zero to start on travis mac.
     sleep $sleepTime
 }
 
 function init {
     echo -e "Initializing.\n"
-    mkdir data
+    mkdir ./scripts/data
 }
