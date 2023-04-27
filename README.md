@@ -47,7 +47,7 @@ yarn add dgraph-js-http
 or npm:
 
 ```sh
-npm install dgraph-js-http --save
+npm install dgraph-js-http@21.03.1 --save
 ```
 
 You will also need a Promise polyfill for
