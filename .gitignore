@@ -39,3 +39,6 @@ Thumbs.db
 # Dgraph
 
 data/**
+
+# npm test cruft
+t/tasks.buf
