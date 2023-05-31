@@ -1,6 +1,5 @@
 #!/bin/bash
 
-set -e
 set -x
 
 sleepTime=5
@@ -53,7 +52,13 @@ npm run build
 curl http://localhost:8080/health
 
 npm test
+TESTS_EXIT_CODE=$?
+if [ $TESTS_EXIT_CODE -ne 0 ]; then
+    echo "dgraph-js-http client tests FAILED"
+    quit
+    exit $TESTS_EXIT_CODE
+fi
 
 rm -rf ./scripts/data
-
-quit 0
+quit
+exit 0
