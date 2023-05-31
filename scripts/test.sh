@@ -7,8 +7,6 @@ sleepTime=5
 
 function quit {
     echo "Shutting down Dgraph alpha and zero."
-    curl -s localhost:8080/admin/shutdown #TODO In the future this endpoint won't work anymore, in favor of GraphQL. We should prepare it.
-
     kill -9 $(pgrep -f "dgraph zero") > /dev/null     # Kill Dgraph zero.
     kill -9 $(pgrep -f "dgraph alpha") > /dev/null    # I don't wanna wait "clean shutdown" on this context. Let's kill it please...
 

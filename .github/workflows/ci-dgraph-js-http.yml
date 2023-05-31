@@ -51,7 +51,8 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
-    - name: run tests
+        cache-dependency-path: dgraph-js-http/package-lock.json
+    - name: Run dgraph-js-http tests
       run: | 
         npm ci --legacy-peer-deps
         bash ./dgraph-js-http/scripts/test.sh
