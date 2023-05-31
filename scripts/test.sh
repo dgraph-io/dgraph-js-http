@@ -1,5 +1,8 @@
 #!/bin/bash
 
+set -e
+set -x
+
 sleepTime=5
 
 function quit {
@@ -37,5 +40,22 @@ function startZero {
 
 function init {
     echo -e "Initializing.\n"
+    rm -rf ./scripts/data
     mkdir ./scripts/data
 }
+
+init
+startZero
+start
+
+sleep 10 # Dgraph need some time to create Groot user
+
+npm run build
+
+curl http://localhost:8080/health
+
+npm test
+
+rm -rf ./scripts/data
+
+quit 0
