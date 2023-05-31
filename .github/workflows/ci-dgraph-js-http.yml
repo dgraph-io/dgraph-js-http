@@ -53,9 +53,10 @@ jobs:
         cache: 'npm'
         cache-dependency-path: dgraph-js-http/package-lock.json
     - name: Run dgraph-js-http tests
+      working-directory: dgraph-js-http
       run: | 
         npm ci --legacy-peer-deps
-        bash ./dgraph-js-http/scripts/test.sh
+        bash ./scripts/test.sh
 
 
 
