@@ -87,7 +87,7 @@ SRCDIR=$(dirname $_SRCDIR)
 init
 startZero
 startAlpha
-sleep 10 # time to create Groot user
+sleep 10 # need time to create Groot user
 
 npm run build
 
