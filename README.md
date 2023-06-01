@@ -416,7 +416,7 @@ npm run build
 
 ### Running tests
 
-The script `test.sh` spins up a local cluster and runs the npm tests.
+The script `run-tests.sh` spins up a local cluster and runs the npm tests.
 
 ```sh
 bash scripts/test.sh
