@@ -19,20 +19,20 @@ testing and exploration.
 First, create two separate directories for `dgraph zero` and `dgraph server`.
 
 ```sh
-mkdir -p dgraphdata/zero dgraphdata/data
+mkdir -p local-dgraph-data/zero local-dgraph-data/data
 ```
 
 Then start `dgraph zero`:
 
 ```sh
-cd dgraphdata/zero
+cd local-dgraph-data/zero
 rm -r zw; dgraph zero
 ```
 
 Finally, start the `dgraph alpha`:
 
 ```sh
-cd dgraphdata/data
+cd local-dgraph-data/data
 rm -r p w; dgraph alpha --zero localhost:5080 -o 100
 ```
 
