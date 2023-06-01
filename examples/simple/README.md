@@ -9,7 +9,7 @@ client for Dgraph.
 
 ### Start Dgraph server
 
-You will need to install [Dgraph v1.0.6 or above][releases] and run it.
+You will need to install [Dgraph v21.3.2 or above][releases] and run it.
 
 [releases]: https://github.com/dgraph-io/dgraph/releases
 
@@ -46,7 +46,7 @@ For more configuration options, and other details, refer to
 ## Install dependencies
 
 ```sh
-npm install dgraph-js-http@21.3.1
+npm install
 ```
 
 ## Run the sample code

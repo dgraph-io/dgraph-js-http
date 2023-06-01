@@ -1,0 +1,6 @@
+{
+  "name": "simple",
+  "dependencies": {
+    "dgraph-js-http": "^21.3.1"
+  }
+}
