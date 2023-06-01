@@ -7,7 +7,7 @@ client for Dgraph.
 
 ## Running
 
-### Start Dgraph server
+### Start dgraph alpha
 
 You will need to install [Dgraph v21.3.2 or above][releases] and run it.
 
@@ -16,7 +16,7 @@ You will need to install [Dgraph v21.3.2 or above][releases] and run it.
 You can run the commands below to start a clean Dgraph server every time, for
 testing and exploration.
 
-First, create two separate directories for `dgraph zero` and `dgraph server`.
+First, create two separate directories for `dgraph zero` and `dgraph alpha`.
 
 ```sh
 mkdir -p local-dgraph-data/zero local-dgraph-data/data
