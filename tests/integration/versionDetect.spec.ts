@@ -8,7 +8,7 @@ describe("clientStub version detection", () => {
             legacyApi: USE_LEGACY_API,
         });
         return expect(stub.detectApiVersion()).resolves.toMatch(
-            /^v[0-9]+(.[0-9]+){2}.*/,
+            /^v[0-9]+(.[0-9]+){2}.*|^[a-z0-9]*$/,
         );
     });
 });

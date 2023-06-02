@@ -7,34 +7,38 @@ client for Dgraph.
 
 ## Running
 
-### Start Dgraph server
+### Start dgraph alpha
 
-You will need to install [Dgraph v1.0.6 or above][releases] and run it.
+You will need to install [Dgraph v21.3.2 or above][releases] and run it.
 
 [releases]: https://github.com/dgraph-io/dgraph/releases
 
 You can run the commands below to start a clean Dgraph server every time, for
 testing and exploration.
 
-First, create two separate directories for `dgraph zero` and `dgraph server`.
+First, create two separate directories for `dgraph zero` and `dgraph alpha`.
 
 ```sh
-mkdir -p dgraphdata/zero dgraphdata/data
+mkdir -p local-dgraph-data/zero local-dgraph-data/data
 ```
 
 Then start `dgraph zero`:
 
 ```sh
-cd dgraphdata/zero
+cd local-dgraph-data/zero
 rm -r zw; dgraph zero
 ```
 
-Finally, start the `dgraph server`:
+Finally, start the `dgraph alpha`:
 
 ```sh
-cd dgraphdata/data
-rm -r p w; dgraph server --lru_mb=1024 --zero localhost:5080
+cd local-dgraph-data/data
+rm -r p w; dgraph alpha --zero localhost:5080 -o 100
 ```
+
+Notice that in the command above, we shifted the ports by 100 from the default ports of 7080 for
+internal traffic, 8080 for http, and 9080 for GRPC, which means the alpha server is binding to
+the port 7180 for internal traffic, 8180 for http, and 9180 for GRPC.
 
 For more configuration options, and other details, refer to
 [docs.dgraph.io](https://docs.dgraph.io)
@@ -42,7 +46,7 @@ For more configuration options, and other details, refer to
 ## Install dependencies
 
 ```sh
-yarn install
+npm install
 ```
 
 ## Run the sample code

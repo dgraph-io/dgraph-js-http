@@ -14,8 +14,6 @@ and understand how to run and work with Dgraph.
 
 [docs.dgraph.io]: https://docs.dgraph.io
 
-**Use [Discuss Issues](https://discuss.dgraph.io/c/issues/35) for reporting issues about this repository.**
-
 ## Table of contents
 
 -   [Install](#install)
@@ -47,7 +45,7 @@ yarn add dgraph-js-http
 or npm:
 
 ```sh
-npm install dgraph-js-http --save
+npm install dgraph-js-http
 ```
 
 You will also need a Promise polyfill for
@@ -62,9 +60,9 @@ use a different version of this client.
 
 | Dgraph version | dgraph-js-http version |
 | :------------: | :--------------------: |
-|   >= 21.03.0   |      >= _21.3.0_       |
-|   >= 20.03.0   |      >= _20.3.0_       |
-|     >= 1.1     |       >= _1.1.0_       |
+|    21.3.X      |       *21.3.0*         |
+|    22.0.X      |       *21.3.0*         |
+|    23.0.X      |       *23.0.0*         |
 
 ## Quickstart
 
@@ -418,8 +416,8 @@ npm run build
 
 ### Running tests
 
-Make sure you have a Dgraph server running on localhost before you run this task.
+The script `run-tests.sh` spins up a local cluster and runs the npm tests.
 
 ```sh
-npm test
+bash scripts/run-tests.sh
 ```
