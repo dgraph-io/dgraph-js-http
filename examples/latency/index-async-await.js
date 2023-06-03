@@ -130,7 +130,7 @@ async function main() {
         string: 'api-key',
         boolean: 'drop-all',
         default: {
-            'addr': 'http://localhost:8080'
+            'addr': 'http://localhost:8180'
         },
         alias: { apiKey: 'api-key', dropAll: 'drop-all' }
     });
