@@ -2,7 +2,7 @@ const dgraph = require("dgraph-js-http");
 
 // Create a client stub.
 function newClientStub() {
-    return new dgraph.DgraphClientStub("http://localhost:8180");
+    return new dgraph.DgraphClientStub("http://localhost:8080");
 }
 
 // Create a client.
