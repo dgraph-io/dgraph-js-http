@@ -33,12 +33,8 @@ Finally, start the `dgraph alpha`:
 
 ```sh
 cd local-dgraph-data/data
-rm -r p w; dgraph alpha --zero localhost:5080 -o 100
+rm -r p w; dgraph alpha --zero localhost:5080
 ```
-
-Notice that in the command above, we shifted the ports by 100 from the default ports of 7080 for
-internal traffic, 8080 for http, and 9080 for GRPC, which means the alpha server is binding to
-the port 7180 for internal traffic, 8180 for http, and 9180 for GRPC.
 
 For more configuration options, and other details, refer to
 [docs.dgraph.io](https://docs.dgraph.io)
