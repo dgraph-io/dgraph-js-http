@@ -1,4 +1,5 @@
-# dgraph-js-http [![npm version](https://img.shields.io/npm/v/dgraph-js-http.svg?style=flat)](https://www.npmjs.com/package/dgraph-js-http) [![Build Status](https://img.shields.io/travis/dgraph-io/dgraph-js-http/master.svg?style=flat)](https://travis-ci.org/dgraph-io/dgraph-js-http) [![Coverage Status](https://img.shields.io/coveralls/github/dgraph-io/dgraph-js-http/master.svg?style=flat)](https://coveralls.io/github/dgraph-io/dgraph-js-http?branch=master)
+# dgraph-js-http 
+[![npm version](https://img.shields.io/npm/v/dgraph-js-http.svg?style=flat)](https://www.npmjs.com/package/dgraph-js-http) [![Coverage Status](https://img.shields.io/coveralls/github/dgraph-io/dgraph-js-http/master.svg?style=flat)](https://coveralls.io/github/dgraph-io/dgraph-js-http?branch=master)
 
 A Dgraph client implementation for javascript using HTTP. It supports both
 browser and Node.js environments.
