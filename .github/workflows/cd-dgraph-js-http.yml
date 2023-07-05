@@ -64,7 +64,6 @@ jobs:
         with:
           node-version: '20.x'
           registry-url: 'https://registry.npmjs.org'
-          scope: '@dgraph-io'
       - name: Build dgraph-js-http package
         run: npm ci --legacy-peer-deps
       - run: npm publish
