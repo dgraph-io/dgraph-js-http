@@ -12,8 +12,8 @@ on:
         type: choice
         options:
           - latest
-          - beta
           - rc
+          - beta
 jobs:
   dgraph-js-http-tests:
     runs-on: ubuntu-20.04
