@@ -6,6 +6,14 @@ on:
         description: "git tag to checkout and version to publish to npm"
         required: true
         type: string
+      releasetype:
+        description: "specify how to tag release on npm"
+        required: true
+        type: choice
+        options:
+          - latest
+          - rc
+          - beta
 jobs:
   dgraph-js-http-tests:
     runs-on: ubuntu-20.04
@@ -66,7 +74,7 @@ jobs:
           registry-url: 'https://registry.npmjs.org'
       - name: Build dgraph-js-http package
         run: npm ci --legacy-peer-deps
-      - run: npm publish
+      - run: npm publish --tag '${{ github.event.inputs.releasetype }}'
         env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_DGRAPH_JS_HTTP_TOKEN }}
 
