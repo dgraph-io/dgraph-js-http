@@ -30,7 +30,7 @@ const DGRAPHCLOUD_API_KEY_HEADER = "X-Auth-Token";
 export class DgraphClientStub {
     private readonly addr: string;
     private readonly options: Options;
-    // tslint:disable-next-line no-any
+    /*  eslint-disable-next-line @typescript-eslint/no-explicit-any */
     private readonly jsonParser: (text: string) => any;
     private legacyApi: boolean;
     private accessToken: string;
@@ -38,17 +38,17 @@ export class DgraphClientStub {
     private autoRefresh: boolean;
     private autoRefreshTimer?: number;
 
+    // eslint-disable-next-line @typescript-eslint/explicit-member-accessibility
     constructor(
         addr?: string,
         stubConfig: {
             legacyApi?: boolean;
-            // tslint:disable-next-line no-any
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
             jsonParser?(text: string): any;
         } = {},
         options: Options = {},
     ) {
         if (addr === undefined) {
-            // tslint:disable-next-line no-http-string
             this.addr = "http://localhost:8080";
         } else {
             this.addr = addr;
@@ -60,13 +60,13 @@ export class DgraphClientStub {
         this.jsonParser =
             stubConfig.jsonParser !== undefined
                 ? stubConfig.jsonParser
-                : // tslint:disable-next-line no-unsafe-any
-                  JSON.parse.bind(JSON);
+                : // eslint-disable-next-line @typescript-eslint/tslint/config
+                JSON.parse.bind(JSON);
     }
 
     public async detectApiVersion(): Promise<string> {
         const health = await this.getHealth();
-        // tslint:disable-next-line no-unsafe-any no-string-literal
+        // eslint-disable-next-line @typescript-eslint/tslint/config, @typescript-eslint/dot-notation
         let version: string = health["version"] || health[0].version;
         if (version === undefined) {
             version = "1.0.x";
@@ -205,19 +205,19 @@ export class DgraphClientStub {
         ) {
             body = `{
                 ${
-                    mu.setNquads === undefined
-                        ? ""
-                        : `set {
+    mu.setNquads === undefined
+        ? ""
+        : `set {
                     ${mu.setNquads}
                 }`
-                }
+}
                 ${
-                    mu.deleteNquads === undefined
-                        ? ""
-                        : `delete {
+    mu.deleteNquads === undefined
+        ? ""
+        : `delete {
                     ${mu.deleteNquads}
                 }`
-                }
+}
             }`;
         } else if (mu.mutation !== undefined) {
             body = mu.mutation;
@@ -250,7 +250,7 @@ export class DgraphClientStub {
         let nextDelim = "?";
         if (mu.startTs > 0) {
             url +=
-                (!this.legacyApi ? `?startTs=` : `/`) + mu.startTs.toString();
+                (!this.legacyApi ? "?startTs=" : "/") + mu.startTs.toString();
             nextDelim = "&";
         }
 
@@ -428,7 +428,7 @@ export class DgraphClientStub {
         return this.callAPI("state", this.options);
     }
 
-    public setAutoRefresh(val: boolean) {
+    public setAutoRefresh(val: boolean): void {
         if (!val) {
             this.cancelRefreshTimer();
         }
@@ -436,7 +436,7 @@ export class DgraphClientStub {
         this.maybeStartRefreshTimer(this.accessToken);
     }
 
-    public setAlphaAuthToken(authToken: string) {
+    public setAlphaAuthToken(authToken: string): void{
         if (this.options.headers === undefined) {
             this.options.headers = {};
         }
@@ -445,29 +445,28 @@ export class DgraphClientStub {
 
     /**
      * @deprecated since v21.3 and will be removed in v21.07 release.
-     *     Please use {@link setCloudApiKey} instead.
+     * Please use {@link setCloudApiKey} instead.
      */
-
-    public setSlashApiKey(apiKey: string) {
+    public setSlashApiKey(apiKey: string): void {
         this.setCloudApiKey(apiKey);
     }
 
-    public setCloudApiKey(apiKey: string) {
+    public setCloudApiKey(apiKey: string): void {
         if (this.options.headers === undefined) {
             this.options.headers = {};
         }
         this.options.headers[DGRAPHCLOUD_API_KEY_HEADER] = apiKey;
     }
 
-    private cancelRefreshTimer() {
+    private cancelRefreshTimer(): void {
         if (this.autoRefreshTimer !== undefined) {
-            // tslint:disable-next-line
-            clearTimeout(<any>this.autoRefreshTimer);
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            clearTimeout((this.autoRefreshTimer as any));
             this.autoRefreshTimer = undefined;
         }
     }
 
-    private maybeStartRefreshTimer(accessToken?: string) {
+    private maybeStartRefreshTimer(accessToken?: string): void {
         if (accessToken === undefined || !this.autoRefresh) {
             return;
         }
@@ -475,21 +474,17 @@ export class DgraphClientStub {
 
         const timeToWait = Math.max(
             2000,
-            // tslint:disable-next-line no-unsafe-any
-            (<{ exp: number }>jwt.decode(accessToken)).exp * 1000 -
+            // eslint-disable-next-line @typescript-eslint/tslint/config
+            (jwt.decode(accessToken) as { exp: number }).exp * 1000 -
                 Date.now() -
                 AUTO_REFRESH_PREFETCH_TIME,
         );
 
-        // tslint:disable-next-line no-unsafe-any no-any
-        this.autoRefreshTimer = <number>(
-            (<unknown>(
-                setTimeout(
-                    () => (this.refreshToken !== undefined ? this.login() : 0),
-                    timeToWait,
-                )
-            ))
-        );
+        // eslint-disable-next-line @typescript-eslint/tslint/config
+        this.autoRefreshTimer = (setTimeout(
+            () => (this.refreshToken !== undefined ? this.login() : 0),
+            timeToWait,
+        ) as unknown) as number;
     }
 
     private async callAPI<T>(path: string, config: Config): Promise<T> {
@@ -499,40 +494,38 @@ export class DgraphClientStub {
             config.headers[ACL_TOKEN_HEADER] = this.accessToken;
         }
 
-        // tslint:disable-next-line no-unsafe-any
+        // eslint-disable-next-line @typescript-eslint/tslint/config
         const response = await fetch(url, config);
 
-        // tslint:disable-next-line no-unsafe-any
+        // eslint-disable-next-line @typescript-eslint/tslint/config
         if (response.status >= 300 || response.status < 200) {
-            // tslint:disable-next-line no-unsafe-any
+            // eslint-disable-next-line @typescript-eslint/tslint/config
             throw new HTTPError(response);
         }
 
         let json;
-        // tslint:disable-next-line no-unsafe-any
+        // eslint-disable-next-line @typescript-eslint/tslint/config
         const responseText: string = await response.text();
 
         try {
-            // tslint:disable-next-line no-unsafe-any
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
             json = this.jsonParser(responseText);
         } catch (e) {
             if (config.acceptRawText) {
-                return <T>(<unknown>responseText);
+                return (responseText as unknown) as T;
             }
-            const err: ErrorNonJson = <ErrorNonJson>(
-                new Error("Response is not JSON")
-            );
+            const err: ErrorNonJson = new Error("Response is not JSON") as ErrorNonJson;
             err.responseText = responseText;
             throw err;
         }
-        // tslint:disable-next-line no-unsafe-any
-        const errors = (<{ errors: APIResultError[] }>json).errors;
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const errors = (json as { errors: APIResultError[] }).errors;
 
         if (errors !== undefined) {
             throw new APIError(url, errors);
         }
 
-        return <T>json;
+        return json as T;
     }
 
     private getURL(path: string): string {

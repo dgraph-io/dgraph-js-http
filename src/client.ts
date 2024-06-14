@@ -18,7 +18,7 @@ export class DgraphClient {
      * The client can be backed by multiple connections (to the same server, or
      * multiple servers in a cluster).
      */
-    constructor(...clients: DgraphClientStub[]) {
+    public constructor(...clients: DgraphClientStub[]) {
         if (clients.length === 0) {
             throw ERR_NO_CLIENTS;
         }
@@ -53,7 +53,7 @@ export class DgraphClient {
         return c.alter(op);
     }
 
-    public setAlphaAuthToken(authToken: string) {
+    public setAlphaAuthToken(authToken: string): void {
         this.clients.forEach((c: DgraphClientStub) =>
             c.setAlphaAuthToken(authToken),
         );
@@ -61,20 +61,18 @@ export class DgraphClient {
 
     /**
      * @deprecated since v21.3 and will be removed in v21.07 release.
-     *     Please use {@link setCloudApiKey} instead.
+     * Please use {@link setCloudApiKey} instead.
      */
-
-    public setSlashApiKey(apiKey: string) {
+    public setSlashApiKey(apiKey: string): void {
         this.setCloudApiKey(apiKey);
     }
 
-    public setCloudApiKey(apiKey: string) {
-        this.clients.forEach((c: DgraphClientStub) => c.setCloudApiKey(apiKey));
+    public setCloudApiKey(apiKey: string): void {
+        this.clients.forEach((c: DgraphClientStub) =>
+            c.setCloudApiKey(apiKey),
+        );
     }
 
-    /**
-     * login obtains access tokens from Dgraph Server
-     */
     public async login(userid: string, password: string): Promise<boolean> {
         this.debug(`Login request:\nuserid: ${userid}`);
 
@@ -85,15 +83,11 @@ export class DgraphClient {
     /**
      * loginIntoNamespace obtains access tokens from Dgraph Server for the particular userid & namespace
      */
-    public async loginIntoNamespace(
-        userid: string,
-        password: string,
-        namespace?: number,
-    ): Promise<boolean> {
+    public async loginIntoNamespace(userid: string, password: string, namespace?: number): Promise<boolean> {
         this.debug(`Login request:\nuserid: ${userid}`);
 
         const c = this.anyClient();
-        return c.loginIntoNamespace(userid, password, namespace); // tslint:disable-line no-unsafe-any
+        return c.loginIntoNamespace(userid, password, namespace); // eslint:disable-line no-unsafe-any
     }
 
     /**
@@ -142,7 +136,8 @@ export class DgraphClient {
      */
     public debug(msg: string): void {
         if (this.debugMode) {
-            console.log(msg); // tslint:disable-line no-console
+            // eslint-disable-next-line no-console
+            console.log(msg);
         }
     }
 

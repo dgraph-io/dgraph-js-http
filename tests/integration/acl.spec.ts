@@ -5,8 +5,8 @@ const data = ["200", "300", "400"];
 describe("ACL Login", () => {
     it("should login and use JWT tokens", async () => {
         if (USE_LEGACY_API) {
-          // Older Dgraph doesn't support ACL.
-          return;
+            // Older Dgraph doesn't support ACL.
+            return;
         }
 
         const client = await setup("groot", "password");
@@ -17,14 +17,14 @@ describe("ACL Login", () => {
             await client.login("groot", "12345678");
             throw new Error("Server should not accept wrong password");
         } catch (e) {
-          // Expected to throw an error for wrong password.
+            // Expected to throw an error for wrong password.
         }
 
         try {
             await client.login("Groot", "password");
             throw new Error("Server should not accept wrong userid");
         } catch (e) {
-          // Expected to throw an error for wrong password.
+            // Expected to throw an error for wrong password.
         }
 
         await setSchema(client, "name: string @index(fulltext) .");
@@ -51,8 +51,8 @@ describe("ACL Login", () => {
 
     it("should use supplied JWT token when passed in", async () => {
         if (USE_LEGACY_API) {
-          // Older Dgraph doesn't support ACL.
-          return;
+            // Older Dgraph doesn't support ACL.
+            return;
         }
 
         const client = await setup("groot", "password");
