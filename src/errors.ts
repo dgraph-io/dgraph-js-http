@@ -17,26 +17,31 @@ export const ERR_BEST_EFFORT_REQUIRED_READ_ONLY = new Error(
 export class CustomError extends Error {
     public readonly name: string;
 
-    constructor(message?: string) {
+    public constructor(message?: string) {
         super(message);
 
-        // tslint:disable no-any no-unsafe-any
         this.name = new.target.name;
 
         // fix the extended error prototype chain because typescript __extends implementation can't
-        const setPrototypeOf: Function = (<any>Object).setPrototypeOf;
+        /* eslint-disable @typescript-eslint/ban-types, @typescript-eslint/tslint/config,
+         @typescript-eslint/no-explicit-any, @typescript-eslint/no-unsafe-assignment */
+        const setPrototypeOf: (o: any, proto: object | null) => any = (Object as any).setPrototypeOf;
         setPrototypeOf !== undefined
             ? setPrototypeOf(this, new.target.prototype)
-            : ((<any>this).__proto__ = new.target.prototype);
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any, no-proto
+            : ((this as any).__proto__ = new.target.prototype);
 
-        // try to remove contructor from stack trace
-        const captureStackTrace: Function = (<any>Error).captureStackTrace;
+        // try to remove constructor from stack trace
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/no-unsafe-member-access
+        const captureStackTrace: (targetObject: any, constructorOpt?: any) => void = (Error as any).captureStackTrace;
         if (captureStackTrace !== undefined) {
             captureStackTrace(this, this.constructor);
         }
-        // tslint:enable no-any no-unsafe-any
+        /* eslint-enable @typescript-eslint/ban-types, @typescript-eslint/tslint/config,
+        @typescript-eslint/no-explicit-any, @typescript-eslint/no-unsafe-assignment */
     }
 }
+
 
 export interface APIResultError {
     code: string;
@@ -50,7 +55,7 @@ export class APIError extends CustomError {
     public readonly url: string;
     public readonly errors: APIResultError[];
 
-    constructor(url: string, errors: APIResultError[]) {
+    public constructor(url: string, errors: APIResultError[]) {
         super(errors.length > 0 ? errors[0].message : "API returned errors");
         this.url = url;
         this.errors = errors;
@@ -63,7 +68,7 @@ export class APIError extends CustomError {
 export class HTTPError extends CustomError {
     public readonly errorResponse: Response;
 
-    constructor(response: Response) {
+    public constructor(response: Response) {
         super(`Invalid status code = ${response.status}`);
         this.errorResponse = response;
     }

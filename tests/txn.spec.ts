@@ -28,7 +28,7 @@ describe("txn", () => {
                     $a: "Alice",
                 },
             );
-            let resJson = <{ me: { name: string }[] }>res.data;
+            let resJson = res.data as { me: { name: string }[] };
             expect(resJson.me).toHaveLength(1);
             expect(resJson.me[0].name).toEqual("Alice");
 
@@ -39,7 +39,7 @@ describe("txn", () => {
                     $b: true, // non-string properties are ignored
                 },
             );
-            resJson = <{ me: { name: string }[] }>res.data; // tslint:disable-line no-unsafe-any
+            resJson = res.data as { me: { name: string }[] }; // tslint:disable-line no-unsafe-any
             expect(resJson.me).toHaveLength(1);
             expect(resJson.me[0].name).toEqual("Alice");
         });
@@ -51,7 +51,7 @@ describe("txn", () => {
                     $a: 1, // non-string properties are ignored
                 },
             );
-            const resJson = <{ me: { name: string }[] }>res.data; // tslint:disable-line no-unsafe-any
+            const resJson = res.data as { me: { name: string }[] }; // tslint:disable-line no-unsafe-any
             expect(resJson.me).toHaveLength(0);
         });
 
@@ -66,27 +66,27 @@ describe("txn", () => {
         });
 
         it("should pass debug option to the server", async () => {
-          client = await setup();
-          const txn = client.newTxn();
-          await txn.mutate({
-              setJson: { name: "Alice" },
-          });
-          await txn.commit();
+            client = await setup();
+            const txn = client.newTxn();
+            await txn.mutate({
+                setJson: { name: "Alice" },
+            });
+            await txn.commit();
 
-          const queryTxn = client.newTxn();
+            const queryTxn = client.newTxn();
 
-          const resp = queryTxn.query(
-              "{ me(func: has(name)) { name }}",
-              { debug: true },
-          );
+            const resp = queryTxn.query(
+                "{ me(func: has(name)) { name }}",
+                { debug: true },
+            );
 
-          await expect(resp).resolves.toHaveProperty("data.me.0.uid");
+            await expect(resp).resolves.toHaveProperty("data.me.0.uid");
 
-          const resp2 = queryTxn.query(
-              "{ me(func: has(name)) { name }}",
-          );
-          // Query without debug shouldn't return uid.
-          await expect(resp2).resolves.not.toHaveProperty("data.me.0.uid");
+            const resp2 = queryTxn.query(
+                "{ me(func: has(name)) { name }}",
+            );
+            // Query without debug shouldn't return uid.
+            await expect(resp2).resolves.not.toHaveProperty("data.me.0.uid");
         });
     });
 

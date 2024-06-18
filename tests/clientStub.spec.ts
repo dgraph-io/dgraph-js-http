@@ -53,8 +53,8 @@ describe("clientStub", () => {
     describe("timeout", () => {
         it("should add timeout to the query string", async () => {
             const stub = new dgraph.DgraphClientStub();
-            // tslint:disable-next-line no-any
-            (<any>stub).callAPI = jest.fn();
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            (stub as any).callAPI = jest.fn();
 
             const req: Request = {
                 query: "",
@@ -62,42 +62,41 @@ describe("clientStub", () => {
                 timeout: 777,
             };
 
-            // tslint:disable-next-line no-unsafe-any
+            // eslint-disable-next-line
             await stub.query(req);
 
-            // tslint:disable-next-line no-any
-            expect((<any>stub).callAPI).toHaveBeenCalledTimes(1);
-            // tslint:disable-next-line no-unsafe-any no-any
-            expect((<any>stub).callAPI.mock.calls[0][0]).toContain(
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            expect((stub as any).callAPI).toHaveBeenCalledTimes(1);
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/tslint/config
+            expect((stub as any).callAPI.mock.calls[0][0]).toContain(
                 "timeout=777s",
             );
 
             req.timeout = 0;
             req.startTs = 0;
-            // tslint:disable-next-line no-unsafe-any
             await stub.query(req);
 
-            // tslint:disable-next-line no-any
-            expect((<any>stub).callAPI).toHaveBeenCalledTimes(2);
-            // tslint:disable-next-line no-unsafe-any no-any
-            expect((<any>stub).callAPI.mock.calls[1][0]).toBe("query");
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            expect((stub as any).callAPI).toHaveBeenCalledTimes(2);
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/tslint/config
+            expect((stub as any).callAPI.mock.calls[1][0]).toBe("query");
         });
     });
 
     describe("mutate", () => {
         it("should detect Content-Type when none is specified", async () => {
             const stub = new dgraph.DgraphClientStub();
-            // tslint:disable-next-line no-any
-            (<any>stub).callAPI = jest.fn();
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            (stub as any).callAPI = jest.fn();
 
             await stub.mutate({
                 mutation: "{ set: 123 }",
             });
 
-            // tslint:disable-next-line no-any
-            expect((<any>stub).callAPI).toHaveBeenCalledTimes(1);
-            // tslint:disable-next-line no-unsafe-any no-any
-            expect((<any>stub).callAPI.mock.calls[0][1].headers).toHaveProperty(
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            expect((stub as any).callAPI).toHaveBeenCalledTimes(1);
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/tslint/config
+            expect((stub as any).callAPI.mock.calls[0][1].headers).toHaveProperty(
                 "Content-Type",
                 "application/rdf",
             );
@@ -106,10 +105,10 @@ describe("clientStub", () => {
                 mutation: '{ "setJson": { "name": "Alice" } }',
             });
 
-            // tslint:disable-next-line no-any
-            expect((<any>stub).callAPI).toHaveBeenCalledTimes(2);
-            // tslint:disable-next-line no-unsafe-any no-any
-            expect((<any>stub).callAPI.mock.calls[1][1].headers).toHaveProperty(
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            expect((stub as any).callAPI).toHaveBeenCalledTimes(2);
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/tslint/config
+            expect((stub as any).callAPI.mock.calls[1][1].headers).toHaveProperty(
                 "Content-Type",
                 "application/json",
             );
@@ -117,18 +116,18 @@ describe("clientStub", () => {
 
         it("should use specified Content-Type if present", async () => {
             const stub = new dgraph.DgraphClientStub();
-            // tslint:disable-next-line no-any
-            (<any>stub).callAPI = jest.fn();
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            (stub as any).callAPI = jest.fn();
 
             await stub.mutate({
                 mutation: "{ set: 123 }",
                 isJsonString: true,
             });
 
-            // tslint:disable-next-line no-any
-            expect((<any>stub).callAPI).toHaveBeenCalledTimes(1);
-            // tslint:disable-next-line no-unsafe-any no-any
-            expect((<any>stub).callAPI.mock.calls[0][1].headers).toHaveProperty(
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            expect((stub as any).callAPI).toHaveBeenCalledTimes(1);
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/tslint/config
+            expect((stub as any).callAPI.mock.calls[0][1].headers).toHaveProperty(
                 "Content-Type",
                 "application/json",
             );
@@ -138,10 +137,10 @@ describe("clientStub", () => {
                 isJsonString: false,
             });
 
-            // tslint:disable-next-line no-any
-            expect((<any>stub).callAPI).toHaveBeenCalledTimes(2);
-            // tslint:disable-next-line no-unsafe-any no-any
-            expect((<any>stub).callAPI.mock.calls[1][1].headers).toHaveProperty(
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            expect((stub as any).callAPI).toHaveBeenCalledTimes(2);
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/tslint/config
+            expect((stub as any).callAPI.mock.calls[1][1].headers).toHaveProperty(
                 "Content-Type",
                 "application/rdf",
             );

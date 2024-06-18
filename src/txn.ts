@@ -27,7 +27,7 @@ export class Txn {
     private finished: boolean = false;
     private mutated: boolean = false;
 
-    constructor(dc: DgraphClient, options: TxnOptions = {}) {
+    public constructor(dc: DgraphClient, options: TxnOptions = {}) {
         this.dc = dc;
 
         if (options.bestEffort && !options.readOnly) {
@@ -36,12 +36,12 @@ export class Txn {
         }
 
         this.ctx = {
-          start_ts: 0,
-          keys: [],
-          preds: [],
-          readOnly: options.readOnly,
-          bestEffort: options.bestEffort,
-          hash: "",
+            start_ts: 0,
+            keys: [],
+            preds: [],
+            readOnly: options.readOnly,
+            bestEffort: options.bestEffort,
+            hash: "",
         };
     }
 
@@ -60,7 +60,7 @@ export class Txn {
      */
     public async queryWithVars(
         q: string,
-        vars?: { [k: string]: any }, // tslint:disable-line no-any
+        vars?: { [k: string]: any }, // eslint-disable-line @typescript-eslint/no-explicit-any
         options: { debug?: boolean } = {},
     ): Promise<Response> {
         if (this.finished) {
@@ -202,7 +202,7 @@ export class Txn {
         await c.abort(this.ctx);
     }
 
-    private mergeArrays(a: string[], b: string[]) {
+    private mergeArrays(a: string[], b: string[]): string[]{
         const res = a.slice().concat(b);
         res.sort();
         // Filter unique in a sorted array.

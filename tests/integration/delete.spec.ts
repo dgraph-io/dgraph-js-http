@@ -13,11 +13,11 @@ describe("delete", () => {
             }
         }`;
         let res = await client.newTxn().query(q);
-        expect((<{ find_bob: { name: string }[] }>res.data).find_bob[0].name).toEqual("Alice");
+        expect((res.data as { find_bob: { name: string }[] }).find_bob[0].name).toEqual("Alice");
 
         await client.newTxn().mutate({ deleteNquads: `<${uid}> <name> * .`, commitNow: true });
         res = await client.newTxn().query(q);
-        expect((<{ find_bob: { name: string }[] }>res.data).find_bob).toHaveLength(0);
+        expect((res.data as { find_bob: { name: string }[] }).find_bob).toHaveLength(0);
     });
 
     it("should delete edges", async () => {
@@ -69,10 +69,10 @@ describe("delete", () => {
             }
         }`;
         let res = await client.newTxn().query(q);
-        expect((<{ me: { friends: string[] }[] }>res.data).me[0].friends.length).toBe(2);
+        expect((res.data as { me: { friends: string[] }[] }).me[0].friends.length).toBe(2);
 
         await client.newTxn().mutate({ deleteNquads: `<${uid}> <friends> * .`, commitNow: true });
         res = await client.newTxn().query(q);
-        expect((<{ me: { friends: string[] }[] }>res.data).me[0].friends).toBeFalsy();
+        expect((res.data as { me: { friends: string[] }[] }).me[0].friends).toBeFalsy();
     });
 });

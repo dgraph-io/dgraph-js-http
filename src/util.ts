@@ -1,6 +1,7 @@
 import { APIError, APIResultError } from "./errors";
 
-export function isAbortedError(error: any): boolean { // tslint:disable-line no-any
+// eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/explicit-module-boundary-types
+export function isAbortedError(error: any): boolean {
     if (!(error instanceof APIError)) {
         return false;
     }
@@ -13,8 +14,8 @@ export function isAbortedError(error: any): boolean { // tslint:disable-line no-
     const message = firstError.message.toLowerCase();
     return message.indexOf("abort") >= 0 && message.indexOf("retry") >= 0;
 }
-
-export function isConflictError(error: any): boolean { // tslint:disable-line no-any
+// eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/explicit-module-boundary-types
+export function isConflictError(error: any): boolean {
     if (!(error instanceof APIError)) {
         return false;
     }
