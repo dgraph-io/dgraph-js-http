@@ -53,7 +53,7 @@ module.exports = {
         "@typescript-eslint/dot-notation": "error",
         "@typescript-eslint/explicit-function-return-type": "error",
         "@typescript-eslint/explicit-member-accessibility": [
-            "error",
+            "off",
             {
                 "accessibility": "explicit"
             }
@@ -439,8 +439,6 @@ module.exports = {
             "error",
             {
                 "rules": {
-                    "chai-prefer-contains-to-index-of": true,
-                    "chai-vague-errors": true,
                     "completed-docs": [
                         true,
                         "classes"
@@ -448,20 +446,13 @@ module.exports = {
                     "encoding": true,
                     "function-name": true,
                     "import-spacing": true,
-                    "informative-docs": true,
-                    "jquery-deferred-must-complete": true,
                     "match-default-export-name": true,
                     "mocha-unneeded-done": true,
-                    "no-disable-auto-sanitization": true,
-                    "no-function-constructor-with-string-args": true,
                     "no-http-string": [
                         true,
                         "http://www.example.com/?.*",
                         "http://localhost:?.*"
                     ],
-                    "no-increment-decrement": true,
-                    "no-inner-html": true,
-                    "no-jquery-raw-elements": true,
                     "no-reserved-keywords": true,
                     "no-string-based-set-immediate": true,
                     "no-string-based-set-interval": true,
@@ -472,20 +463,12 @@ module.exports = {
                     "no-unnecessary-local-variable": true,
                     "no-unnecessary-override": true,
                     "no-unsafe-any": true,
-                    "no-unsupported-browser-code": true,
                     "no-useless-files": true,
                     "number-literal-format": true,
                     "prefer-method-signature": true,
                     "prefer-type-cast": true,
                     "prefer-while": true,
                     "promise-must-complete": true,
-                    "react-a11y-input-elements": true,
-                    "react-a11y-meta": true,
-                    "react-a11y-required": true,
-                    "react-a11y-titles": true,
-                    "react-anchor-blank-noopener": true,
-                    "react-iframe-missing-sandbox": true,
-                    "react-this-binding-issue": true,
                     "switch-final-break": true,
                     "use-named-parameter": true,
                     "use-simple-attributes": true,

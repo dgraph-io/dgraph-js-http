@@ -38,7 +38,6 @@ export class DgraphClientStub {
     private autoRefresh: boolean;
     private autoRefreshTimer?: number;
 
-    // eslint-disable-next-line @typescript-eslint/explicit-member-accessibility
     constructor(
         addr?: string,
         stubConfig: {
