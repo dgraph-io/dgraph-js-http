@@ -34,7 +34,6 @@
     "@typescript-eslint/eslint-plugin": "^7.13.0",
     "@typescript-eslint/eslint-plugin-tslint": "^7.0.2",
     "@typescript-eslint/parser": "^7.13.0",
-    "coveralls": "^3.1.1",
     "eslint": "^8.57.0",
     "eslint-plugin-import": "^2.29.1",
     "eslint-plugin-jest": "^28.6.0",
