@@ -3,7 +3,7 @@ name: ci-dgraph-js-http-tests
 on:
   push:
     branches: 
-    - master
+    - main
   pull_request:
     types:
     - opened
@@ -11,7 +11,7 @@ on:
     - synchronize
     - ready_for_review
     branches: 
-    - master
+    - main
 jobs:
   dgraph-js-http-tests:
     runs-on: ubuntu-20.04
